@@ -1,0 +1,8 @@
+<html>
+    <body>
+        <h1>Hi, {{ current_user.display_name }}</h1>
+        <h3><a href="{{ url_for('profile', username = current_user.username) }}">My Profile</a></h3>
+        <h3><a href="{{ url_for('settings') }}">Settings</a></h3>
+        <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
+    </body>
+</html>
