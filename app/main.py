@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
-from forms import RegisterForm
+from forms import RegisterForm, SettingsForm
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -118,6 +118,8 @@ def dashboard():
 @app.route('/settings', methods = ['POST', 'GET'])
 @login_required
 def settings():
+    form = SettingsForm()
+
     if request.method == 'POST':
         display_name = request.form['display_name']
         password_new = request.form['password_new']
@@ -138,7 +140,7 @@ def settings():
         
         db_user.session.commit()
 
-    return render_template('settings.html')
+    return render_template('settings.html', form = form)
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['POST', 'GET'])
