@@ -19,6 +19,9 @@ class UserModel(UserMixin, db_user.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def avatar(self):
+        pass
 
 # Link Flask_Login and database
 login = LoginManager()

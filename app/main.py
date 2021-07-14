@@ -98,12 +98,14 @@ def login():
 
 # LOGOUT
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect('/login')
 
 # ACCOUNT DELETION
 @app.route('/deactivate')
+@login_required
 def deactivate():
     db_user.session.delete(current_user)
     db_user.session.commit()
@@ -146,6 +148,7 @@ def settings():
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['POST', 'GET'])
+@login_required
 def profile(username):
     if username == current_user.username:
         return "hi, it's you!"
