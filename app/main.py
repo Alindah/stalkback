@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
+from forms import RegisterForm
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -28,10 +29,11 @@ def index():
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
     contains_err = False
+    form = RegisterForm()
 
     if current_user.is_authenticated:
         return redirect('/dashboard')
-    
+
     if request.method == 'POST':
         email = request.form['email']
         username = request.form['username']
@@ -69,7 +71,7 @@ def register():
         flash("Account successfully created! Please log in.")
         return redirect('/login')
 
-    return render_template('register.html')
+    return render_template('register.html', form = form)
 
 # LOGIN
 @app.route('/login', methods = ['POST', 'GET'])
