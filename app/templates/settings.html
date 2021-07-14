@@ -11,23 +11,26 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-
-            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-                {{ form.display_name.label }}
-                {{ form.display_name(maxlength=32) }}<br>
-                
-                {{ form.password.label }}
-                {{ form.password }}<br>
-
-                {{ form.password_new.label }}
-                {{ form.password_new }}<br>
-
-                {{ form.password_check.label }}
-                {{ form.password_check }}<br><br>
-
-                {{ form.submit }}
-                </div>
             
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+                    {{ form.display_name.label }}
+                    {{ form.display_name(maxlength=32) }}<br>
+                    
+                    {{ form.password.label }}
+                    {{ form.password }}<br>
+
+                    {{ form.password_new.label }}
+                    {{ form.password_new }}<br>
+
+                    {{ form.password_check.label }}
+                    {{ form.password_check }}<br><br>
+
+                    {{ form.submit }}
+                </div>
+            </fieldset>
+
             <!--
             <p>Display Name <input type="text" name="display_name" maxlength="32" value="{{ current_user.display_name }}"/></p>
             <p>Old Password <input type="password" name="password" /></p>

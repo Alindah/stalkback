@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
-from forms import RegisterForm, SettingsForm
+from forms import RegisterForm, SettingsForm, LoginForm
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -76,6 +76,8 @@ def register():
 # LOGIN
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
+    form = LoginForm()
+
     if current_user.is_authenticated:
         return redirect('/dashboard')
     
@@ -92,7 +94,7 @@ def login():
             
             flash("Password does not match records. Please try again.")
 
-    return render_template('login.html')
+    return render_template('login.html', form = form)
 
 # LOGOUT
 @app.route('/logout')
