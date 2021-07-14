@@ -1,21 +1,43 @@
 <html>
     <body>
         <h1>Settings</h1>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
         <form action="" method="POST">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+                    {{ form.display_name.label }}
+                    {{ form.display_name(maxlength=32) }}<br>
+                    
+                    {{ form.password.label }}
+                    {{ form.password }}<br>
+
+                    {{ form.password_new.label }}
+                    {{ form.password_new }}<br>
+
+                    {{ form.password_check.label }}
+                    {{ form.password_check }}<br><br>
+
+                    {{ form.submit }}
+                </div>
+            </fieldset>
+
+            <!--
             <p>Display Name <input type="text" name="display_name" maxlength="32" value="{{ current_user.display_name }}"/></p>
             <p>Old Password <input type="password" name="password" /></p>
             <p>New Password <input type="password" name="password_new" /></p>
             <p>Re-enter password <input type="password" name="password_check" /></p>  
-            <p><input type="submit" value="Save"></p>  
+            <p><input type="submit" value="Save"></p>
+            -->  
         </form>
         <h3><a href="{{ url_for('dashboard') }}">Return to dashboard</a></h3>
         <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
