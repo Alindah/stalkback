@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import flashes %}
 {% block content %}
     <div class="login-container">
         <p>
@@ -13,15 +14,7 @@
             {{ form.remember }}
             {{ form.submit }}
         </form></p>
-        <div class="flashes-container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <li>{{ message }}</li>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
+        {{ flashes() }}
         <hr>
         <p>  
             Don't have an account yet?<br>

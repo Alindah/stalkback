@@ -1,0 +1,25 @@
+{% macro flashes() -%}
+    <div class="flashes-container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+{%- endmacro %}
+
+{% macro footer_link(text, url, svg_path) -%}
+    <span class="footer-link">
+        {% if svg_path %}
+            <div class="footer-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24">
+                    <title>{{ text }}</title>
+                    <path d="{{ svg_path }}"></path>
+                </svg>
+            </div>
+        {% endif %}
+        <a href="{{ url }}" target="_blank">{{ text }}</a>
+    </span>
+{%- endmacro %}

@@ -1,16 +1,9 @@
 {% extends "base.html" %}
+{% from "macros.html" import flashes %}
 {% block content %}
     <h1>Settings</h1>
     <form action="" method="POST">
-        <div class="flashes-container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <li>{{ message }}</li>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
+        {{ flashes() }}
         
         {{ form.hidden_tag() }}
         <fieldset>
