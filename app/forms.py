@@ -12,11 +12,12 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     email = StringField("Email*", [validators.Required("Enter your email address."), 
-                                validators.Email("Enter a proper email address.")])
-    username = StringField("Username*", [validators.Required("Enter a username.")])
-    display_name = StringField("Display Name")
-    password = PasswordField("Password*", [validators.Required("Enter a password.")])
-    password_check = PasswordField("Re-enter password*", [validators.Required("Retype your password.")])
+                                validators.Email("Enter a proper email address.")],
+                                description = "Email*")
+    username = StringField("Username*", [validators.Required("Enter a username.")], description = "Username*")
+    display_name = StringField("Display Name", description = "Display Name")
+    password = PasswordField("Password*", [validators.Required("Enter a password.")], description = "Password*")
+    password_check = PasswordField("Re-enter password*", [validators.Required("Retype your password.")], description = "Re-type password*")
     submit = SubmitField("Submit")
 
 class SettingsForm(FlaskForm):

@@ -94,9 +94,25 @@ a:hover {
 .flashes-container {
     color: var(--color-highlight);
     font-size: 0.8em;
+    padding: 1em;
 }
 
-.login-container {
+.flashes-container fieldset {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1em;
+    border-color: var(--color-text);
+}
+
+.flashes-container legend {
+    color: var(--color-text);
+}
+
+.flashes-container li {
+    position: relative;
+    list-style-position: inside;
+}
+
+.acct-form-container {
     margin: auto;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -109,25 +125,28 @@ a:hover {
     text-align: center;
 }
 
-.login-container input {
+.acct-form-container input {
     font-family: var(--font-main);
     font-size: 1em;
     padding: 0.5em;
     margin: 0.12em;
 }
 
-.login-container input[type='text'], input[type='password'] {
+.acct-form-container input[type='text'], input[type='password'] {
     width: 18em;
 }
 
-.login-container input[type='submit'] {
-    margin: 0.25em;
-    margin-left: 2em;
+.acct-form-container input[type='submit'] {
     width: 9em;
     font-weight: bold;
     cursor: pointer;
     background-color: var(--color-highlight);
     border-color: var(--color-highlight);
+}
+
+.login-container input[type='submit'] {
+    margin: 0.25em;
+    margin-left: 2em;
 }
 
 .headline {

@@ -1,13 +1,18 @@
-{% macro flashes() -%}
-    <div class="flashes-container">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
+{% macro flashes(desc) -%}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flashes-container">
+                <fieldset>
+                    {% if desc %}
+                        <legend>{{ desc }}</legend>
+                    {% endif %}
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </fieldset>
+            </div>
+        {% endif %}
+    {% endwith %}
 {%- endmacro %}
 
 {% macro footer_link(text, url, svg_path) -%}
