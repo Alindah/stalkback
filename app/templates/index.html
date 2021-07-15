@@ -1,7 +1,32 @@
-<html>
-    <body>
-        Time to stalkback!
-        <br>
-        Stalk it out!
-    </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="login-container">
+        <p>
+            <span class="headline">Come <span class="highlight">stalk</span> your friends.</span><br>
+            <span class="tagline">We know you want to ;)</span>
+        </p>
+        <p><form action="" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
+            {{ form.password(placeholder=form.password.description) }}<br>
+            {{ form.remember.label }}
+            {{ form.remember }}
+            {{ form.submit }}
+        </form></p>
+        <div class="flashes-container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <hr>
+        <p>  
+            Don't have an account yet?<br>
+            Grab those binoculars ∞
+            <a href="{{ url_for('register') }}">Register here!</a>
+        </p>
+    </div>       
+{% endblock %}
