@@ -4,6 +4,7 @@
     --color-bg: rgb(96, 110, 130);
     --color-header: rgb(41, 43, 51);
     --color-highlight: rgb(255, 166, 0);
+    --color-link-highlight: rgb(255, 208, 0);
     --color-text: rgb(255, 255, 255);
     --font-header: 'Poppins', sans-serif;
     --font-main: 'Open Sans', sans-serif;
@@ -19,6 +20,14 @@ body, html {
 
 a {
     color: var(--color-highlight);
+}
+
+a:hover {
+    color: var(--color-link-highlight);
+}
+
+::selection {
+    background-color: var(--color-bg);
 }
 
 .content-container {
@@ -46,6 +55,10 @@ a {
     text-decoration: none;
 }
 
+.header-logo-bino {
+    letter-spacing: -0.1em;
+}
+
 .menu-container {
     position: absolute;
     top: 1.5em;
@@ -62,9 +75,7 @@ a {
     position: relative;
     padding: 1em;
     bottom: 0;
-    height: 6em;
     text-align: center;
-    background-color: var(--color-header);
     font-size: 0.9em;
 }
 
@@ -77,7 +88,7 @@ a {
     position: relative;
     display: inline-block;
     width: 1em;
-    fill: var(--color-highlight);
+    fill: var(--color-text);
 }
 
 .flashes-container {
@@ -113,6 +124,8 @@ a {
     margin: 0.25em;
     margin-left: 2em;
     width: 9em;
+    font-weight: bold;
+    cursor: pointer;
     background-color: var(--color-highlight);
     border-color: var(--color-highlight);
 }

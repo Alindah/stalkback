@@ -127,8 +127,11 @@ def settings():
         password_check = request.form['password_check']
 
         if display_name != current_user.display_name:
-            current_user.display_name = display_name
-            flash("Display name successfully changed")
+            if display_name == "":
+                flash("Display name must be at least 1 character long.")
+            else:
+                current_user.display_name = display_name
+                flash("Display name successfully changed")
         
         if password_new or password_check:
             if not current_user.check_password(request.form['password']):
@@ -158,6 +161,11 @@ def profile(username):
 @app.route('/post', methods = ['POST', 'GET'])
 def post():
     return render_template('post.html')
+
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
 
