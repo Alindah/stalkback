@@ -6,19 +6,18 @@
             <span class="headline">Become a <span class="highlight">stalker</span> today.</span><br>
             <span class="tagline">It's ok. Your friends are stalking you, too.</span>
         </p>
-        <form action="" method="POST">
+        <form action="" method="POST" class="form-container">
             {{ flashes("Please fix the following errors:") }}
-
             {{ form.hidden_tag() }}
-            <p>* [Required information]</p>
+            <p class="small-text">* [Required information]</p>
             {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
             {{ form.username(maxlength=30, placeholder=form.username.description) }}<br>
             {{ form.display_name(maxlength=32, placeholder=form.display_name.description) }}<br>
             {{ form.password(placeholder=form.password.description) }}<br>
-            {{ form.password_check(placeholder=form.password_check.description) }}<br><br>
-
+            {{ form.password_check(placeholder=form.password_check.description) }}<br>
             {{ form.submit }}
         </form>
+        <br>
         <hr>
         <p>  
             Already have an account?<br>
