@@ -11,7 +11,7 @@
             {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
             {{ form.password(placeholder=form.password.description) }}<br>
             <div class="login-submit-container">
-                <div class="remember-me-box"><span class="small-text">{{ form.remember.label }}{{ form.remember }}</span></div>
+                <div class="remember-me-box"><span class="small-text">{{ form.remember.label }} {{ form.remember }}</span></div>
                 {{ form.submit }}
             </div>
         </form></p>

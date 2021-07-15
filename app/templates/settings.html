@@ -2,28 +2,26 @@
 {% from "macros.html" import flashes %}
 {% block content %}
     <h1>Settings</h1>
-    <form action="" method="POST">
+    <fieldset class="simple-form">
         {{ flashes() }}
+        <p><form action="" method="POST">
+            {{ form.hidden_tag() }}
         
-        {{ form.hidden_tag() }}
-        <fieldset>
-            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-                {{ form.display_name.label }}
-                {{ form.display_name(minlength=1, maxlength=32, value=current_user.display_name) }}<br>
-                
-                {{ form.password.label }}
-                {{ form.password }}<br>
+            {{ form.display_name.label }}
+            {{ form.display_name(minlength=1, maxlength=32, value=current_user.display_name) }}<br>
+            
+            {{ form.password.label }}
+            {{ form.password }}<br>
 
-                {{ form.password_new.label }}
-                {{ form.password_new }}<br>
+            {{ form.password_new.label }}
+            {{ form.password_new }}<br>
 
-                {{ form.password_check.label }}
-                {{ form.password_check }}<br><br>
+            {{ form.password_check.label }}
+            {{ form.password_check }}<br>
 
-                {{ form.submit }}
-            </div>
-        </fieldset>
-    </form>
+            {{ form.submit }}
+        </form></p>
+    </fieldset>
     <h3><a href="{{ url_for('dashboard') }}">Return to dashboard</a></h3>
     <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
     <h3><a href="{{ url_for('deactivate') }}">Delete account</a></h3>
