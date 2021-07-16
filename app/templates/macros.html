@@ -1,0 +1,39 @@
+{% macro flashes(desc) -%}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flashes-container">
+                <fieldset class="info-box">
+                    {% if desc %}
+                        <legend>{{ desc }}</legend>
+                    {% endif %}
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </fieldset>
+            </div>
+        {% endif %}
+    {% endwith %}
+{%- endmacro %}
+
+{% macro footer_link(text, url, svg_path) -%}
+    <span class="footer-link">
+        {% if svg_path %}
+            <div class="footer-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24">
+                    <title>{{ text }}</title>
+                    <path d="{{ svg_path }}"></path>
+                </svg>
+            </div>
+        {% endif %}
+        <a href="{{ url }}" target="_blank">{{ text }}</a>
+    </span>
+{%- endmacro %}
+
+{% macro search_bar(form) -%}
+    <div class="search-container">
+        <form action="" method="POST">
+            {{ form.search_query(placeholder=form.search_query.description) }}
+            {{ form.search }}
+        </form>
+    </div>
+{%- endmacro %}

@@ -1,46 +1,44 @@
-<html>
-    <body>
-        <h1>Settings</h1>
-        <form action="" method="POST">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            
+{% extends "base.html" %}
+{% from "macros.html" import flashes %}
+{% block content %}
+    <head>
+        <script src="{{ url_for('static', filename='script.js') }}"></script> 
+    </head>
+    <h1>Settings</h1>
+    <fieldset class="simple-form">
+        {{ flashes() }}
+        <p><form action="" method="POST">
             {{ form.hidden_tag() }}
-            <fieldset>
-                <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-                    {{ form.display_name.label }}
-                    {{ form.display_name(maxlength=32) }}<br>
-                    
-                    {{ form.password.label }}
-                    {{ form.password }}<br>
+        
+            {{ form.display_name.label }}
+            {{ form.display_name(minlength=1, maxlength=32, value=current_user.display_name) }}<br>
+            
+            {{ form.password.label }}
+            {{ form.password }}<br>
 
-                    {{ form.password_new.label }}
-                    {{ form.password_new }}<br>
+            {{ form.password_new.label }}
+            {{ form.password_new }}<br>
 
-                    {{ form.password_check.label }}
-                    {{ form.password_check }}<br><br>
+            {{ form.password_check.label }}
+            {{ form.password_check }}<br>
 
-                    {{ form.submit }}
-                </div>
-            </fieldset>
-
-            <!--
-            <p>Display Name <input type="text" name="display_name" maxlength="32" value="{{ current_user.display_name }}"/></p>
-            <p>Old Password <input type="password" name="password" /></p>
-            <p>New Password <input type="password" name="password_new" /></p>
-            <p>Re-enter password <input type="password" name="password_check" /></p>  
-            <p><input type="submit" value="Save"></p>
-            -->  
-        </form>
-        <h3><a href="{{ url_for('dashboard') }}">Return to dashboard</a></h3>
-        <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
-        <h3><a href="{{ url_for('deactivate') }}">Delete account</a></h3>
-    </body>
-</html>
+            {{ form.submit }}
+        </form></p>
+    </fieldset>
+    <h3><a href="{{ url_for('dashboard') }}">Return to dashboard</a></h3>
+    <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
+    <h3><a href="javascript:deleteConfirmation();">Delete account</a></h3>
+    <div id="delete-confirm">
+        <fieldset class="info-box">
+            <p>
+                Enter password to confirm account deletion.<br>
+                <span class="warning">*Warning* This is PERMANENT</span>
+            </p>
+            <form action="" method="POST">
+                {{ form_delete.password_del(placeholder=form_delete.password_del.description) }}
+                {{ form_delete.del_confirmation }}
+            </form>
+        </fieldset>
+    </div>
+    
+{% endblock %}

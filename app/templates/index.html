@@ -1,7 +1,26 @@
-<html>
-    <body>
-        Time to stalkback!
-        <br>
-        Stalk it out!
-    </body>
-</html>
+{% extends "base.html" %}
+{% from "macros.html" import flashes %}
+{% block content %}
+    <div class="acct-form-container login-container">
+        <p>
+            <span class="headline">Come <span class="highlight">stalk</span> your friends.</span><br>
+            <span class="tagline">We know you want to ;)</span>
+        </p>
+        <p><form action="" method="POST" class="form-container">
+            {{ form.hidden_tag() }}
+            {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
+            {{ form.password(placeholder=form.password.description) }}<br>
+            <div class="login-submit-container">
+                <div class="remember-me-box"><span class="small-text">{{ form.remember.label }} {{ form.remember }}</span></div>
+                {{ form.submit }}
+            </div>
+        </form></p>
+        {{ flashes() }}
+        <hr>
+        <p>  
+            Don't have an account yet?<br>
+            Grab your binoculars ∞
+            <a href="{{ url_for('register') }}">Register now!</a>
+        </p>
+    </div>       
+{% endblock %}

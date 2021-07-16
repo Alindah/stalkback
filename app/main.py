@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, flash, Markup
+from flask import Flask, jsonify, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
-from forms import RegisterForm, SettingsForm, LoginForm
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
+from sqlalchemy import or_
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -10,23 +11,44 @@ app.secret_key = "A poorly-kept secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Change cache age so css changes show
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
+
 db_user.init_app(app)
 login.init_app(app)
 
 # Default to here if unauthenticated user attempts to access login required pages
-login.login_view = 'login'
+login.login_view = '/'
 
 @app.before_first_request
 def create_table():
     db_user.create_all()
 
-# INDEX
-@app.route('/')
+# INDEX / LOGIN
+@app.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    form = LoginForm()
+
+    if current_user.is_authenticated:
+        return redirect('/dashboard')
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        user = UserModel.query.filter_by(email = email).first()
+
+        if user is None:
+            flash("Oops, user doesn't exist. Please register first.")
+        else:
+            if user.check_password(request.form['password']):
+                login_user(user, remember='remember' in request.form)
+                return redirect('/dashboard')
+            
+            flash("Password does not match records. Please try again.")
+
+    return render_template('index.html', form = form)
 
 # REGISTRATION
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['GET', 'POST'])
 def register():
     contains_err = False
     form = RegisterForm()
@@ -69,39 +91,15 @@ def register():
         db_user.session.commit()
 
         flash("Account successfully created! Please log in.")
-        return redirect('/login')
+        return redirect('/')
 
     return render_template('register.html', form = form)
 
-# LOGIN
-@app.route('/login', methods = ['POST', 'GET'])
-def login():
-    form = LoginForm()
-
-    if current_user.is_authenticated:
-        return redirect('/dashboard')
-    
-    if request.method == 'POST':
-        email = request.form['email']
-        user = UserModel.query.filter_by(email = email).first()
-
-        if user is None:
-            flash("Oops, user doesn't exist. Please register first.")
-        else:
-            if user.check_password(request.form['password']):
-                login_user(user, remember='remember' in request.form)
-                return redirect('/dashboard')
-            
-            flash("Password does not match records. Please try again.")
-
-    return render_template('login.html', form = form)
-
 # LOGOUT
 @app.route('/logout')
-@login_required
 def logout():
     logout_user()
-    return redirect('/login')
+    return redirect('/')
 
 # ACCOUNT DELETION
 @app.route('/deactivate')
@@ -109,45 +107,67 @@ def logout():
 def deactivate():
     db_user.session.delete(current_user)
     db_user.session.commit()
-    flash("Your account was successfully deleted")
+    flash("Your account was successfully deleted.")
     return redirect('/logout')
 
 # DASHBOARD
-@app.route('/dashboard')
+@app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    search_bar = SearchBar()
+    if request.method == 'POST':
+        if search_bar.search.data:
+            sq = request.form['search_query']
+            results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
+            res_list = []
+            for r in results:
+                res_list.append([r.username, r.display_name])
+                
+            return jsonify(res_list)
+
+    return render_template('dashboard.html', sb = search_bar)
 
 # SETTINGS
-@app.route('/settings', methods = ['POST', 'GET'])
+@app.route('/settings', methods = ['GET', 'POST'])
 @login_required
 def settings():
     form = SettingsForm()
+    form_delete = DeleteForm()
 
     if request.method == 'POST':
-        display_name = request.form['display_name']
-        password_new = request.form['password_new']
-        password_check = request.form['password_check']
+        if form_delete.del_confirmation.data:
+            if current_user.check_password(request.form['password_del']):
+                return redirect('/deactivate')
 
-        if display_name != current_user.display_name:
-            current_user.display_name = display_name
-            flash("Display name successfully changed")
+            flash("Incorrect password. Account is not deleted.")
         
-        if password_new or password_check:
-            if not current_user.check_password(request.form['password']):
-                flash("Old password required to change password")
-            elif password_new != password_check:
-                flash("New passwords must match")
-            else:
-                current_user.set_password(password_new)
-                flash("Password successfully changed")
-        
-        db_user.session.commit()
+        if form.submit.data:
+            display_name = request.form['display_name']
+            password_new = request.form['password_new']
+            password_check = request.form['password_check']
 
-    return render_template('settings.html', form = form)
+            if display_name != current_user.display_name:
+                if display_name == "":
+                    flash("Display name must be at least 1 character long.")
+                else:
+                    current_user.display_name = display_name
+                    flash("Display name successfully changed")
+            
+            if password_new or password_check:
+                if not current_user.check_password(request.form['password']):
+                    flash("Old password required to change password")
+                elif password_new != password_check:
+                    flash("New passwords must match")
+                else:
+                    current_user.set_password(password_new)
+                    flash("Password successfully changed")
+            
+            db_user.session.commit()
+
+    return render_template('settings.html', form = form, form_delete = form_delete)
 
 # PROFILE
-@app.route('/stalk/<username>', methods = ['POST', 'GET'])
+@app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @login_required
 def profile(username):
     if username == current_user.username:
@@ -161,6 +181,11 @@ def profile(username):
 @app.route('/post', methods = ['POST', 'GET'])
 def post():
     return render_template('post.html')
+
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Poppins&family=Righteous&family=Ubuntu:wght@500&display=swap');
+
+:root {
+    --color-bg: rgb(96, 110, 130);
+    --color-header: rgb(41, 43, 51);
+    --color-highlight: rgb(255, 166, 0);
+    --color-link-highlight: rgb(255, 208, 0);
+    --color-text: rgb(255, 255, 255);
+    --color-warning: rgb(255, 94, 0);
+    --font-header: 'Poppins', sans-serif;
+    --font-main: 'Open Sans', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    font-family: var(--font-main);
+    background-color: var(--color-header);
+    color: var(--color-text);
+    margin: 0;
+}
+
+a {
+    color: var(--color-highlight);
+}
+
+input {
+    font-family: var(--font-main);
+    padding: 0.2em;
+}
+
+input[type='submit'] {
+    background-color: var(--color-highlight);
+    border-color: var(--color-highlight);
+}
+
+a:hover {
+    color: var(--color-link-highlight);
+}
+
+::selection {
+    background-color: var(--color-bg);
+}
+
+.small-text {
+    font-size: 0.8em;
+}
+
+.highlight {
+    color: var(--color-highlight);
+}
+
+.warning {
+    color: var(--color-warning);
+}
+
+.content-container {
+    position: relative;
+    padding: 1em;
+    background: var(--color-bg);
+}
+
+.header {
+    position: relative;
+    margin: 0;
+    padding: 1em;
+    background-color: var(--color-header);
+    color: var(--color-text);
+}
+
+.header-logo {
+    display: inline-block;
+}
+
+.header-logo a {
+    font-family: var(--font-header);
+    font-size: 2em;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.header-logo-bino {
+    letter-spacing: -0.1em;
+}
+
+.menu-container {
+    position: absolute;
+    top: 1.5em;
+    right: 1em;
+    height: 2.25em;
+    width: 2.25em;
+}
+
+#svg-menu {
+    fill: var(--color-text);
+}
+
+.footer {
+    position: relative;
+    padding: 1em;
+    bottom: 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.footer-link {
+    display: inline-block;
+    margin: 0.5em;
+}
+
+.footer-icon {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    fill: var(--color-text);
+}
+
+.flashes-container {
+    color: var(--color-highlight);
+    font-size: 0.8em;
+}
+
+.info-box {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1em;
+    border-color: var(--color-text);
+}
+
+.flashes-container legend {
+    color: var(--color-text);
+}
+
+.flashes-container li {
+    position: relative;
+    list-style-position: inside;
+}
+
+.acct-form-container {
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    width: 23em;
+    max-width: 80%;
+    background-color: var(--color-header);
+    text-align: center;
+}
+
+.form-container {
+    position: relative;
+    margin: auto;
+    width: 80%;
+}
+
+.form-container input {
+    font-size: 1em;
+    padding: 0.5em;
+    margin-top: 0.12em;
+    margin-bottom: 0.12em;
+    box-sizing: border-box;
+}
+
+.form-container input[type='text'], input[type='password'] {
+    width: 100%;
+}
+
+.form-container input[type='submit'] {
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-submit-container {
+    position: relative;
+    width: 100%;
+    height: 3em;
+}
+
+.remember-me-box {
+    float: left;
+    margin: 0.5em;
+}
+
+.login-container input[type='submit'] {
+    float: right;
+    width: 50%;
+}
+
+.headline {
+    font-size: 1.75em;
+    font-weight: bold;
+}
+
+.tagline {
+    font-size: 1.25em;
+}
+
+.simple-form {
+    padding: 1em;
+}
+
+.simple-form input {
+    width: 50%;
+    margin: 0.1em;
+}
+
+.simple-form input[type='submit'] {
+    width: auto;
+    padding: 0.5em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    margin-top: 0.5em;
+}
+
+#delete-confirm {
+    display: none;
+}
+
+#delete-confirm input {
+    margin: 0.5em;
+}
+
+#delete-confirm input[type='password'] {
+    width: 30%;
+}
+
+#delete-confirm input[type='submit'] {
+    background-color: var(--color-warning);
+    border-color: var(--color-warning);
+}
+
+.search-container {
+    display: inline;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-container input {
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.search-container input[type='submit'] {
+    float: right;
+    width: 20%;
+    box-sizing: border-box;
+}
+
+

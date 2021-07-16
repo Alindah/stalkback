@@ -23,6 +23,9 @@ class UserModel(UserMixin, db_user.Model):
     def avatar(self):
         pass
 
+    def avatar():
+        return 0
+
 # Link Flask_Login and database
 login = LoginManager()
 

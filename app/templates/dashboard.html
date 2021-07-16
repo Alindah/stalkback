@@ -1,8 +1,14 @@
-<html>
-    <body>
-        <h1>Hi, {{ current_user.display_name }}</h1>
-        <h3><a href="{{ url_for('profile', username = current_user.username) }}">My Profile</a></h3>
-        <h3><a href="{{ url_for('settings') }}">Settings</a></h3>
-        <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
-    </body>
-</html>
+{% extends "base.html" %}
+{% from "macros.html" import search_bar%}
+
+<!-- SEARCH BAR -->
+{% block search_bar %}
+    {{ search_bar(sb) }}
+{% endblock %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.display_name }}</h1>
+    <h3><a href="{{ url_for('profile', username = current_user.username) }}">My Profile</a></h3>
+    <h3><a href="{{ url_for('settings') }}">Settings</a></h3>
+    <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
+{% endblock %}

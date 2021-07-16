@@ -1,50 +1,27 @@
-<html>
-    <body>
-        <form action="" method="POST">
-            <fieldset>
-                <legend>Register Form</legend>
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <p>Please fix the following errors:</p>
-                        <ul class=flashes>
-                        {% for message in messages %}
-                        <li>{{ message }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
-
-                {{ form.hidden_tag() }}
-                <p>* [Required information]</p>
-                <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-                    {{ form.email.label }}
-                    {{ form.email(maxlength=254) }}<br>
-                    
-                    {{ form.username.label }}
-                    {{ form.username(maxlength=30) }}<br>
-                    
-                    {{ form.display_name.label }}
-                    {{ form.display_name(maxlength=32) }}<br>
-                    
-                    {{ form.password.label }}
-                    {{ form.password }}<br>
-
-                    {{ form.password_check.label }}
-                    {{ form.password_check }}<br><br>
-
-                    {{ form.submit }}
-                    </div>
-            </fieldset>
-            <!-- OLD FORM
-            <p>Email* <input type="email" name="email" maxlength="254"/></p>
-            <p>Username* <input type="text" name="username" maxlength="30"/></p>
-            <p>Display Name <input type="text" name="display_name" maxlength="32"/></p>
-            <p>Password* <input type="password" name="password" /></p>
-            <p>Re-enter password* <input type="password" name="password_check" /></p>
-            <p>Submit <input type="submit" value="Submit" /></p>
-            -->     
+{% extends "base.html" %}
+{% from "macros.html" import flashes %}
+{% block content %}
+    <div class="acct-form-container">
+        <p>
+            <span class="headline">Become a <span class="highlight">stalker</span> today.</span><br>
+            <span class="tagline">It's ok. Your friends are stalking you, too.</span>
+        </p>
+        <form action="" method="POST" class="form-container">
+            {{ flashes("Please fix the following errors:") }}
+            {{ form.hidden_tag() }}
+            <p class="small-text">* [Required information]</p>
+            {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
+            {{ form.username(maxlength=30, placeholder=form.username.description) }}<br>
+            {{ form.display_name(maxlength=32, placeholder=form.display_name.description) }}<br>
+            {{ form.password(placeholder=form.password.description) }}<br>
+            {{ form.password_check(placeholder=form.password_check.description) }}<br>
+            {{ form.submit }}
         </form>
-        <h3>Already have an account?</h3>
-        <p><a href="{{ url_for('login') }}">Log in here!</a></p>        
-    </body>
-</html>
+        <br>
+        <hr>
+        <p>  
+            Already have an account?<br>
+            <a href="{{ url_for('index') }}">Log in here!</a>
+        </p>
+    </div>       
+{% endblock %}
