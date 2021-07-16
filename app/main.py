@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, redirect, flash, Markup
+from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
@@ -118,14 +118,18 @@ def dashboard():
     if request.method == 'POST':
         if search_bar.search.data:
             sq = request.form['search_query']
-            results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
-            res_list = []
-            for r in results:
-                res_list.append([r.username, r.display_name])
-                
-            return jsonify(res_list)
+            if sq != "":
+                return search(sq)
 
     return render_template('dashboard.html', sb = search_bar)
+
+# SEARCH
+@app.route('/search', methods = ['GET', 'POST'])
+@login_required
+def search(sq):
+    results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
+    res_list = [[r.username, r.display_name] for r in results]
+    return jsonify(res_list)
 
 # SETTINGS
 @app.route('/settings', methods = ['GET', 'POST'])
