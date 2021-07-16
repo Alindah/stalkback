@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
-from forms import RegisterForm, SettingsForm, LoginForm
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -106,7 +106,7 @@ def logout():
 def deactivate():
     db_user.session.delete(current_user)
     db_user.session.commit()
-    flash("Your account was successfully deleted")
+    flash("Your account was successfully deleted.")
     return redirect('/logout')
 
 # DASHBOARD
@@ -120,31 +120,39 @@ def dashboard():
 @login_required
 def settings():
     form = SettingsForm()
+    form_delete = DeleteForm()
 
     if request.method == 'POST':
-        display_name = request.form['display_name']
-        password_new = request.form['password_new']
-        password_check = request.form['password_check']
+        if form_delete.del_confirmation.data:
+            if current_user.check_password(request.form['password_del']):
+                return redirect('/deactivate')
 
-        if display_name != current_user.display_name:
-            if display_name == "":
-                flash("Display name must be at least 1 character long.")
-            else:
-                current_user.display_name = display_name
-                flash("Display name successfully changed")
+            flash("Incorrect password. Account is not deleted.")
         
-        if password_new or password_check:
-            if not current_user.check_password(request.form['password']):
-                flash("Old password required to change password")
-            elif password_new != password_check:
-                flash("New passwords must match")
-            else:
-                current_user.set_password(password_new)
-                flash("Password successfully changed")
-        
-        db_user.session.commit()
+        if form.submit.data:
+            display_name = request.form['display_name']
+            password_new = request.form['password_new']
+            password_check = request.form['password_check']
 
-    return render_template('settings.html', form = form)
+            if display_name != current_user.display_name:
+                if display_name == "":
+                    flash("Display name must be at least 1 character long.")
+                else:
+                    current_user.display_name = display_name
+                    flash("Display name successfully changed")
+            
+            if password_new or password_check:
+                if not current_user.check_password(request.form['password']):
+                    flash("Old password required to change password")
+                elif password_new != password_check:
+                    flash("New passwords must match")
+                else:
+                    current_user.set_password(password_new)
+                    flash("Password successfully changed")
+            
+            db_user.session.commit()
+
+    return render_template('settings.html', form = form, form_delete = form_delete)
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['POST', 'GET'])

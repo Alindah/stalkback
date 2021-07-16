@@ -26,3 +26,7 @@ class SettingsForm(FlaskForm):
     password_new = PasswordField("New password")
     password_check = PasswordField("Re-enter password")
     submit = SubmitField("Save")
+
+class DeleteForm(FlaskForm):
+    password_del = PasswordField(description = "Password")
+    del_confirmation = SubmitField("Delete Account")
