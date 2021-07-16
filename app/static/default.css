@@ -23,6 +23,11 @@ a {
     color: var(--color-highlight);
 }
 
+input {
+    font-family: var(--font-main);
+    padding: 0.2em;
+}
+
 a:hover {
     color: var(--color-link-highlight);
 }
@@ -144,7 +149,6 @@ a:hover {
 }
 
 .form-container input {
-    font-family: var(--font-main);
     font-size: 1em;
     padding: 0.5em;
     margin-top: 0.12em;
@@ -198,9 +202,7 @@ a:hover {
 
 .simple-form input {
     width: 50%;
-    padding: 0.2em;
     margin: 0.1em;
-    font-family: var(--font-main);
 }
 
 .simple-form input[type='submit'] {
@@ -217,7 +219,6 @@ a:hover {
 
 #delete-confirm input {
     margin: 0.5em;
-    font-family: var(--font-main);
 }
 
 #delete-confirm input[type='password'] {
@@ -226,4 +227,17 @@ a:hover {
 
 #delete-confirm input[type='submit'] {
     background-color: var(--color-warning);
+    border-color: var(--color-warning);
 }
+
+.search-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-bar {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+

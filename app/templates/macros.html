@@ -28,3 +28,9 @@
         <a href="{{ url }}" target="_blank">{{ text }}</a>
     </span>
 {%- endmacro %}
+
+{% macro search_bar() -%}
+    <div class="search-container">
+        <input class="search-bar" type="text" placeholder="Start stalking...">
+    </div>
+{%- endmacro %}
