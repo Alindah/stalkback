@@ -29,8 +29,11 @@
     </span>
 {%- endmacro %}
 
-{% macro search_bar() -%}
+{% macro search_bar(form) -%}
     <div class="search-container">
-        <input class="search-bar" type="text" placeholder="Start stalking...">
+        <form action="" method="POST">
+            {{ form.search_query(placeholder=form.search_query.description) }}
+            {{ form.search }}
+        </form>
     </div>
 {%- endmacro %}

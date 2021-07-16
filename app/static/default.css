@@ -28,6 +28,11 @@ input {
     padding: 0.2em;
 }
 
+input[type='submit'] {
+    background-color: var(--color-highlight);
+    border-color: var(--color-highlight);
+}
+
 a:hover {
     color: var(--color-link-highlight);
 }
@@ -164,8 +169,6 @@ a:hover {
     width: 100%;
     font-weight: bold;
     cursor: pointer;
-    background-color: var(--color-highlight);
-    border-color: var(--color-highlight);
 }
 
 .login-submit-container {
@@ -175,15 +178,12 @@ a:hover {
 }
 
 .remember-me-box {
-    position: absolute;
-    left: 0;
+    float: left;
     margin: 0.5em;
-    display: inline-block;
 }
 
 .login-container input[type='submit'] {
-    position: absolute;
-    right: 0;
+    float: right;
     width: 50%;
 }
 
@@ -231,12 +231,19 @@ a:hover {
 }
 
 .search-container {
+    display: inline;
     width: 100%;
     box-sizing: border-box;
 }
 
-.search-bar {
-    width: 100%;
+.search-container input {
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.search-container input[type='submit'] {
+    float: right;
+    width: 20%;
     box-sizing: border-box;
 }
 

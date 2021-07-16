@@ -30,3 +30,7 @@ class SettingsForm(FlaskForm):
 class DeleteForm(FlaskForm):
     password_del = PasswordField(description = "Password")
     del_confirmation = SubmitField("Delete Account")
+
+class SearchBar(FlaskForm):
+    search_query = StringField(description = "∞ Start stalking...")
+    search = SubmitField("oo")

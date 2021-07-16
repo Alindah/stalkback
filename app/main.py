@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, flash, Markup
+from flask import Flask, jsonify, render_template, request, redirect, flash, Markup
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
+from sqlalchemy import or_
 
 app = Flask(__name__)
 app.secret_key = "A poorly-kept secret"
@@ -24,7 +25,7 @@ def create_table():
     db_user.create_all()
 
 # INDEX / LOGIN
-@app.route('/', methods = ['POST', 'GET'])
+@app.route('/', methods = ['GET', 'POST'])
 def index():
     form = LoginForm()
 
@@ -47,7 +48,7 @@ def index():
     return render_template('index.html', form = form)
 
 # REGISTRATION
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['GET', 'POST'])
 def register():
     contains_err = False
     form = RegisterForm()
@@ -110,13 +111,24 @@ def deactivate():
     return redirect('/logout')
 
 # DASHBOARD
-@app.route('/dashboard')
+@app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    search_bar = SearchBar()
+    if request.method == 'POST':
+        if search_bar.search.data:
+            sq = request.form['search_query']
+            results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
+            res_list = []
+            for r in results:
+                res_list.append([r.username, r.display_name])
+                
+            return jsonify(res_list)
+
+    return render_template('dashboard.html', sb = search_bar)
 
 # SETTINGS
-@app.route('/settings', methods = ['POST', 'GET'])
+@app.route('/settings', methods = ['GET', 'POST'])
 @login_required
 def settings():
     form = SettingsForm()
@@ -155,7 +167,7 @@ def settings():
     return render_template('settings.html', form = form, form_delete = form_delete)
 
 # PROFILE
-@app.route('/stalk/<username>', methods = ['POST', 'GET'])
+@app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @login_required
 def profile(username):
     if username == current_user.username:
