@@ -146,8 +146,6 @@ def settings():
     form = SettingsForm()
     form_delete = DeleteForm()
 
-    #up_avatar = request.files['uploaded_avatar']
-
     if request.method == 'POST':
         if form_delete.del_confirmation.data:
             if current_user.check_password(request.form['password_del']):
@@ -177,12 +175,6 @@ def settings():
                     flash("Password successfully changed")
 
             db_user.session.commit()
-        
-        #if up_avatar.filename != "":
-            #filename = avatars.save_avatar(up_avatar)
-            #current_user.set_avatar(avatars, send_from_directory(app.config['AVATARS_SAVE_PATH'], filename))
-            #db_user.session.commit()
-        #    pass
 
     return render_template('settings.html', form = form, form_delete = form_delete)
 

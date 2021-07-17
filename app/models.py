@@ -22,7 +22,7 @@ class UserModel(UserMixin, db_user.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def set_avatar(self, avatars, upload):
+    def set_avatar(self, avatars, upload = None):
         if upload:
             self.avatar_url = upload
         else:
