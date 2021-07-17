@@ -126,8 +126,7 @@ def dashboard():
     if request.method == 'POST':
         if search_bar.search.data:
             sq = request.form['search_query']
-            if sq != "":
-                return search(sq)
+            return search(sq)
 
     return render_template('dashboard.html', sb = search_bar)
 
@@ -135,9 +134,18 @@ def dashboard():
 @app.route('/search', methods = ['GET', 'POST'])
 @login_required
 def search(sq):
-    results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
-    res_list = [[r.username, r.display_name] for r in results]
-    return jsonify(res_list)
+    search_bar = SearchBar()
+    results = None
+
+    if sq.isspace():
+        flash("Enter a name or username to search")
+    else:
+        results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
+
+        if not results:
+            flash("No users found")
+    
+    return render_template('search.html', sb = search_bar, res = results)
 
 # SETTINGS
 @app.route('/settings', methods = ['GET', 'POST'])

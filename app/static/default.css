@@ -247,6 +247,18 @@ a:hover {
     box-sizing: border-box;
 }
 
+.search-results {
+    border-collapse: collapse;
+    background-color: var(--color-header);
+    min-width: 26em;
+}
+
+.search-results td {
+    border-bottom: 0.2em solid var(--color-bg);
+    border-collapse: collapse;
+    padding: 0.5em;
+}
+
 .prof-header {
     margin: auto;
     padding: 1em;
@@ -261,4 +273,5 @@ a:hover {
     height: auto;
     max-width: 200px;
 }
+
 
