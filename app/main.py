@@ -146,7 +146,7 @@ def settings():
     form = SettingsForm()
     form_delete = DeleteForm()
 
-    up_avatar = request.files['uploaded_avatar']
+    #up_avatar = request.files['uploaded_avatar']
 
     if request.method == 'POST':
         if form_delete.del_confirmation.data:
