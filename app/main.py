@@ -1,15 +1,22 @@
 from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
+from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
 from sqlalchemy import or_
+from flask_avatars import Avatars
+
 
 app = Flask(__name__)
+avatars = Avatars(app)
 app.secret_key = "A poorly-kept secret"
 
 # Link flask app and database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Set up paths
+app.config['AVATARS_SAVE_PATH'] = "./data/user/avatars"
 
 # Change cache age so css changes show
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
@@ -87,6 +94,7 @@ def register():
 
         user = UserModel(email = email, username = username, display_name = display_name)
         user.set_password(password)
+        user.set_avatar(avatars)
         db_user.session.add(user)
         db_user.session.commit()
 
@@ -138,6 +146,8 @@ def settings():
     form = SettingsForm()
     form_delete = DeleteForm()
 
+    up_avatar = request.files['uploaded_avatar']
+
     if request.method == 'POST':
         if form_delete.del_confirmation.data:
             if current_user.check_password(request.form['password_del']):
@@ -165,22 +175,29 @@ def settings():
                 else:
                     current_user.set_password(password_new)
                     flash("Password successfully changed")
-            
+
             db_user.session.commit()
+        
+        if up_avatar.filename != "":
+            #filename = avatars.save_avatar(up_avatar)
+            #current_user.set_avatar(avatars, send_from_directory(app.config['AVATARS_SAVE_PATH'], filename))
+            #db_user.session.commit()
+            pass
 
     return render_template('settings.html', form = form, form_delete = form_delete)
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @login_required
-def profile(username):
-    if username == current_user.username:
-        return "hi, it's you!"
+def profile(username): 
+    user = UserModel.query.filter_by(username = username).first_or_404();   
     
-    if not UserModel.query.filter_by(username = username).first():
-        return "this user doesn't exist!"
-    
-    return render_template('profile.html', username = username)
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+
+    return render_template('profile.html', user = user, posts = posts)
 
 @app.route('/post', methods = ['POST', 'GET'])
 def post():

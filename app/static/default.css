@@ -3,6 +3,7 @@
 :root {
     --color-bg: rgb(96, 110, 130);
     --color-header: rgb(41, 43, 51);
+    --color-header2: rgb(55, 63, 75);
     --color-highlight: rgb(255, 166, 0);
     --color-link-highlight: rgb(255, 208, 0);
     --color-text: rgb(255, 255, 255);
@@ -54,7 +55,6 @@ a:hover {
 }
 
 .content-container {
-    position: relative;
     padding: 1em;
     background: var(--color-bg);
 }
@@ -247,4 +247,18 @@ a:hover {
     box-sizing: border-box;
 }
 
+.prof-header {
+    margin: auto;
+    padding: 1em;
+    width: 100%;
+    text-align: center;
+    background-color: var(--color-header);
+    box-sizing: border-box;
+}
+
+.user-av {
+    width: 30vw;
+    height: auto;
+    max-width: 200px;
+}
 
