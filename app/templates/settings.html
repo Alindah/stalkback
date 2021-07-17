@@ -7,9 +7,18 @@
     <h1>Settings</h1>
     <fieldset class="simple-form">
         {{ flashes() }}
-        <p><form action="" method="POST">
+        <br>
+        <div style="margin: auto; width: 100%; text-align: center;">
+            <img src="{{ current_user.avatar_url }}" style="width: 100px;"><br>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <input type="file" name="uploaded_avatar" accept=".png,.jpg">
+            <input type="submit" value="Upload avatar">
+        </form>
+
+        <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-        
+
             {{ form.display_name.label }}
             {{ form.display_name(minlength=1, maxlength=32, value=current_user.display_name) }}<br>
             

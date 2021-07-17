@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros.html" import flashes, search_bar %}
+
+{% block content_header %}
+    {{ search_bar(sb) }}
+{% endblock %}
+
+{% block content %}
+    {{ flashes() }}
+    {% if res %}
+        <table class="search-results">
+            {% for r in res %}
+                <tr>
+                    <td class="user-av-med">
+                        <a href="{{ url_for('profile', username = r.username) }}">
+                            <img src="{{ r.avatar_url }}" class="user-av-med"></a>
+                    </td>
+                    <td>
+                        {{ r.display_name }}<br>
+                        <a href="{{ url_for('profile', username = r.username) }}" class="small-text highlight" style="text-decoration: none;">
+                            @{{ r.username }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

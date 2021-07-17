@@ -1,15 +1,22 @@
-from flask import Flask, jsonify, render_template, request, redirect, flash, Markup
+from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
+from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db_user, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
 from sqlalchemy import or_
+from flask_avatars import Avatars
+
 
 app = Flask(__name__)
+avatars = Avatars(app)
 app.secret_key = "A poorly-kept secret"
 
 # Link flask app and database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Set up paths
+app.config['AVATARS_SAVE_PATH'] = "./data/user/avatars"
 
 # Change cache age so css changes show
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
@@ -87,6 +94,7 @@ def register():
 
         user = UserModel(email = email, username = username, display_name = display_name)
         user.set_password(password)
+        user.set_avatar(avatars)
         db_user.session.add(user)
         db_user.session.commit()
 
@@ -94,6 +102,11 @@ def register():
         return redirect('/')
 
     return render_template('register.html', form = form)
+
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # LOGOUT
 @app.route('/logout')
@@ -117,15 +130,26 @@ def dashboard():
     search_bar = SearchBar()
     if request.method == 'POST':
         if search_bar.search.data:
-            sq = request.form['search_query']
-            results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
-            res_list = []
-            for r in results:
-                res_list.append([r.username, r.display_name])
-                
-            return jsonify(res_list)
+            return search(request.form['search_query'])
 
     return render_template('dashboard.html', sb = search_bar)
+
+# SEARCH
+@app.route('/search', methods = ['GET', 'POST'])
+@login_required
+def search(sq):
+    search_bar = SearchBar()
+    results = None
+
+    if sq.isspace():
+        flash("Enter a name or username to search")
+    else:
+        results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
+
+        if not results:
+            flash("No users found")
+    
+    return render_template('search.html', sb = search_bar, res = results)
 
 # SETTINGS
 @app.route('/settings', methods = ['GET', 'POST'])
@@ -161,7 +185,7 @@ def settings():
                 else:
                     current_user.set_password(password_new)
                     flash("Password successfully changed")
-            
+
             db_user.session.commit()
 
     return render_template('settings.html', form = form, form_delete = form_delete)
@@ -169,23 +193,20 @@ def settings():
 # PROFILE
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @login_required
-def profile(username):
-    if username == current_user.username:
-        return "hi, it's you!"
+def profile(username): 
+    user = UserModel.query.filter_by(username = username).first_or_404();   
     
-    if not UserModel.query.filter_by(username = username).first():
-        return "this user doesn't exist!"
-    
-    return render_template('profile.html', username = username)
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+
+    return render_template('profile.html', user = user, posts = posts)
 
 @app.route('/post', methods = ['POST', 'GET'])
+@login_required
 def post():
     return render_template('post.html')
-
-# ABOUT
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

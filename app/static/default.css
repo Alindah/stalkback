@@ -3,6 +3,7 @@
 :root {
     --color-bg: rgb(96, 110, 130);
     --color-header: rgb(41, 43, 51);
+    --color-header2: rgb(55, 63, 75);
     --color-highlight: rgb(255, 166, 0);
     --color-link-highlight: rgb(255, 208, 0);
     --color-text: rgb(255, 255, 255);
@@ -23,6 +24,14 @@ a {
     color: var(--color-highlight);
 }
 
+a:hover {
+    color: var(--color-link-highlight);
+}
+
+::selection {
+    background-color: var(--color-bg);
+}
+
 input {
     font-family: var(--font-main);
     padding: 0.2em;
@@ -31,14 +40,6 @@ input {
 input[type='submit'] {
     background-color: var(--color-highlight);
     border-color: var(--color-highlight);
-}
-
-a:hover {
-    color: var(--color-link-highlight);
-}
-
-::selection {
-    background-color: var(--color-bg);
 }
 
 .small-text {
@@ -54,7 +55,6 @@ a:hover {
 }
 
 .content-container {
-    position: relative;
     padding: 1em;
     background: var(--color-bg);
 }
@@ -246,5 +246,42 @@ a:hover {
     width: 20%;
     box-sizing: border-box;
 }
+
+.search-results {
+    border-collapse: collapse;
+    background-color: var(--color-header);
+    min-width: 26em;
+}
+
+.search-results td {
+    border-bottom: 0.2em solid var(--color-bg);
+    border-collapse: collapse;
+    padding: 0.5em;
+}
+
+.prof-header {
+    margin: auto;
+    padding: 1em;
+    width: 100%;
+    text-align: center;
+    background-color: var(--color-header);
+    box-sizing: border-box;
+}
+
+.user-av {
+    width: 30vw;
+    height: auto;
+    max-width: 200px;
+}
+
+.user-av-med {
+    width: 60px;
+}
+
+.user-av-small {
+    width: 30px;
+}
+
+
 
 
