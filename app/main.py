@@ -178,11 +178,11 @@ def settings():
 
             db_user.session.commit()
         
-        if up_avatar.filename != "":
+        #if up_avatar.filename != "":
             #filename = avatars.save_avatar(up_avatar)
             #current_user.set_avatar(avatars, send_from_directory(app.config['AVATARS_SAVE_PATH'], filename))
             #db_user.session.commit()
-            pass
+        #    pass
 
     return render_template('settings.html', form = form, form_delete = form_delete)
 
