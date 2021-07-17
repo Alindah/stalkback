@@ -24,6 +24,14 @@ a {
     color: var(--color-highlight);
 }
 
+a:hover {
+    color: var(--color-link-highlight);
+}
+
+::selection {
+    background-color: var(--color-bg);
+}
+
 input {
     font-family: var(--font-main);
     padding: 0.2em;
@@ -32,14 +40,6 @@ input {
 input[type='submit'] {
     background-color: var(--color-highlight);
     border-color: var(--color-highlight);
-}
-
-a:hover {
-    color: var(--color-link-highlight);
-}
-
-::selection {
-    background-color: var(--color-bg);
 }
 
 .small-text {
@@ -273,5 +273,15 @@ a:hover {
     height: auto;
     max-width: 200px;
 }
+
+.user-av-med {
+    width: 60px;
+}
+
+.user-av-small {
+    width: 30px;
+}
+
+
 
 

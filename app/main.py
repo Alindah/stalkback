@@ -103,6 +103,11 @@ def register():
 
     return render_template('register.html', form = form)
 
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 # LOGOUT
 @app.route('/logout')
 def logout():
@@ -125,8 +130,7 @@ def dashboard():
     search_bar = SearchBar()
     if request.method == 'POST':
         if search_bar.search.data:
-            sq = request.form['search_query']
-            return search(sq)
+            return search(request.form['search_query'])
 
     return render_template('dashboard.html', sb = search_bar)
 
@@ -200,13 +204,9 @@ def profile(username):
     return render_template('profile.html', user = user, posts = posts)
 
 @app.route('/post', methods = ['POST', 'GET'])
+@login_required
 def post():
     return render_template('post.html')
-
-# ABOUT
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

@@ -11,9 +11,9 @@
         <table class="search-results">
             {% for r in res %}
                 <tr>
-                    <td style="width:60px">
+                    <td class="user-av-med">
                         <a href="{{ url_for('profile', username = r.username) }}">
-                            <img src="{{ r.avatar_url }}" style="width:60px;"></a>
+                            <img src="{{ r.avatar_url }}" class="user-av-med"></a>
                     </td>
                     <td>
                         {{ r.display_name }}<br>
@@ -21,7 +21,6 @@
                             @{{ r.username }}</a>
                     </td>
                 </tr>
-                </a>
             {% endfor %}
         </table>
     {% endif %}
