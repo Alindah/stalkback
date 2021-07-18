@@ -259,6 +259,7 @@ input[type='submit'] {
 
 .search-container input {
     width: 80%;
+    padding-left: 1em;
     box-sizing: border-box;
 }
 
