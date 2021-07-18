@@ -37,3 +37,12 @@
         </form>
     </div>
 {%- endmacro %}
+
+{% macro menu_window() -%}
+    <div id="menu-container">
+        <a href="{{ url_for('profile', username = current_user.username) }}" class="menu-link"><div class="menu-item">My Profile</div></a>
+        <a href="{{ url_for('dashboard') }}" class="menu-link"><div class="menu-item">Dashboard</div></a>
+        <a href="{{ url_for('settings') }}" class="menu-link"><div class="menu-item">Settings</div></a>
+        <a href="{{ url_for('logout') }}" class="menu-link"><div class="menu-item">Log Out</div></a>
+    </div>
+{%- endmacro %}

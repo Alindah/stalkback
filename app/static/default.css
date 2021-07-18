@@ -3,7 +3,7 @@
 :root {
     --color-bg: rgb(96, 110, 130);
     --color-header: rgb(41, 43, 51);
-    --color-header2: rgb(55, 63, 75);
+    --color-header-gray: rgb(55, 63, 75);
     --color-highlight: rgb(255, 166, 0);
     --color-link-highlight: rgb(255, 208, 0);
     --color-text: rgb(255, 255, 255);
@@ -62,13 +62,13 @@ input[type='submit'] {
 .header {
     position: relative;
     margin: 0;
-    padding: 1em;
     background-color: var(--color-header);
     color: var(--color-text);
 }
 
 .header-logo {
     display: inline-block;
+    padding: 1em;
 }
 
 .header-logo a {
@@ -82,12 +82,33 @@ input[type='submit'] {
     letter-spacing: -0.1em;
 }
 
-.menu-container {
+.menu-button {
     position: absolute;
     top: 1.5em;
     right: 1em;
     height: 2.25em;
     width: 2.25em;
+    cursor: pointer;
+}
+
+#menu-container {
+    position: absolute;
+    display: none;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-header-gray);
+}
+
+.menu-item {
+    font-family: var(--font-header);
+    padding: 1em;
+    font-size: 1.75em;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: var(--color-text);
 }
 
 #svg-menu {
