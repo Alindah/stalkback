@@ -304,6 +304,30 @@ input[type='submit'] {
     width: 30px;
 }
 
+.post {
+    background-color: rosybrown;
+}
 
+.post div {
+    padding: 1em;
+}
+
+.post-title {
+    background-color: var(--color-header);
+}
+
+.post-content {
+    background-color: seagreen;
+}
+
+.post-desc {
+    background-color: var(--color-header-gray);
+    display: flex;
+    overflow-wrap: anywhere;
+}
+
+.post-footer {
+    background-color: skyblue;
+}
 
 
