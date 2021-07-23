@@ -1,6 +1,25 @@
 {% extends "base.html" %}
+{% from "macros.html" import flashes %}
 {% block content %}
-    <p>Make a new post</p>
-    <p>create new category</p>
-    <p>dropdown category</p>
+    <h1>Create a new post</h1>
+    <fieldset class="simple-form">
+        {{ flashes() }}
+        <p><form action="" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <span class="small-text">{{ form.title.label }}</span><br>
+            {{ form.title(maxlength=300, placeholder=form.title.description) }}<br>
+
+            <span class="small-text">{{ form.desc.label }}</span><br>
+            {{ form.desc(maxlength=40000, placeholder=form.desc.description) }}<br>
+
+            <span class="small-text">{{ form.content.label }}</span><br>
+            {{ form.content }}<br>
+
+            <span class="small-text">{{ form.category.label }}</span><br>
+            {{ form.category(placeholder=form.category.description) }}<br>
+
+            {{ form.submit }}
+        </form></p>
+    </fieldset>
 {% endblock %}

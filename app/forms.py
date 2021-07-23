@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, validators
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, SelectField, HiddenField, validators
 
 class LoginForm(FlaskForm):
     email = StringField("Email", validators = [validators.Required("Enter your email address."), 
@@ -33,3 +33,14 @@ class DeleteForm(FlaskForm):
 class SearchBar(FlaskForm):
     search_query = StringField(description = "∞ Start stalking...")
     search = SubmitField("oo")
+
+class PostForm(FlaskForm):
+    title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
+    content = FileField("Content")
+    desc = StringField("Description", description = "Enter a description")
+    category = SelectField("Category", choices = ['none'])
+    submit = SubmitField("Post!")
+
+class DeletePost(FlaskForm):
+    del_id = HiddenField("Post ID")
+    del_post = SubmitField("Delete")

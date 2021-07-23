@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import user_post%}
+{% from "macros.html" import user_post with context %}
 
 {% block content_header %}
     <div class="prof-header">
@@ -13,6 +13,6 @@
 
 {% block content %}
     {% for post in posts %}
-        <p>{{ user_post(user, title=post.title, desc=post.desc)}}</p>
+        <p>{{ user_post(post) }}</p>
     {% endfor %}
 {% endblock %}

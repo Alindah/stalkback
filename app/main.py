@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, db, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
+from models import UserModel, PostModel, db, login
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar, PostForm, DeletePost
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+#from flask_migrate import Migrate
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -15,7 +15,7 @@ app.config.from_object(Config)
 db.init_app(app)
 login.init_app(app)
 avatars = Avatars(app)
-migrate = Migrate(app, db)
+#migrate = Migrate(app, db)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'
@@ -187,19 +187,39 @@ def settings():
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @login_required
 def profile(username): 
-    user = UserModel.query.filter_by(username = username).first_or_404();   
-    
-    posts = [
-        {'author': user, 'title': "this is a test!", 'desc': "Test post #1"},
-        {'author': user, 'desc': "Test post #2"}
-    ]
+    user = UserModel.query.filter_by(username = username).first_or_404()
+    posts = reversed(user.posts.all())
+    form_del = DeletePost()
 
-    return render_template('profile.html', user = user, posts = posts)
+    if request.method == 'POST':
+        # Delete post
+        if form_del.del_post.data:
+            db.session.delete(PostModel.query.get(request.form['del_id']))
+            db.session.commit()
+            return redirect(url_for('profile', username = username))
+
+    return render_template('profile.html', user = user, posts = posts, del_form = form_del)
 
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
 def post():
-    return render_template('post.html')
+    form = PostForm()
+
+    if request.method == 'POST':
+        title = request.form['title']
+        desc = request.form['desc']
+        content = request.files['content']
+        cat = request.form['category']
+
+        post = PostModel(author = current_user, title = title, desc = desc, category = cat)
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Posted successfully!")
+
+        return redirect('/post')
+
+    return render_template('post.html', form = form)
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

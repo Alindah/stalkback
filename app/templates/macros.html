@@ -47,42 +47,46 @@
     </div>
 {%- endmacro %}
 
-{% macro user_post(user, title="", content="", desc="", footer="") -%}
+{% macro user_post(p) -%}
     <div class="post">
         <div class="post-title">
             <table><tr>
                 <td class="user-av-med">
-                    <a href="{{ url_for('profile', username = user.username) }}">
-                        <img src="{{ user.avatar_url }}" class="user-av-med"></a></td>
+                    <a href="{{ url_for('profile', username = p.author.username) }}">
+                        <img src="{{ p.author.avatar_url }}" class="user-av-med"></a></td>
                 <td style="padding-left: 1em;">
-                    <a href="{{ url_for('profile', username = user.username) }}" class="small-text" style="text-decoration: none;">
-                        {{ user.username }} / category</a><br>
-                    {% if title %}
-                        <span style="font-size: 2em;">{{ title }}</span>
-                    {% endif %}
+                    <a href="{{ url_for('profile', username = p.author.username) }}" class="small-text" style="text-decoration: none;">
+                        {{ p.author.username }} / category</a><br>
+                    <span style="font-size: 2em;">{{ p.title }}</span><br>
+                    <span class="small-text">{{ p.timestamp.strftime("%a, %d %b %Y, %I:%M:%S %p") }}</span>
                 </td>
             </tr></table>
         </div>
 
-        {% if content %}
+        {% if p.content %}
             <div class="post-content">
                 image here
             </div>
         {% endif %}
 
-        {% if desc %}
+        {% if p.desc %}
             <div class="post-desc">
-                <div class="user-av-med" style="text-align: center;"><img src="{{ user.avatar_url }}" class="user-av-med"><br>{{ user.display_name }}</div>
+                <div class="user-av-med" style="text-align:center;"><img src="{{ p.author.avatar_url }}" class="user-av-med"><br>{{ p.author.display_name }}</div>
                 <div style="padding-left: 1em;">
-                    {{ desc }}
+                    {{ p.desc }}
                 </div>
             </div>
         {% endif %}
-
-        {% if footer %}
-            <div class="post-footer">
-                #something here
-            </div>
-        {% endif %}
+        <div class="post-footer">
+            Like, comment, share
+            <br>
+            {% if p.author == current_user %}
+                <form action="" method="POST">
+                    {{ del_form.csrf_token() }}
+                    {{ del_form.del_id(value=p.id) }}
+                    {{ del_form.del_post }}
+                </form>
+            {% endif %}
+        </div>
     </div>
 {%- endmacro %}

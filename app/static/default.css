@@ -327,7 +327,7 @@ input[type='submit'] {
 }
 
 .post-footer {
-    background-color: skyblue;
+    background-color: var(--color-header);
 }
 
 
