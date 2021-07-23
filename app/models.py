@@ -65,7 +65,7 @@ class CategoryModel(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.String(32), default = "none")
-    desc = db.Column(db.String(40000), default = "")
+    desc = db.Column(db.String(1000), default = "")
     icon = db.Column(db.String())
     creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
 

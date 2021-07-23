@@ -2,7 +2,7 @@
 {% from "macros.html" import flashes %}
 {% block content %}
     <h1>Create a new post</h1>
-    <fieldset id="post-form" class="simple-form">
+    <fieldset class="simple-form text-area-form">
         {{ flashes() }}
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}

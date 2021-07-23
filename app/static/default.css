@@ -360,8 +360,9 @@ input[type='submit'] {
     width: 2em;
 }
 
-#post-form textarea {
+.text-area-form textarea {
     width: 80vw;
+    font-family: var(--font-main);
 }
 
 .profile-button {

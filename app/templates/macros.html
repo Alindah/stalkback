@@ -78,7 +78,7 @@
             <div class="post-desc">
                 <div style="text-align:center;">
                     {{ user_avatar_linked(p.author) }}<br>
-                    {{ user_name_linked(p.author) }}</div>
+                    {{ user_dname_linked(p.author) }}</div>
                 <div style="padding-left: 1em;">
                     {{ p.desc }}
                 </div>
@@ -108,7 +108,7 @@
         <img src="{{ user.avatar_url }}" class="user-av-med"></a>
 {%- endmacro %}
 
-{% macro user_name_linked(user) -%}
+{% macro user_dname_linked(user) -%}
     <a href="{{ url_for('profile', username = user.username) }}" class="no-underline">
         {{ user.display_name }}</a>
 {%- endmacro %}

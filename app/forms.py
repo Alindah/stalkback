@@ -45,3 +45,8 @@ class PostForm(FlaskForm):
 class DeletePost(FlaskForm):
     del_id = HiddenField("Post ID")
     del_post = SubmitField("Delete")
+
+class EditProfileForm(FlaskForm):
+    tagline = StringField("Tagline", description = "Enter a tagline")
+    desc = TextAreaField("Description", description = "Enter a description")
+    submit = SubmitField("Save")

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, flash, Mar
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, CategoryModel, db, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm
 from flask_sqlalchemy import SQLAlchemy
 #from flask_migrate import Migrate
 from sqlalchemy import or_
@@ -234,6 +234,22 @@ def post():
         return redirect('/post')
 
     return render_template('post.html', form = form, categories = categories)
+
+# EDIT PROFILE
+@app.route('/edit/profile', methods = ['POST', 'GET'])
+@login_required
+def edit_prof():
+    form = EditProfileForm()
+
+    if request.method == 'POST':
+        tagline = request.form['tagline']
+        desc = request.form['desc']
+    
+        current_user.tagline = tagline
+        db.session.commit()
+        flash("Profile successfully saved")
+    
+    return render_template('edit_profile.html', form = form)
 
 app.run(host = 'localhost', port = '5000', debug = True)
 
