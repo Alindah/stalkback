@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, flash, Mar
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, db, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar, PostForm, DeletePost
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost
 from flask_sqlalchemy import SQLAlchemy
 #from flask_migrate import Migrate
 from sqlalchemy import or_
@@ -149,7 +149,7 @@ def search(sq):
 @login_required
 def settings():
     form = SettingsForm()
-    form_delete = DeleteForm()
+    form_delete = DeleteAccount()
 
     if request.method == 'POST':
         if form_delete.del_confirmation.data:

@@ -26,7 +26,7 @@ class SettingsForm(FlaskForm):
     password_check = PasswordField("Re-enter password")
     submit = SubmitField("Save")
 
-class DeleteForm(FlaskForm):
+class DeleteAccount(FlaskForm):
     password_del = PasswordField(description = "Password")
     del_confirmation = SubmitField("Delete Account")
 
@@ -39,6 +39,7 @@ class PostForm(FlaskForm):
     content = FileField("Content")
     desc = StringField("Description", description = "Enter a description")
     category = SelectField("Category", choices = ['none'])
+    new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")
 
 class DeletePost(FlaskForm):

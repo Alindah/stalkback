@@ -14,9 +14,9 @@
                     <img src="{{ current_user.avatar_url }}" class="user-av-med"></a>
             </td>
             <td style="padding: 0.5em">
-                Hi, {{ current_user.display_name }}
+                Hi, {{ current_user.display_name }}. Let's get stalking!
                 <br>
-                Let's get stalking!
+                <a href="{{ url_for('post') }}">Create new post</a>
             </td>
         </table>
     </div>

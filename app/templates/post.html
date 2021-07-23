@@ -17,7 +17,8 @@
             {{ form.content }}<br>
 
             <span class="small-text">{{ form.category.label }}</span><br>
-            {{ form.category(placeholder=form.category.description) }}<br>
+            {{ form.category(placeholder=form.category.description) }}
+            {{ form.new_cat(placeholder=form.new_cat.description) }}<br>
 
             {{ form.submit }}
         </form></p>
