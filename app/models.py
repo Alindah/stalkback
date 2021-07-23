@@ -5,26 +5,26 @@ import hashlib
 from datetime import datetime
 
 # Create database and user model
-db_user = SQLAlchemy()
+db = SQLAlchemy()
 
-class UserModel(UserMixin, db_user.Model):
+class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     
-    id = db_user.Column(db_user.Integer, primary_key = True)
-    email = db_user.Column(db_user.String(254), unique = True)
-    username = db_user.Column(db_user.String(30), unique = True)
-    display_name = db_user.Column(db_user.String(32))
-    avatar_url = db_user.Column(db_user.String())
-    password_hash = db_user.Column(db_user.String())
-    join_date = db_user.Column(db_user.DateTime, default = datetime.utcnow)
+    id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(254), unique = True)
+    username = db.Column(db.String(30), unique = True)
+    display_name = db.Column(db.String(32))
+    avatar_url = db.Column(db.String())
+    password_hash = db.Column(db.String())
+    join_date = db.Column(db.DateTime, default = datetime.utcnow)
     
     # Optional info
-    birthday = db_user.Column(db_user.DateTime)
-    sex = db_user.Column(db_user.String(16), default="unset")
+    birthday = db.Column(db.DateTime)
+    sex = db.Column(db.String(16), default="unset")
 
     # Profile
-    tagline = db_user.Column(db_user.String(128), default="")
-    last_seen = db_user.Column(db_user.DateTime, default = datetime.utcnow)
+    tagline = db.Column(db.String(128), default="")
+    last_seen = db.Column(db.DateTime, default = datetime.utcnow)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -49,11 +49,11 @@ def load_user(id):
 class PostModel():
     __tablename__ = 'posts'
 """
-    id = db_user.Column(db_user.Integer, primary_key = True)
-    author = db_user.Column(db_user.String(32))
-    title = db_user.Column(db_user.String())
-    content = db_user.user.Column()
-    desc = db_user.Column(db_user.String())"""
+    id = db.Column(db.Integer, primary_key = True)
+    author = db.Column(db.String(32))
+    title = db.Column(db.String())
+    content = db.user.Column()
+    desc = db.Column(db.String())"""
 
 class CategoryModel():
     __tablename__ = 'categories'

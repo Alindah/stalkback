@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, db_user, login
+from models import UserModel, db, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -10,16 +12,17 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
-db_user.init_app(app)
+db.init_app(app)
 login.init_app(app)
 avatars = Avatars(app)
+migrate = Migrate(app, db)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'
 
 @app.before_first_request
 def create_table():
-    db_user.create_all()
+    db.create_all()
 
 # INDEX / LOGIN
 @app.route('/', methods = ['GET', 'POST'])
@@ -85,8 +88,8 @@ def register():
         user = UserModel(email = email, username = username, display_name = display_name)
         user.set_password(password)
         user.set_avatar(avatars)
-        db_user.session.add(user)
-        db_user.session.commit()
+        db.session.add(user)
+        db.session.commit()
 
         flash("Account successfully created! Please log in.")
         return redirect('/')
@@ -108,8 +111,8 @@ def logout():
 @app.route('/deactivate')
 @login_required
 def deactivate():
-    db_user.session.delete(current_user)
-    db_user.session.commit()
+    db.session.delete(current_user)
+    db.session.commit()
     flash("Your account was successfully deleted.")
     return redirect('/logout')
 
@@ -176,7 +179,7 @@ def settings():
                     current_user.set_password(password_new)
                     flash("Password successfully changed")
 
-            db_user.session.commit()
+            db.session.commit()
 
     return render_template('settings.html', form = form, form_delete = form_delete)
 
