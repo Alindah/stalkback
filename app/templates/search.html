@@ -16,9 +16,13 @@
                             <img src="{{ r.avatar_url }}" class="user-av-med"></a>
                     </td>
                     <td>
-                        {{ r.display_name }}<br>
-                        <a href="{{ url_for('profile', username = r.username) }}" class="small-text highlight" style="text-decoration: none;">
-                            @{{ r.username }}</a>
+                        <a href="{{ url_for('profile', username = r.username) }}" class="no-underline">
+                            <div>
+                                <span class="default-text">{{ r.display_name }}</span><br>
+                                <span class="small-text">
+                                    @{{ r.username }}</span>
+                            </div>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

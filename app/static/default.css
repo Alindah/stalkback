@@ -46,6 +46,10 @@ input[type='submit'] {
     font-size: 0.8em;
 }
 
+.default-text {
+    color: var(--color-text);
+}
+
 .highlight {
     color: var(--color-highlight);
 }
