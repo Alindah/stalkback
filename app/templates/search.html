@@ -18,10 +18,8 @@
                         <a href="{{ url_for('profile', username = r.username) }}" class="no-underline">
                             <div>
                                 <span class="default-text">{{ r.display_name }}</span><br>
-                                <span class="small-text">
-                                    @{{ r.username }}</span>
-                            </div>
-                        </a>
+                                <span class="small-text">@{{ r.username }}</span>
+                            </div></a>
                     </td>
                 </tr>
             {% endfor %}

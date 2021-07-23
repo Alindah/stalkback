@@ -90,12 +90,21 @@ input[type='submit'] {
     letter-spacing: -0.1em;
 }
 
+.header-prof-av {
+    float: right;
+    padding-top: 1em;
+}
+
+.header-prof-av img {
+    height: 2.5em;
+    width: 2.5em;
+}
+
 .menu-button {
-    position: absolute;
-    top: 1.5em;
-    right: 1em;
-    height: 2.25em;
+    float: right;
     width: 2.25em;
+    padding: 1.5em;
+    padding-bottom: 1em;
     cursor: pointer;
 }
 
@@ -310,6 +319,10 @@ input[type='submit'] {
 
 .user-av-small {
     width: 30px;
+}
+
+.user-av-med img {
+    border: 0.2em solid var(--color-header-gray);
 }
 
 .post div {

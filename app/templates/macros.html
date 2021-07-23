@@ -52,8 +52,7 @@
         <div class="post-title-container">
             <table><tr>
                 <td class="user-av-med">
-                    <a href="{{ url_for('profile', username = p.author.username) }}">
-                        <img src="{{ p.author.avatar_url }}" class="user-av-med"></a></td>
+                    {{ user_avatar_linked(p.author) }}</td>
                 <td class="post-title">
                         {% if p.category != "none" %}
                             <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
@@ -77,7 +76,9 @@
 
         {% if p.desc %}
             <div class="post-desc">
-                <div class="user-av-med" style="text-align:center;"><img src="{{ p.author.avatar_url }}" class="user-av-med"><br>{{ p.author.display_name }}</div>
+                <div style="text-align:center;">
+                    {{ user_avatar_linked(p.author) }}<br>
+                    {{ user_name_linked(p.author) }}</div>
                 <div style="padding-left: 1em;">
                     {{ p.desc }}
                 </div>
@@ -105,4 +106,9 @@
 {% macro user_avatar_linked(user) -%}
     <a href="{{ url_for('profile', username = user.username) }}">
         <img src="{{ user.avatar_url }}" class="user-av-med"></a>
+{%- endmacro %}
+
+{% macro user_name_linked(user) -%}
+    <a href="{{ url_for('profile', username = user.username) }}" class="no-underline">
+        {{ user.display_name }}</a>
 {%- endmacro %}
