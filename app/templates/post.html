@@ -2,7 +2,7 @@
 {% from "macros.html" import flashes %}
 {% block content %}
     <h1>Create a new post</h1>
-    <fieldset class="simple-form">
+    <fieldset id="post-form" class="simple-form">
         {{ flashes() }}
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
@@ -11,7 +11,7 @@
             {{ form.title(maxlength=300, placeholder=form.title.description) }}<br>
 
             <span class="small-text">{{ form.desc.label }}</span><br>
-            {{ form.desc(maxlength=40000, placeholder=form.desc.description) }}<br>
+            {{ form.desc(maxlength=40000, rows=6, placeholder=form.desc.description) }}<br>
 
             <span class="small-text">{{ form.content.label }}</span><br>
             {{ form.content }}<br>

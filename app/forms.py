@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, SelectField, HiddenField, validators
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, SelectField, HiddenField, TextAreaField, validators
 
 class LoginForm(FlaskForm):
     email = StringField("Email", validators = [validators.Required("Enter your email address."), 
@@ -37,7 +37,7 @@ class SearchBar(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
     content = FileField("Content")
-    desc = StringField("Description", description = "Enter a description")
+    desc = TextAreaField("Description", description = "Enter a description")
     category = SelectField("Category", choices = ['none'])
     new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")

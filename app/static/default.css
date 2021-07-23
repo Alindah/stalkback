@@ -342,3 +342,7 @@ input[type='submit'] {
     height: 2em;
     width: 2em;
 }
+
+#post-form textarea {
+    width: 80vw;
+}
