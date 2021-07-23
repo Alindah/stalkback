@@ -5,24 +5,14 @@ from models import UserModel, db_user, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
 from sqlalchemy import or_
 from flask_avatars import Avatars
-
+from config import Config
 
 app = Flask(__name__)
-avatars = Avatars(app)
-app.secret_key = "A poorly-kept secret"
-
-# Link flask app and database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Set up paths
-app.config['AVATARS_SAVE_PATH'] = "./data/user/avatars"
-
-# Change cache age so css changes show
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
+app.config.from_object(Config)
 
 db_user.init_app(app)
 login.init_app(app)
+avatars = Avatars(app)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'

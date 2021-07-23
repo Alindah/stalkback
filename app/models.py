@@ -16,7 +16,7 @@ class UserModel(UserMixin, db_user.Model):
     display_name = db_user.Column(db_user.String(32))
     avatar_url = db_user.Column(db_user.String())
     password_hash = db_user.Column(db_user.String())
-    join_date = db_user.Column(db_user.DateTime, default=datetime.utcnow)
+    join_date = db_user.Column(db_user.DateTime, default = datetime.utcnow)
     
     # Optional info
     birthday = db_user.Column(db_user.DateTime)
@@ -24,6 +24,7 @@ class UserModel(UserMixin, db_user.Model):
 
     # Profile
     tagline = db_user.Column(db_user.String(128), default="")
+    last_seen = db_user.Column(db_user.DateTime, default = datetime.utcnow)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
