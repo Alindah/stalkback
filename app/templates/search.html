@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import flashes, search_bar %}
+{% from "macros.html" import flashes, search_bar, user_avatar_linked %}
 
 {% block content_header %}
     {{ search_bar(sb) }}
@@ -12,8 +12,7 @@
             {% for r in res %}
                 <tr>
                     <td class="user-av-med">
-                        <a href="{{ url_for('profile', username = r.username) }}">
-                            <img src="{{ r.avatar_url }}" class="user-av-med"></a>
+                        {{ user_avatar_linked(r) }}</a>
                     </td>
                     <td>
                         <a href="{{ url_for('profile', username = r.username) }}" class="no-underline">
