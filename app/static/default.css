@@ -346,3 +346,11 @@ input[type='submit'] {
 #post-form textarea {
     width: 80vw;
 }
+
+.profile-button {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 2em;
+    max-height: 2em;
+    fill: var(--color-highlight);
+}

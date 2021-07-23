@@ -223,7 +223,7 @@ def post():
             cat = new_cat
 
             if new_cat not in categories:
-                db.session.add(CategoryModel(user = current_user, category = new_cat))
+                db.session.add(CategoryModel(user = current_user, name = new_cat))
 
         post = PostModel(author = current_user, title = title, desc = desc, category = cat)
         db.session.add(post)
