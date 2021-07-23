@@ -128,7 +128,7 @@ input[type='submit'] {
     margin: 0.5em;
 }
 
-.footer-icon {
+.svg-icon {
     position: relative;
     display: inline-block;
     width: 1em;
@@ -304,16 +304,18 @@ input[type='submit'] {
     width: 30px;
 }
 
-.post {
-    background-color: rosybrown;
-}
-
 .post div {
     padding: 1em;
 }
 
-.post-title {
+.post-title-container {
     background-color: var(--color-header);
+
+}
+
+.post-title {
+    padding-left: 1em;
+    width: 100%;
 }
 
 .post-content {
@@ -330,4 +332,9 @@ input[type='submit'] {
     background-color: var(--color-header);
 }
 
-
+.post-options-menu {
+    fill: var(--color-text);
+    float: right;
+    height: 2em;
+    width: 2em;
+}
