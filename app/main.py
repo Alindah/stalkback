@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, db, login
+from models import UserModel, PostModel, CategoryModel, db, login
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost
 from flask_sqlalchemy import SQLAlchemy
 #from flask_migrate import Migrate
@@ -91,7 +91,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash("Account successfully created! Please log in.")
+        flash("Account successfully created!")
         return redirect('/')
 
     return render_template('register.html', form = form)
@@ -185,11 +185,12 @@ def settings():
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
+@app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
-def profile(username): 
-    user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = reversed(user.posts.all())
+def profile(username, category = "none"):
     form_del = DeletePost()
+    user = UserModel.query.filter_by(username = username).first_or_404()
+    posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
 
     if request.method == 'POST':
         # Delete post
@@ -198,11 +199,17 @@ def profile(username):
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-    return render_template('profile.html', user = user, posts = posts, del_form = form_del)
+    return render_template('profile.html', user = user, posts = reversed(posts), del_form = form_del)
+
+@app.route('/stalk/<username>/none')
+@login_required
+def profile_none(username):
+    return redirect(url_for('profile', username = username))
 
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
 def post():
+    categories = current_user.categories.all()
     form = PostForm()
 
     if request.method == 'POST':
@@ -210,6 +217,13 @@ def post():
         desc = request.form['desc']
         content = request.files['content']
         cat = request.form['category']
+        new_cat = request.form['new_cat']
+
+        if new_cat:
+            cat = new_cat
+
+            if new_cat not in categories:
+                db.session.add(CategoryModel(user = current_user, category = new_cat))
 
         post = PostModel(author = current_user, title = title, desc = desc, category = cat)
         db.session.add(post)
@@ -219,7 +233,7 @@ def post():
 
         return redirect('/post')
 
-    return render_template('post.html', form = form)
+    return render_template('post.html', form = form, categories = categories)
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

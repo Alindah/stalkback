@@ -25,7 +25,8 @@ class UserModel(UserMixin, db.Model):
     # Profile
     tagline = db.Column(db.String(128), default="")
     last_seen = db.Column(db.DateTime, default = datetime.utcnow)
-    posts = db.relationship('PostModel', backref = 'author', lazy='dynamic')
+    categories = db.relationship('CategoryModel', backref = 'user', lazy = 'dynamic')
+    posts = db.relationship('PostModel', backref = 'author', lazy = 'dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -52,14 +53,19 @@ class PostModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    category = db.Column(db.String(), default = "")
+    category = db.Column(db.String(32), default = "none")
     title = db.Column(db.String(300), default = "")
     content = db.Column(db.String(), default = "")
     desc = db.Column(db.String(40000), default = "")
     timestamp = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
 
-class CategoryModel():
+class CategoryModel(db.Model):
     __tablename__ = 'categories'
+
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    category = db.Column(db.String(32), default = "none")
+    creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
 
 
 

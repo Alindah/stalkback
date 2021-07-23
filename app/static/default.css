@@ -54,6 +54,10 @@ input[type='submit'] {
     color: var(--color-warning);
 }
 
+.no-underline {
+    text-decoration: none;
+}
+
 .content-container {
     padding: 1em;
     background: var(--color-bg);

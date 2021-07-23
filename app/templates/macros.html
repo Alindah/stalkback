@@ -55,8 +55,14 @@
                     <a href="{{ url_for('profile', username = p.author.username) }}">
                         <img src="{{ p.author.avatar_url }}" class="user-av-med"></a></td>
                 <td class="post-title">
-                    <a href="{{ url_for('profile', username = p.author.username) }}" class="small-text" style="text-decoration: none;">
-                        {{ p.author.username }} / category</a><br>
+                        {% if p.category != "none" %}
+                            <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
+                            > {{ p.author.username }} / {{ p.category }}</a>
+                        {% else %}
+                            <a href="{{ url_for('profile', username = p.author.username) }}" class="small-text" style="text-decoration: none;">
+                            > {{ p.author.username }}</a> 
+                        {% endif %}
+                    </a><br>
                     <span style="font-size: 2em;">{{ p.title }}</span><br>
                     <span class="small-text">{{ p.timestamp.strftime("%a, %d %b %Y, %I:%M:%S %p") }}</span>
                 </td>

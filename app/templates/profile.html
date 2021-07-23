@@ -5,7 +5,8 @@
     <div class="prof-header">
         <img class="user-av" src="{{ user.avatar_url }}">
         <p>
-            <span style="font-size: 1.5em;">{{ user.display_name }}<br>(@{{ user.username }})</span><br>
+            <span style="font-size: 1.5em;">{{ user.display_name }}<br>
+                <a class="no-underline" href="{{ url_for('profile', username = user.username) }}">(@{{ user.username }})</a></span><br>
             <span class="small-text">tagline here</span>
         </p>
     </div>
