@@ -191,6 +191,7 @@ def profile(username, category = "none"):
     form_del = DeletePost()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
+    current_cat = user.categories.filter_by(name = category).first()
 
     if request.method == 'POST':
         # Delete post
@@ -199,7 +200,7 @@ def profile(username, category = "none"):
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-    return render_template('profile.html', user = user, posts = reversed(posts), del_form = form_del)
+    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), del_form = form_del)
 
 @app.route('/stalk/<username>/none')
 @login_required
@@ -209,7 +210,8 @@ def profile_none(username):
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
 def post():
-    categories = current_user.categories.all()
+    user_categories = current_user.categories.all()
+    uc_names = [ c.name for c in user_categories ]
     form = PostForm()
 
     if request.method == 'POST':
@@ -222,8 +224,8 @@ def post():
         if new_cat:
             cat = new_cat
 
-            if new_cat not in categories:
-                db.session.add(CategoryModel(user = current_user, name = new_cat))
+        if cat not in uc_names:
+            db.session.add(CategoryModel(user = current_user, name = cat))
 
         post = PostModel(author = current_user, title = title, desc = desc, category = cat)
         db.session.add(post)
@@ -233,12 +235,12 @@ def post():
 
         return redirect('/post')
 
-    return render_template('post.html', form = form, categories = categories)
+    return render_template('post.html', form = form, categories = user_categories)
 
 # EDIT PROFILE
-@app.route('/edit/profile', methods = ['POST', 'GET'])
+@app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
 @login_required
-def edit_prof():
+def edit_prof(category):
     form = EditProfileForm()
 
     if request.method == 'POST':
@@ -246,10 +248,15 @@ def edit_prof():
         desc = request.form['desc']
     
         current_user.tagline = tagline
+
+        current_cat = current_user.categories.filter_by(name = category).first()
+        current_cat.desc = desc
+
         db.session.commit()
+
         flash("Profile successfully saved")
     
-    return render_template('edit_profile.html', form = form)
+    return render_template('edit_profile.html', category = category, form = form)
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

@@ -3,13 +3,14 @@
 
 {% block content %}
     <h1>Edit your profile</h1>
+    Editing for {{ category }}
     <fieldset class="simple-form text-area-form">
         {{ flashes() }}
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
             <span class="small-text">{{ form.tagline.label }}</span><br>
-            {{ form.tagline(maxlength=128, value=current_user.tagline, placeholder=form.tagline.description) }}<br>
+            {{ form.tagline(maxlength=128, rows=2, placeholder=form.tagline.description) }}<br>
 
             <span class="small-text">{{ form.desc.label }}</span><br>
             {{ form.desc(maxlength=1000, rows=6, placeholder=form.desc.description) }}<br>

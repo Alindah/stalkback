@@ -38,7 +38,7 @@ class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
     content = FileField("Content")
     desc = TextAreaField("Description", description = "Enter a description")
-    category = SelectField("Category", choices = ['none'])
+    category = SelectField("Category", choices = ['none', 'announcements'])
     new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")
 
@@ -47,6 +47,6 @@ class DeletePost(FlaskForm):
     del_post = SubmitField("Delete")
 
 class EditProfileForm(FlaskForm):
-    tagline = StringField("Tagline", description = "Enter a tagline")
-    desc = TextAreaField("Description", description = "Enter a description")
+    tagline = TextAreaField("Tagline", description = "Enter a tagline. Affects all of your categories.")
+    desc = TextAreaField("Description", description = "Enter a description. This only affects the current category.")
     submit = SubmitField("Save")
