@@ -241,15 +241,16 @@ def post():
 @app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
 @login_required
 def edit_prof(category):
+    current_cat = current_user.categories.filter_by(name = category).first()
     form = EditProfileForm()
+    form.tagline.data = current_user.tagline
+    form.desc.data = current_cat.desc
 
     if request.method == 'POST':
         tagline = request.form['tagline']
         desc = request.form['desc']
     
         current_user.tagline = tagline
-
-        current_cat = current_user.categories.filter_by(name = category).first()
         current_cat.desc = desc
 
         db.session.commit()
