@@ -18,7 +18,7 @@
 {% macro footer_link(text, url, svg_path) -%}
     <span class="footer-link">
         {% if svg_path %}
-            <div class="footer-icon">
+            <div class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24">
                     <title>{{ text }}</title>
                     <path d="{{ svg_path }}"></path>
@@ -36,4 +36,79 @@
             {{ form.search }}
         </form>
     </div>
+{%- endmacro %}
+
+{% macro menu_window() -%}
+    <div id="menu-container">
+        <a href="{{ url_for('profile', username = current_user.username) }}" class="menu-link"><div class="menu-item">My Profile</div></a>
+        <a href="{{ url_for('dashboard') }}" class="menu-link"><div class="menu-item">Dashboard</div></a>
+        <a href="{{ url_for('settings') }}" class="menu-link"><div class="menu-item">Settings</div></a>
+        <a href="{{ url_for('logout') }}" class="menu-link"><div class="menu-item">Log Out</div></a>
+    </div>
+{%- endmacro %}
+
+{% macro user_post(p) -%}
+    <div class="post">
+        <div class="post-title-container">
+            <table><tr>
+                <td class="user-av-med">
+                    {{ user_avatar_linked(p.author) }}</td>
+                <td class="post-title">
+                        {% if p.category != "none" %}
+                            <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
+                            > {{ p.author.username }} / {{ p.category }}</a>
+                        {% else %}
+                            <a href="{{ url_for('profile', username = p.author.username) }}" class="small-text" style="text-decoration: none;">
+                            > {{ p.author.username }}</a> 
+                        {% endif %}
+                    </a><br>
+                    <span style="font-size: 2em;">{{ p.title }}</span><br>
+                    <span class="small-text">{{ p.timestamp.strftime("%a, %d %b %Y, %I:%M:%S %p") }}</span>
+                </td>
+            </tr></table>
+        </div>
+
+        {% if p.content %}
+            <div class="post-content">
+                image here
+            </div>
+        {% endif %}
+
+        {% if p.desc %}
+            <div class="post-desc">
+                <div style="text-align:center;">
+                    {{ user_avatar_linked(p.author) }}<br>
+                    {{ user_dname_linked(p.author) }}</div>
+                <div style="padding-left: 1em;">
+                    {{ p.desc }}
+                </div>
+            </div>
+        {% endif %}
+        <div class="post-footer">
+            {% if p.author == current_user %}
+                <td><svg class="post-options-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.96 122.88">
+                        <title>Options</title>
+                        <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"/>
+                    </svg></td>
+                <form action="" method="POST">
+                    {{ del_form.csrf_token() }}
+                    {{ del_form.del_id(value=p.id) }}
+                    {{ del_form.del_post }}
+                </form>
+            {% endif %}
+            (>) comment, like
+            <br>
+            
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro user_avatar_linked(user) -%}
+    <a href="{{ url_for('profile', username = user.username) }}">
+        <img src="{{ user.avatar_url }}" class="user-av-med"></a>
+{%- endmacro %}
+
+{% macro user_dname_linked(user) -%}
+    <a href="{{ url_for('profile', username = user.username) }}" class="no-underline">
+        {{ user.display_name }}</a>
 {%- endmacro %}

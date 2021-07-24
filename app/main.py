@@ -1,35 +1,28 @@
 from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, db_user, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteForm, SearchBar
+from models import UserModel, PostModel, CategoryModel, db, login
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm
+from flask_sqlalchemy import SQLAlchemy
+#from flask_migrate import Migrate
 from sqlalchemy import or_
 from flask_avatars import Avatars
-
+from config import Config
 
 app = Flask(__name__)
-avatars = Avatars(app)
-app.secret_key = "A poorly-kept secret"
+app.config.from_object(Config)
 
-# Link flask app and database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Set up paths
-app.config['AVATARS_SAVE_PATH'] = "./data/user/avatars"
-
-# Change cache age so css changes show
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = -1
-
-db_user.init_app(app)
+db.init_app(app)
 login.init_app(app)
+avatars = Avatars(app)
+#migrate = Migrate(app, db)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'
 
 @app.before_first_request
 def create_table():
-    db_user.create_all()
+    db.create_all()
 
 # INDEX / LOGIN
 @app.route('/', methods = ['GET', 'POST'])
@@ -95,10 +88,11 @@ def register():
         user = UserModel(email = email, username = username, display_name = display_name)
         user.set_password(password)
         user.set_avatar(avatars)
-        db_user.session.add(user)
-        db_user.session.commit()
+        db.session.add(user)
+        db.session.add(CategoryModel(user = user, name = "none"))
+        db.session.commit()
 
-        flash("Account successfully created! Please log in.")
+        flash("Account successfully created!")
         return redirect('/')
 
     return render_template('register.html', form = form)
@@ -118,8 +112,8 @@ def logout():
 @app.route('/deactivate')
 @login_required
 def deactivate():
-    db_user.session.delete(current_user)
-    db_user.session.commit()
+    db.session.delete(current_user)
+    db.session.commit()
     flash("Your account was successfully deleted.")
     return redirect('/logout')
 
@@ -141,7 +135,7 @@ def search(sq):
     search_bar = SearchBar()
     results = None
 
-    if sq.isspace():
+    if sq.isspace() or sq == "":
         flash("Enter a name or username to search")
     else:
         results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
@@ -156,7 +150,7 @@ def search(sq):
 @login_required
 def settings():
     form = SettingsForm()
-    form_delete = DeleteForm()
+    form_delete = DeleteAccount()
 
     if request.method == 'POST':
         if form_delete.del_confirmation.data:
@@ -186,27 +180,91 @@ def settings():
                     current_user.set_password(password_new)
                     flash("Password successfully changed")
 
-            db_user.session.commit()
+            db.session.commit()
 
     return render_template('settings.html', form = form, form_delete = form_delete)
 
 # PROFILE
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
+@app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
-def profile(username): 
-    user = UserModel.query.filter_by(username = username).first_or_404();   
-    
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
+def profile(username, category = "none"):
+    form_del = DeletePost()
+    user = UserModel.query.filter_by(username = username).first_or_404()
+    posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
+    current_cat = user.categories.filter_by(name = category).first_or_404()
 
-    return render_template('profile.html', user = user, posts = posts)
+    if request.method == 'POST':
+        # Delete post
+        if form_del.del_post.data:
+            db.session.delete(PostModel.query.get(request.form['del_id']))
+            db.session.commit()
+            return redirect(url_for('profile', username = username))
+
+    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), del_form = form_del)
+
+@app.route('/stalk/<username>/none')
+@login_required
+def profile_none(username):
+    return redirect(url_for('profile', username = username))
 
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
 def post():
-    return render_template('post.html')
+    user_categories = current_user.categories.all()
+    uc_names = [ c.name for c in user_categories ]
+    form = PostForm(uc_names)
+
+    current_cat = request.args.get('category')
+    
+    if current_cat == "none" or not current_cat:
+        current_cat = ""
+
+    if request.method == 'POST':
+        title = request.form['title']
+        desc = request.form['desc']
+        content = request.files['content']
+        cat = request.form['category']
+        new_cat = request.form['new_cat']
+
+        if new_cat:
+            cat = new_cat
+
+        if cat not in uc_names:
+            db.session.add(CategoryModel(user = current_user, name = cat))
+
+        post = PostModel(author = current_user, title = title, desc = desc, category = cat)
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Posted successfully!")
+
+        return redirect('/post')
+
+    return render_template('post.html', form = form, categories = user_categories, current_cat = current_cat)
+
+# EDIT PROFILE
+@app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
+@login_required
+def edit_prof(category):
+    current_cat = current_user.categories.filter_by(name = category).first_or_404()
+    form = EditProfileForm()
+    form.tagline.data = current_user.tagline
+    form.desc.data = current_cat.desc
+
+    if request.method == 'POST':
+        tagline = request.form['tagline']
+        desc = request.form['desc']
+    
+        current_user.tagline = tagline
+        current_cat.desc = desc
+
+        db.session.commit()
+        flash("Profile successfully saved")
+
+        return redirect(url_for('edit_prof', category = category))
+    
+    return render_template('edit_profile.html', category = category, form = form)
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

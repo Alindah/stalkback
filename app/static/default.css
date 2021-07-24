@@ -3,7 +3,7 @@
 :root {
     --color-bg: rgb(96, 110, 130);
     --color-header: rgb(41, 43, 51);
-    --color-header2: rgb(55, 63, 75);
+    --color-header-gray: rgb(55, 63, 75);
     --color-highlight: rgb(255, 166, 0);
     --color-link-highlight: rgb(255, 208, 0);
     --color-text: rgb(255, 255, 255);
@@ -46,12 +46,20 @@ input[type='submit'] {
     font-size: 0.8em;
 }
 
+.default-text {
+    color: var(--color-text);
+}
+
 .highlight {
     color: var(--color-highlight);
 }
 
 .warning {
     color: var(--color-warning);
+}
+
+.no-underline {
+    text-decoration: none;
 }
 
 .content-container {
@@ -62,13 +70,13 @@ input[type='submit'] {
 .header {
     position: relative;
     margin: 0;
-    padding: 1em;
     background-color: var(--color-header);
     color: var(--color-text);
 }
 
 .header-logo {
     display: inline-block;
+    padding: 1em;
 }
 
 .header-logo a {
@@ -82,12 +90,42 @@ input[type='submit'] {
     letter-spacing: -0.1em;
 }
 
-.menu-container {
-    position: absolute;
-    top: 1.5em;
-    right: 1em;
-    height: 2.25em;
+.header-prof-av {
+    float: right;
+    padding-top: 1em;
+}
+
+.header-prof-av img {
+    height: 2.5em;
+    width: 2.5em;
+}
+
+.menu-button {
+    float: right;
     width: 2.25em;
+    padding: 1.5em;
+    padding-bottom: 1em;
+    cursor: pointer;
+}
+
+#menu-container {
+    position: absolute;
+    display: none;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-header-gray);
+}
+
+.menu-item {
+    font-family: var(--font-header);
+    padding: 1em;
+    font-size: 1.75em;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: var(--color-text);
 }
 
 #svg-menu {
@@ -107,7 +145,7 @@ input[type='submit'] {
     margin: 0.5em;
 }
 
-.footer-icon {
+.svg-icon {
     position: relative;
     display: inline-block;
     width: 1em;
@@ -238,6 +276,7 @@ input[type='submit'] {
 
 .search-container input {
     width: 80%;
+    padding-left: 1em;
     box-sizing: border-box;
 }
 
@@ -282,6 +321,54 @@ input[type='submit'] {
     width: 30px;
 }
 
+.user-av-med img {
+    border: 0.2em solid var(--color-header-gray);
+}
 
+.post div {
+    padding: 1em;
+}
 
+.post-title-container {
+    background-color: var(--color-header);
 
+}
+
+.post-title {
+    padding-left: 1em;
+    width: 100%;
+}
+
+.post-content {
+    background-color: seagreen;
+}
+
+.post-desc {
+    background-color: var(--color-header-gray);
+    display: flex;
+    overflow-wrap: anywhere;
+}
+
+.post-footer {
+    background-color: var(--color-header);
+}
+
+.post-options-menu {
+    fill: var(--color-text);
+    float: right;
+    height: 2em;
+    width: 2em;
+}
+
+.text-area-form textarea {
+    width: 80vw;
+    font-family: var(--font-main);
+}
+
+.profile-button {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 2em;
+    max-height: 2em;
+    fill: var(--color-highlight);
+}

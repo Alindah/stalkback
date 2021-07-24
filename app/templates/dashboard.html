@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import search_bar%}
+{% from "macros.html" import search_bar, user_avatar_linked %}
 
 <!-- SEARCH BAR -->
 {% block content_header %}
@@ -10,17 +10,13 @@
     <div style="background-color: var(--color-header);">
         <table>
             <td class="user-av-med" style="padding: 0.5em">
-                <a href="{{ url_for('profile', username = current_user.username) }}">
-                    <img src="{{ current_user.avatar_url }}" class="user-av-med"></a>
+                {{ user_avatar_linked(current_user) }}
             </td>
             <td style="padding: 0.5em">
-                Hi, {{ current_user.display_name }}
+                Hi, {{ current_user.display_name }}. Let's get stalking!
                 <br>
-                Let's get stalking!
+                <a href="{{ url_for('post') }}">Create new post</a>
             </td>
         </table>
     </div>
-    <h3><a href="{{ url_for('profile', username = current_user.username) }}">My Profile</a></h3>
-    <h3><a href="{{ url_for('settings') }}">Settings</a></h3>
-    <h3><a href="{{ url_for('logout') }}">Log out</a></h3>
 {% endblock %}
