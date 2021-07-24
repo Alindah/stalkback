@@ -89,6 +89,7 @@ def register():
         user.set_password(password)
         user.set_avatar(avatars)
         db.session.add(user)
+        db.session.add(CategoryModel(user = user, name = "none"))
         db.session.commit()
 
         flash("Account successfully created!")
@@ -191,7 +192,7 @@ def profile(username, category = "none"):
     form_del = DeletePost()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
-    current_cat = user.categories.filter_by(name = category).first()
+    current_cat = user.categories.filter_by(name = category).first_or_404()
 
     if request.method == 'POST':
         # Delete post
@@ -254,8 +255,9 @@ def edit_prof(category):
         current_cat.desc = desc
 
         db.session.commit()
-
         flash("Profile successfully saved")
+
+        return redirect(url_for('edit_prof', category = category))
     
     return render_template('edit_profile.html', category = category, form = form)
 
