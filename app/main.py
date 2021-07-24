@@ -215,6 +215,8 @@ def post():
     uc_names = [ c.name for c in user_categories ]
     form = PostForm()
 
+    form.category.choices = uc_names
+
     if request.method == 'POST':
         title = request.form['title']
         desc = request.form['desc']

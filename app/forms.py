@@ -38,7 +38,7 @@ class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
     content = FileField("Content")
     desc = TextAreaField("Description", description = "Enter a description")
-    category = SelectField("Category", choices = ['none', 'announcements'])
+    category = SelectField("Category", choices = ['none'])
     new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")
 
