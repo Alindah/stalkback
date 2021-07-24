@@ -54,3 +54,10 @@ class EditProfileForm(FlaskForm):
     tagline = TextAreaField("Tagline", description = "Enter a tagline. Affects all of your categories.")
     desc = TextAreaField("Description", description = "Enter a description. This only affects the current category.")
     submit = SubmitField("Save")
+
+class CategoryDropdown(FlaskForm):
+    category = SelectField("Category")
+
+    def __init__(self, user_cat = [], current_cat = "none"):
+        super(CategoryDropdown, self).__init__()
+        self.category.choices = ['Select a category...'] + user_cat

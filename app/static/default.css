@@ -372,3 +372,7 @@ input[type='submit'] {
     max-height: 2em;
     fill: var(--color-highlight);
 }
+
+.prof-cat-dropdown {
+    float: right;
+}

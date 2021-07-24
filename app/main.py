@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, flash, Mar
 from flask.helpers import send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, CategoryModel, db, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm, CategoryDropdown
 from flask_sqlalchemy import SQLAlchemy
 #from flask_migrate import Migrate
 from sqlalchemy import or_
@@ -193,6 +193,8 @@ def profile(username, category = "none"):
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
+    uc_names = [ c.name for c in user.categories.all() ]
+    cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
         # Delete post
@@ -201,7 +203,7 @@ def profile(username, category = "none"):
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), del_form = form_del)
+    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, del_form = form_del)
 
 @app.route('/stalk/<username>/none')
 @login_required
