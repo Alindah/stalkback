@@ -38,9 +38,13 @@ class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
     content = FileField("Content")
     desc = TextAreaField("Description", description = "Enter a description")
-    category = SelectField("Category", choices = ['none'])
+    category = SelectField("Category")
     new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")
+
+    def __init__(self, user_cat = ['none'], current_cat = "none"):
+        super(PostForm, self).__init__()
+        self.category.choices = user_cat
 
 class DeletePost(FlaskForm):
     del_id = HiddenField("Post ID")

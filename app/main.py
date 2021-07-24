@@ -213,9 +213,12 @@ def profile_none(username):
 def post():
     user_categories = current_user.categories.all()
     uc_names = [ c.name for c in user_categories ]
-    form = PostForm()
+    form = PostForm(uc_names)
 
-    form.category.choices = uc_names
+    current_cat = request.args.get('category')
+    
+    if current_cat == "none" or not current_cat:
+        current_cat = ""
 
     if request.method == 'POST':
         title = request.form['title']
@@ -238,13 +241,13 @@ def post():
 
         return redirect('/post')
 
-    return render_template('post.html', form = form, categories = user_categories)
+    return render_template('post.html', form = form, categories = user_categories, current_cat = current_cat)
 
 # EDIT PROFILE
 @app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
 @login_required
 def edit_prof(category):
-    current_cat = current_user.categories.filter_by(name = category).first()
+    current_cat = current_user.categories.filter_by(name = category).first_or_404()
     form = EditProfileForm()
     form.tagline.data = current_user.tagline
     form.desc.data = current_cat.desc
