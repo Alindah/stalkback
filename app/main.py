@@ -1,16 +1,16 @@
-from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
-from flask.helpers import send_from_directory
-from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, CategoryModel, db, login
+from flask import Flask, render_template, request, redirect, flash, Markup, url_for
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from models import UserModel, PostModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm, CategoryDropdown
-from flask_sqlalchemy import SQLAlchemy
-#from flask_migrate import Migrate
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Link Flask_Login and database
+login = LoginManager()
 
 db.init_app(app)
 login.init_app(app)
@@ -23,6 +23,10 @@ login.login_view = '/'
 @app.before_first_request
 def create_table():
     db.create_all()
+
+@login.user_loader
+def load_user(id):
+    return UserModel.query.get(int(id))
 
 # INDEX / LOGIN
 @app.route('/', methods = ['GET', 'POST'])

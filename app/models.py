@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager
+from flask_login import UserMixin
 import hashlib
 from datetime import datetime
 
@@ -41,13 +41,6 @@ class UserModel(UserMixin, db.Model):
             email_hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
             self.avatar_url = avatars.gravatar(email_hash, size=300)
 
-# Link Flask_Login and database
-login = LoginManager()
-
-@login.user_loader
-def load_user(id):
-    return UserModel.query.get(int(id))
-
 class PostModel(db.Model):
     __tablename__ = 'posts'
 
@@ -68,6 +61,8 @@ class CategoryModel(db.Model):
     desc = db.Column(db.String(1000), default = "")
     icon = db.Column(db.String())
     creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
+
+
 
 
 
