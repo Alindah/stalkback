@@ -76,10 +76,10 @@
 
         {% if p.desc %}
             <div class="post-desc">
-                <div style="text-align:center;">
+                <div class="post-user-container">
                     {{ user_avatar_linked(p.author) }}<br>
                     {{ user_dname_linked(p.author) }}</div>
-                <div style="padding-left: 1em;">
+                <div class="post-desc-container">
                     {{ p.desc }}
                 </div>
             </div>
@@ -98,7 +98,6 @@
             {% endif %}
             (>) comment, like
             <br>
-            
         </div>
     </div>
 {%- endmacro %}
