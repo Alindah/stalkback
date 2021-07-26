@@ -201,7 +201,7 @@ def profile(username, category = "none"):
     cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
-        # Start stalking
+        # Start/stop stalking
         if button_stalk.submit.data:
             if current_user.is_stalking(user):
                 current_user.stop_stalking(user)
