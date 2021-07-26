@@ -16,7 +16,17 @@
 <!-- Profile info bar and tools -->
 {% block content %}
     <div style="padding:1em;">
-        stalkers, stalking, start stalking
+        stalkers, stalking
+        {% if user != current_user %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {{ button_stalk.hidden_tag() }}
+                {% if current_user.is_stalking(user) %}
+                    {{ button_stalk.submit(value = "stop stalking") }}
+                {% else %}
+                    {{ button_stalk.submit(value = "stalk") }}
+                {% endif %}
+            </form>
+        {% endif %}
         <div class="prof-cat-dropdown">{{ cat_dropdown.category }}</div>
     </div>
     

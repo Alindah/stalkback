@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, Markup, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, CategoryModel, db
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm, CategoryDropdown
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -15,7 +15,6 @@ login = LoginManager()
 db.init_app(app)
 login.init_app(app)
 avatars = Avatars(app)
-#migrate = Migrate(app, db)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'
@@ -194,6 +193,7 @@ def settings():
 @login_required
 def profile(username, category = "none"):
     form_del = DeletePost()
+    button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
@@ -201,13 +201,26 @@ def profile(username, category = "none"):
     cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
+        # Start stalking
+        if button_stalk.submit.data:
+            if current_user.is_stalking(user):
+                current_user.stop_stalking(user)
+            else:
+                current_user.start_stalking(user)
+            
+            db.session.commit()
+            
+            return redirect(url_for('profile', username = username))
+
         # Delete post
         if form_del.del_post.data:
             db.session.delete(PostModel.query.get(request.form['del_id']))
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, del_form = form_del)
+    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
+                            posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, 
+                            del_form = form_del, button_stalk = button_stalk)
 
 @app.route('/stalk/<username>/none')
 @login_required

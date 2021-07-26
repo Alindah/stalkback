@@ -61,3 +61,6 @@ class CategoryDropdown(FlaskForm):
     def __init__(self, user_cat = [], current_cat = "none"):
         super(CategoryDropdown, self).__init__()
         self.category.choices = ['Select a category...'] + user_cat
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField("Submit")

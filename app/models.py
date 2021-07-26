@@ -7,6 +7,12 @@ from datetime import datetime
 # Create database and user model
 db = SQLAlchemy()
 
+# Association table (model not necessary because no new data other than foreign keys)
+# https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-viii-followers
+stalkers = db.Table('stalkers', 
+    db.Column('stalker_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('stalking_id', db.Integer, db.ForeignKey('users.id')))
+
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     
@@ -28,6 +34,13 @@ class UserModel(UserMixin, db.Model):
     categories = db.relationship('CategoryModel', backref = 'user', lazy = 'dynamic')
     posts = db.relationship('PostModel', backref = 'author', lazy = 'dynamic')
 
+    # Stalkers
+    stalking = db.relationship(
+        'UserModel', secondary = stalkers,
+        primaryjoin = (stalkers.c.stalker_id == id),
+        secondaryjoin = (stalkers.c.stalking_id == id),
+        backref = db.backref('stalkers', lazy = 'dynamic'), lazy = 'dynamic')
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     
@@ -40,6 +53,30 @@ class UserModel(UserMixin, db.Model):
         else:
             email_hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
             self.avatar_url = avatars.gravatar(email_hash, size=300)
+
+    def start_stalking(self, user):
+        if not self.is_stalking(user):
+            self.stalking.append(user)
+    
+    def stop_stalking(self, user):
+        if self.is_stalking(user):
+            self.stalking.remove(user)
+    
+    # Returns true if user is following indicated user and false otherwise
+    def is_stalking(self, user):
+        return self.stalking.filter(stalkers.c.stalking_id == user.id).count() > 0
+    
+    # Return list of users this user is stalking
+    def get_stalking(self):
+        return self.stalking.filter(stalkers.c.stalking_id)
+    
+    # Get posts from stalkees, ordering by timestamp
+    def stalked_posts(self):
+        return PostModel.query.join(
+            stalkers, (stalkers.c.stalking_id == PostModel.user_id)).filter( # All posts that are being stalked
+                stalkers.c.stalker_id == self.id).order_by( # Only get posts that are stalked by this user
+                    PostModel.timestamp.desc()) # Order by time, with first result being most recent
+
 
 class PostModel(db.Model):
     __tablename__ = 'posts'
@@ -61,8 +98,6 @@ class CategoryModel(db.Model):
     desc = db.Column(db.String(1000), default = "")
     icon = db.Column(db.String())
     creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
-
-
 
 
 
