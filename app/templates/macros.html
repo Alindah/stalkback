@@ -100,7 +100,18 @@
                     {{ del_form.del_post }}
                 </form>
             {% endif %}
-            (>) comment, like
+            (>) comment
+
+            <form action="" method="POST">
+                {{ button_like.csrf_token() }}
+                {{ button_like.like_id(value=p.id) }}
+
+                {% if not p.is_liked_by(current_user) %}
+                    {{ button_like.like_post(value="Like") }}
+                {% else %}
+                    {{ button_like.like_post(value="Unlike") }}
+                {% endif %}
+            </form>
             <br>
         </div>
     </div>
