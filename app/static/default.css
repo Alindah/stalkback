@@ -309,10 +309,19 @@ input[type='submit'] {
     box-sizing: border-box;
 }
 
-.prof-info-bar {
+.prof-info-container {
     background-color: var(--color-header-gray);
+}
+
+.prof-info-bar {
     padding: 1em;
     width: 100%;
+}
+
+.prof-tools-container {
+    height: 2em;
+    padding-bottom: 1em;
+    padding-right: 0.5em;
 }
 
 .user-av {
