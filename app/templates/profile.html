@@ -16,7 +16,10 @@
 <!-- Profile info bar and tools -->
 {% block content %}
     <div style="padding:1em;">
-        stalkers, stalking
+        <a href="{{ url_for('stalklist', username = user.username, category = category, rel = 'stalkers') }}">Stalkers</a>
+        {{ stalkers_count }}
+        <a href="{{ url_for('stalklist', username = user.username, category = category, rel = 'stalking') }}">Stalking</a>
+        {{ stalking_count }}
         {% if user != current_user %}
             <form action="" method="POST" enctype="multipart/form-data">
                 {{ button_stalk.hidden_tag() }}

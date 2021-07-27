@@ -220,7 +220,8 @@ def profile(username, category = "none"):
 
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
                             posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, 
-                            del_form = form_del, button_stalk = button_stalk)
+                            del_form = form_del, button_stalk = button_stalk, stalkers_count = user.get_stalkers().count(),
+                            stalking_count = user.get_stalking().count())
 
 @app.route('/stalk/<username>/none')
 @login_required
@@ -228,22 +229,24 @@ def profile_none(username):
     return redirect(url_for('profile', username = username))
 
 @app.route('/sl/<username>/<rel>', methods = ['GET', 'POST'])
-@app.route('/sl/<username>/<category>/stalkers', methods = ['GET', 'POST'])
+@app.route('/sl/<username>/<category>/<rel>', methods = ['GET', 'POST'])
 @login_required
 def stalklist(username, category = "none", rel = "stalking"):
     user = UserModel.query.filter_by(username = username).first_or_404()
-    s = user.get_stalking()
+    s = None
 
     if rel == "stalkers":
         s = user.get_stalkers()
+    elif rel == "stalking":
+        s = user.get_stalking()
         
     return render_template('stalklist.html', username = username, category = category,
                             stalkers = s, table_header = rel)
 
-@app.route('/sl/<username>/none')
+@app.route('/sl/<username>/none/<rel>')
 @login_required
-def stalklist_none(username):
-    return redirect(url_for('stalklist', username = username))
+def stalklist_none(username, rel):
+    return redirect(url_for('stalklist', username = username, rel = rel))
 
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
