@@ -19,15 +19,18 @@
 {% block content %}
     <!-- Profile info bar -->
     <div class="prof-info-container">
+        {% if category and category != "none" %}
+            <div class="prof-info-title">{{ category }}</div>
+        {% endif %}
         <table class="prof-info-bar">
             <tr>
                 <td><div><table><tr>
                     <td>
                         <!-- Stalker/ing counts and link -->
                         <a href="{{ url_for('stalklist', username = user.username, category = category, rel = 'stalkers') }}">Stalkers</a>
-                        {{ stalkers_count }}<br>
+                        <span class="stalk-count">{{ stalkers_count }}</span><br>
                         <a href="{{ url_for('stalklist', username = user.username, category = category, rel = 'stalking') }}">Stalking</a>
-                        {{ stalking_count }}
+                        <span class="stalk-count">{{ stalking_count }}</span>
                     </td>
                     
                     <!-- Stalk/Stop stalking button -->
@@ -46,13 +49,11 @@
                         </td>
                     {% endif %}
                 </tr></table></div></td>
-                
                 <td>
                     <div style="float:right; display:flex;">
                         <table><tr>
                             <!-- Category dropdown -->
-                            <td><div>{{ cat_dropdown.category(**{"onchange":"test(this)"}) }}</div></td>
-                            <!--<td><div>{{ cat_dropdown.category }}</div></td>-->
+                            <td><div>{{ cat_dropdown.category(**{"onchange":"onChangeProfCatDropdown(this)"}) }}</div></td>
                         </tr></table>
                     </div>
                 </td>

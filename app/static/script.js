@@ -14,7 +14,7 @@ function toggleMenu() {
         menu.style.display = "none";
 }
 
-function test(dropdown) {
+function onChangeProfCatDropdown(dropdown) {
     var selected = dropdown.options[dropdown.selectedIndex].text;
     var username = location.href.replace("http://localhost:5000/stalk/", "").split("/", 1)[0];
 

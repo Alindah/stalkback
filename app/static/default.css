@@ -313,6 +313,14 @@ input[type='submit'] {
     background-color: var(--color-header-gray);
 }
 
+.prof-info-title {
+    background-color: var(--color-header);
+    text-align: center;
+    text-transform: uppercase;
+    font-family: var(--font-header);
+    padding: 1em;
+}
+
 .prof-info-bar {
     padding: 1em;
     width: 100%;
@@ -322,6 +330,12 @@ input[type='submit'] {
     height: 2em;
     padding-bottom: 1em;
     padding-right: 0.5em;
+}
+
+.stalk-count {
+    padding-left: 0.5em;
+    padding-right: 1em;
+    font-weight: bold;
 }
 
 .user-av {
@@ -406,6 +420,5 @@ input[type='submit'] {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     font-family: var(--font-header);
-    margin-left: 1em;
     text-transform: capitalize;
 }
