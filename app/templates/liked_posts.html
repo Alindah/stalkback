@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% from "macros.html" import user_post with context %}
+{% block content %}
+    {% for post in current_user.liked_posts %}
+        <p>{{ user_post(post) }}</p>
+    {% endfor %}
+{% endblock %}

@@ -31,8 +31,8 @@ class DeleteAccount(FlaskForm):
     del_confirmation = SubmitField("Delete Account")
 
 class SearchBar(FlaskForm):
-    search_query = StringField(description = "∞ Start stalking...")
-    search = SubmitField("oo")
+    search_query = StringField(description = "∞ Type here to start stalking...")
+    search = SubmitField("Search ∞")
 
 class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
@@ -50,7 +50,20 @@ class DeletePost(FlaskForm):
     del_id = HiddenField("Post ID")
     del_post = SubmitField("Delete")
 
+class LikePost(FlaskForm):
+    like_id = HiddenField("Post ID")
+
 class EditProfileForm(FlaskForm):
     tagline = TextAreaField("Tagline", description = "Enter a tagline. Affects all of your categories.")
     desc = TextAreaField("Description", description = "Enter a description. This only affects the current category.")
     submit = SubmitField("Save")
+
+class CategoryDropdown(FlaskForm):
+    category = SelectField("Category")
+
+    def __init__(self, user_cat = [], current_cat = "none"):
+        super(CategoryDropdown, self).__init__()
+        self.category.choices = ['Select a category...'] + user_cat
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField("Submit")

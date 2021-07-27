@@ -1,10 +1,8 @@
-from flask import Flask, jsonify, render_template, request, redirect, flash, Markup, url_for
-from flask.helpers import send_from_directory
-from flask_login import login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, CategoryModel, db, login
-from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, DeletePost, EditProfileForm
-from flask_sqlalchemy import SQLAlchemy
-#from flask_migrate import Migrate
+from flask import Flask, render_template, request, redirect, flash, Markup, url_for
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from models import UserModel, PostModel, CategoryModel, likes, db
+from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
+                    DeletePost, LikePost, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -12,10 +10,12 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+# Link Flask_Login and database
+login = LoginManager()
+
 db.init_app(app)
 login.init_app(app)
 avatars = Avatars(app)
-#migrate = Migrate(app, db)
 
 # Default to here if unauthenticated user attempts to access login required pages
 login.login_view = '/'
@@ -23,6 +23,10 @@ login.login_view = '/'
 @app.before_first_request
 def create_table():
     db.create_all()
+
+@login.user_loader
+def load_user(id):
+    return UserModel.query.get(int(id))
 
 # INDEX / LOGIN
 @app.route('/', methods = ['GET', 'POST'])
@@ -122,11 +126,13 @@ def deactivate():
 @login_required
 def dashboard():
     search_bar = SearchBar()
+    button_like = LikePost()
+
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
 
-    return render_template('dashboard.html', sb = search_bar)
+    return render_template('dashboard.html', sb = search_bar, button_like = button_like)
 
 # SEARCH
 @app.route('/search', methods = ['GET', 'POST'])
@@ -136,7 +142,7 @@ def search(sq):
     results = None
 
     if sq.isspace() or sq == "":
-        flash("Enter a name or username to search")
+        flash("Enter a non-empty name or username in the search bar above")
     else:
         results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
 
@@ -190,25 +196,62 @@ def settings():
 @login_required
 def profile(username, category = "none"):
     form_del = DeletePost()
+    button_like = LikePost()
+    button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
+    uc_names = [ c.name for c in user.categories.all() ]
+    cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
+        # Start/stop stalking
+        if button_stalk.submit.data:
+            if current_user.is_stalking(user):
+                current_user.stop_stalking(user)
+            else:
+                current_user.start_stalking(user)
+            
+            db.session.commit()
+            return redirect(url_for('profile', username = username))
+
         # Delete post
         if form_del.del_post.data:
             db.session.delete(PostModel.query.get(request.form['del_id']))
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, posts = reversed(posts), del_form = form_del)
+    return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
+                            posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, 
+                            del_form = form_del, button_like = button_like, button_stalk = button_stalk, 
+                            stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
 @app.route('/stalk/<username>/none')
 @login_required
 def profile_none(username):
     return redirect(url_for('profile', username = username))
 
-@app.route('/post', methods = ['POST', 'GET'])
+@app.route('/sl/<username>/<rel>', methods = ['GET', 'POST'])
+@app.route('/sl/<username>/<category>/<rel>', methods = ['GET', 'POST'])
+@login_required
+def stalklist(username, category = "none", rel = "stalking"):
+    user = UserModel.query.filter_by(username = username).first_or_404()
+    s = None
+
+    if rel == "stalkers":
+        s = user.get_stalkers()
+    elif rel == "stalking":
+        s = user.get_stalking()
+        
+    return render_template('stalklist.html', username = username, category = category,
+                            stalkers = s, table_header = rel)
+
+@app.route('/sl/<username>/none/<rel>')
+@login_required
+def stalklist_none(username, rel):
+    return redirect(url_for('stalklist', username = username, rel = rel))
+
+@app.route('/post', methods = ['GET', 'POST'])
 @login_required
 def post():
     user_categories = current_user.categories.all()
@@ -244,7 +287,7 @@ def post():
     return render_template('post.html', form = form, categories = user_categories, current_cat = current_cat)
 
 # EDIT PROFILE
-@app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
+@app.route('/edit/profile/<category>', methods = ['GET', 'POST'])
 @login_required
 def edit_prof(category):
     current_cat = current_user.categories.filter_by(name = category).first_or_404()
@@ -265,6 +308,46 @@ def edit_prof(category):
         return redirect(url_for('edit_prof', category = category))
     
     return render_template('edit_profile.html', category = category, form = form)
+
+# Handle like button submissions
+@app.route('/handlelike', methods = ['POST'])
+@login_required
+def handle_like():
+    toggle_like(request.form['like_id'])
+    return "success"
+
+# LIKED POSTS
+@app.route('/liked', methods = ['GET', 'POST'])
+@login_required
+def liked_posts():
+    form_del = DeletePost()
+    button_like = LikePost()
+    return render_template('liked_posts.html', del_form = form_del, button_like = button_like)
+
+# Toggle like or unlike depending on if the user has already liked the post or not
+def toggle_like(post_id):
+    p = PostModel.query.get(int(post_id))
+
+    if not p.is_liked_by(current_user):
+        current_user.like_post(p)
+    else:
+        current_user.unlike_post(p)
+
+    db.session.commit()
+
+# TEST
+@app.route('/test', methods = ['GET', 'POST'])
+def test():
+    #db.session.query(likes).delete()
+    #db.session.commit()
+    #p = PostModel.query.get(int(2))
+    #users = p.liked_by
+    #lp = current_user.get_liked_posts()
+    #lp = current_user.liked_posts
+    #print("TEST")
+    #for u in users:
+    #    print(u.id)
+    return render_template('test.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
 

@@ -22,6 +22,7 @@ body, html {
 
 a {
     color: var(--color-highlight);
+    text-decoration: none;
 }
 
 a:hover {
@@ -58,10 +59,6 @@ input[type='submit'] {
     color: var(--color-warning);
 }
 
-.no-underline {
-    text-decoration: none;
-}
-
 .content-container {
     padding: 1em;
     background: var(--color-bg);
@@ -83,7 +80,6 @@ input[type='submit'] {
     font-family: var(--font-header);
     font-size: 2em;
     color: var(--color-text);
-    text-decoration: none;
 }
 
 .header-logo-bino {
@@ -124,7 +120,6 @@ input[type='submit'] {
 }
 
 .menu-link {
-    text-decoration: none;
     color: var(--color-text);
 }
 
@@ -150,6 +145,20 @@ input[type='submit'] {
     display: inline-block;
     width: 1em;
     fill: var(--color-text);
+}
+
+.like-button {
+    background-color: transparent;
+    border: none;
+}
+
+.like-icon {
+    width: 2em;
+    cursor: pointer;
+}
+
+.liked-icon {
+    fill: var(--color-highlight)
 }
 
 .flashes-container {
@@ -268,6 +277,10 @@ input[type='submit'] {
     border-color: var(--color-warning);
 }
 
+.button-del-post {
+    float: right;
+}
+
 .search-container {
     display: inline;
     width: 100%;
@@ -286,16 +299,23 @@ input[type='submit'] {
     box-sizing: border-box;
 }
 
-.search-results {
+.list-results {
     border-collapse: collapse;
     background-color: var(--color-header);
     min-width: 26em;
 }
 
-.search-results td {
+.list-results td {
     border-bottom: 0.2em solid var(--color-bg);
     border-collapse: collapse;
     padding: 0.5em;
+    background-color: var(--color-header-gray);
+}
+
+.list-results th {
+    padding: 0.5em;
+    text-align: center;
+    text-transform: capitalize;
 }
 
 .prof-header {
@@ -305,6 +325,35 @@ input[type='submit'] {
     text-align: center;
     background-color: var(--color-header);
     box-sizing: border-box;
+}
+
+.prof-info-container {
+    background-color: var(--color-header-gray);
+}
+
+.prof-info-title {
+    background-color: var(--color-header);
+    text-align: center;
+    text-transform: uppercase;
+    font-family: var(--font-header);
+    padding: 1em;
+}
+
+.prof-info-bar {
+    padding: 1em;
+    width: 100%;
+}
+
+.prof-tools-container {
+    height: 2em;
+    padding-bottom: 1em;
+    padding-right: 0.5em;
+}
+
+.stalk-count {
+    padding-left: 0.5em;
+    padding-right: 1em;
+    font-weight: bold;
 }
 
 .user-av {
@@ -325,13 +374,9 @@ input[type='submit'] {
     border: 0.2em solid var(--color-header-gray);
 }
 
-.post div {
-    padding: 1em;
-}
-
 .post-title-container {
     background-color: var(--color-header);
-
+    padding: 1em;
 }
 
 .post-title {
@@ -341,16 +386,28 @@ input[type='submit'] {
 
 .post-content {
     background-color: seagreen;
+    padding: 1em;
 }
 
 .post-desc {
     background-color: var(--color-header-gray);
     display: flex;
     overflow-wrap: anywhere;
+    padding: 1em;
+}
+
+.post-user-container {
+    text-align: center;
+    width: 5em;
+}
+
+.post-desc-container {
+    padding-left: 1em;
 }
 
 .post-footer {
     background-color: var(--color-header);
+    padding: 1em;
 }
 
 .post-options-menu {
@@ -358,6 +415,7 @@ input[type='submit'] {
     float: right;
     height: 2em;
     width: 2em;
+    cursor: pointer;
 }
 
 .text-area-form textarea {
@@ -371,4 +429,15 @@ input[type='submit'] {
     width: 2em;
     max-height: 2em;
     fill: var(--color-highlight);
+}
+
+.stalk-button input[type='submit'] {
+    background-color: var(--color-header);
+    border-color: var(--color-highlight);
+    color: var(--color-text);
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-family: var(--font-header);
+    text-transform: capitalize;
 }
