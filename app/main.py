@@ -306,6 +306,10 @@ def edit_prof(category):
     
     return render_template('edit_profile.html', category = category, form = form)
 
+@app.route('/test', methods = ['POST', 'GET'])
+def test():
+    return render_template('test.html')
+
 app.run(host = 'localhost', port = '5000', debug = True)
 
 
