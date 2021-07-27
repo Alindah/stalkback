@@ -13,3 +13,12 @@ function toggleMenu() {
     else
         menu.style.display = "none";
 }
+
+function test(dropdown) {
+    var selected = dropdown.options[dropdown.selectedIndex].text;
+    var username = location.href.replace("http://localhost:5000/stalk/", "").split("/", 1)[0];
+
+    if (selected != dropdown.options[0].text)
+        redirect = ("http://localhost:5000/stalk/" + username + "/" + selected)
+        location.href = redirect;
+}

@@ -51,7 +51,8 @@
                     <div style="float:right; display:flex;">
                         <table><tr>
                             <!-- Category dropdown -->
-                            <td><div>{{ cat_dropdown.category }}</div></td>
+                            <td><div>{{ cat_dropdown.category(**{"onchange":"test(this)"}) }}</div></td>
+                            <!--<td><div>{{ cat_dropdown.category }}</div></td>-->
                         </tr></table>
                     </div>
                 </td>
