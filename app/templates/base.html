@@ -1,4 +1,4 @@
-{% from "macros.html" import footer_link, menu_window, user_avatar_linked with context%}
+{% from "macros.html" import stalkback_logo, footer_link, menu_window, user_avatar_linked with context%}
 
 <!doctype html>
 <html>
@@ -13,7 +13,7 @@
             <div class="header-logo">
                 <a href="{{ url_for('index') }}">
                     <span class="highlight">stalk</span>back 
-                    <span class="header-logo-bino"><span class="highlight">o</span>o</span>
+                    {{ stalkback_logo() }}
                 </a>
             </div>
             {% if current_user.is_authenticated %}

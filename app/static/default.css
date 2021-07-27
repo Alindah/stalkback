@@ -309,6 +309,12 @@ input[type='submit'] {
     box-sizing: border-box;
 }
 
+.prof-info-bar {
+    background-color: var(--color-header-gray);
+    padding: 1em;
+    width: 100%;
+}
+
 .user-av {
     width: 30vw;
     height: auto;
@@ -383,6 +389,14 @@ input[type='submit'] {
     fill: var(--color-highlight);
 }
 
-.prof-cat-dropdown {
-    float: right;
+.stalk-button input[type='submit'] {
+    background-color: var(--color-header);
+    border-color: var(--color-highlight);
+    color: var(--color-text);
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-family: var(--font-header);
+    margin-left: 1em;
+    text-transform: capitalize;
 }

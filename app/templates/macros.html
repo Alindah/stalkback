@@ -1,3 +1,7 @@
+{% macro stalkback_logo() -%}
+    <span class="header-logo-bino"><span class="highlight">o</span>o</span>
+{%- endmacro %}
+
 {% macro flashes(desc) -%}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
