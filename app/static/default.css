@@ -411,6 +411,7 @@ input[type='submit'] {
     float: right;
     height: 2em;
     width: 2em;
+    cursor: pointer;
 }
 
 .text-area-form textarea {

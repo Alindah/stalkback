@@ -310,6 +310,21 @@ def edit_prof(category):
     
     return render_template('edit_profile.html', category = category, form = form)
 
+# Handle like button submissions
+@app.route('/handlelike', methods = ['POST'])
+@login_required
+def handle_like():
+    toggle_like(request.form['like_id'])
+    return "success"
+
+# LIKED POSTS
+@app.route('/liked', methods = ['GET', 'POST'])
+@login_required
+def liked_posts():
+    form_del = DeletePost()
+    button_like = LikePost()
+    return render_template('liked_posts.html', del_form = form_del, button_like = button_like)
+
 # Toggle like or unlike depending on if the user has already liked the post or not
 def toggle_like(post_id):
     p = PostModel.query.get(int(post_id))
@@ -335,10 +350,6 @@ def test():
     #    print(u.id)
     return render_template('test.html')
 
-@app.route('/handlelike', methods = ['POST'])
-def handle_like():
-    toggle_like(request.form['like_id'])
-    return "success"
 
 app.run(host = 'localhost', port = '5000', debug = True)
 
