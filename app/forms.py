@@ -52,7 +52,6 @@ class DeletePost(FlaskForm):
 
 class LikePost(FlaskForm):
     like_id = HiddenField("Post ID")
-    like_post = SubmitField("Like")
 
 class EditProfileForm(FlaskForm):
     tagline = TextAreaField("Tagline", description = "Enter a tagline. Affects all of your categories.")

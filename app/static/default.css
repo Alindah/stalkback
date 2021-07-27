@@ -147,6 +147,20 @@ input[type='submit'] {
     fill: var(--color-text);
 }
 
+.like-button {
+    background-color: transparent;
+    border: none;
+}
+
+.like-icon {
+    width: 2em;
+    cursor: pointer;
+}
+
+.liked-icon {
+    fill: var(--color-highlight)
+}
+
 .flashes-container {
     color: var(--color-highlight);
     font-size: 0.8em;

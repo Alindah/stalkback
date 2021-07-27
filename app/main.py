@@ -131,11 +131,6 @@ def dashboard():
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
-        
-        # Like/Unlike post
-        if button_like.like_post.data:
-            toggle_like(request.form['like_id'])
-            return redirect('/dashboard')
 
     return render_template('dashboard.html', sb = search_bar, button_like = button_like)
 
@@ -210,6 +205,7 @@ def profile(username, category = "none"):
     cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
+        print("POSTED " + request.form['like_id'])
         # Start/stop stalking
         if button_stalk.submit.data:
             if current_user.is_stalking(user):
@@ -218,11 +214,6 @@ def profile(username, category = "none"):
                 current_user.start_stalking(user)
             
             db.session.commit()
-            return redirect(url_for('profile', username = username))
-        
-        # Like/Unlike post
-        if button_like.like_post.data:
-            toggle_like(request.form['like_id'])
             return redirect(url_for('profile', username = username))
 
         # Delete post
@@ -261,7 +252,7 @@ def stalklist(username, category = "none", rel = "stalking"):
 def stalklist_none(username, rel):
     return redirect(url_for('stalklist', username = username, rel = rel))
 
-@app.route('/post', methods = ['POST', 'GET'])
+@app.route('/post', methods = ['GET', 'POST'])
 @login_required
 def post():
     user_categories = current_user.categories.all()
@@ -297,7 +288,7 @@ def post():
     return render_template('post.html', form = form, categories = user_categories, current_cat = current_cat)
 
 # EDIT PROFILE
-@app.route('/edit/profile/<category>', methods = ['POST', 'GET'])
+@app.route('/edit/profile/<category>', methods = ['GET', 'POST'])
 @login_required
 def edit_prof(category):
     current_cat = current_user.categories.filter_by(name = category).first_or_404()
@@ -331,18 +322,23 @@ def toggle_like(post_id):
     db.session.commit()
 
 # TEST
-@app.route('/test', methods = ['POST', 'GET'])
+@app.route('/test', methods = ['GET', 'POST'])
 def test():
     #db.session.query(likes).delete()
     #db.session.commit()
-    p = PostModel.query.get(int(2))
-    users = p.liked_by
+    #p = PostModel.query.get(int(2))
+    #users = p.liked_by
     #lp = current_user.get_liked_posts()
-    lp = current_user.liked_posts
-    print("TEST")
-    for u in users:
-        print(u.id)
+    #lp = current_user.liked_posts
+    #print("TEST")
+    #for u in users:
+    #    print(u.id)
     return render_template('test.html')
+
+@app.route('/handlelike', methods = ['POST'])
+def handle_like():
+    toggle_like(request.form['like_id'])
+    return "success"
 
 app.run(host = 'localhost', port = '5000', debug = True)
 
