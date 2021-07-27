@@ -112,6 +112,6 @@
 {%- endmacro %}
 
 {% macro user_dname_linked(user) -%}
-    <a href="{{ url_for('profile', username = user.username) }}" class="no-underline">
+    <a href="{{ url_for('profile', username = user.username) }}">
         {{ user.display_name }}</a>
 {%- endmacro %}
