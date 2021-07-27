@@ -227,6 +227,24 @@ def profile(username, category = "none"):
 def profile_none(username):
     return redirect(url_for('profile', username = username))
 
+@app.route('/sl/<username>/<rel>', methods = ['GET', 'POST'])
+@app.route('/sl/<username>/<category>/stalkers', methods = ['GET', 'POST'])
+@login_required
+def stalklist(username, category = "none", rel = "stalking"):
+    user = UserModel.query.filter_by(username = username).first_or_404()
+    s = user.get_stalking()
+
+    if rel == "stalkers":
+        s = user.get_stalkers()
+        
+    return render_template('stalklist.html', username = username, category = category,
+                            stalkers = s, table_header = rel)
+
+@app.route('/sl/<username>/none')
+@login_required
+def stalklist_none(username):
+    return redirect(url_for('stalklist', username = username))
+
 @app.route('/post', methods = ['POST', 'GET'])
 @login_required
 def post():

@@ -69,6 +69,10 @@ class UserModel(UserMixin, db.Model):
     # Return list of users this user is stalking
     def get_stalking(self):
         return self.stalking.filter(stalkers.c.stalking_id)
+
+    # Retunr list of users who are stalking this user
+    def get_stalkers(self):
+        return self.stalkers.filter(stalkers.c.stalker_id)
     
     # Get posts from stalkees, ordering by timestamp
     def stalked_posts(self):

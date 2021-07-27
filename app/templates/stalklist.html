@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "macros.html" import user_avatar_linked %}
+
+{% block content %}
+    <table class="list-results">
+        {% if stalkers %}
+            <th>{{ table_header }}</th>
+            {% for stalker in stalkers %}
+                <tr>
+                    <td class="user-av-med">{{ user_avatar_linked(stalker) }}</td>
+                    <td>
+                        <a href="{{ url_for('profile', username = stalker.username) }}" class="no-underline">
+                            <div>
+                                <span class="default-text">{{ stalker.display_name }}</span><br>
+                                <span class="small-text">@{{ stalker.username }}</span>
+                            </div></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+{% endblock %}

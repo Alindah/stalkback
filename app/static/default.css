@@ -286,16 +286,23 @@ input[type='submit'] {
     box-sizing: border-box;
 }
 
-.search-results {
+.list-results {
     border-collapse: collapse;
     background-color: var(--color-header);
     min-width: 26em;
 }
 
-.search-results td {
+.list-results td {
     border-bottom: 0.2em solid var(--color-bg);
     border-collapse: collapse;
     padding: 0.5em;
+    background-color: var(--color-header-gray);
+}
+
+.list-results th {
+    padding: 0.5em;
+    text-align: center;
+    text-transform: capitalize;
 }
 
 .prof-header {
