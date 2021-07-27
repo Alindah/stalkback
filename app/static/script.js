@@ -33,7 +33,7 @@ function toggleLike(button) {
         body: new FormData(button.parentElement),
     }).then(function(response) {
         // Toggle between like icons
-        icons = button.getElementsByTagName('div')
+        var icons = button.getElementsByTagName('div')
 
         for (let i of icons)
             i.style.display = (i.style.display == "") ? "none" : "";

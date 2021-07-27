@@ -277,6 +277,10 @@ input[type='submit'] {
     border-color: var(--color-warning);
 }
 
+.button-del-post {
+    float: right;
+}
+
 .search-container {
     display: inline;
     width: 100%;

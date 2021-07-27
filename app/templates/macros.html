@@ -98,7 +98,7 @@
                         <title>Options</title>
                         <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"/>
                     </svg></td>
-                <form action="" method="POST">
+                <form class="button-del-post" action="" method="POST">
                     {{ del_form.csrf_token() }}
                     {{ del_form.del_id(value=p.id) }}
                     {{ del_form.del_post }}
@@ -118,6 +118,9 @@
                         <div class="svg-icon like-icon" style="display:none;">{{ unliked_icon() }}</div>
                     {% endif %}
                 </button>
+                {% if p.liked_by | length > 0 %}
+                    <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
+                {% endif %}
             </form>
             COMMENT
             <br>

@@ -205,7 +205,6 @@ def profile(username, category = "none"):
     cat_dd = CategoryDropdown(uc_names)
 
     if request.method == 'POST':
-        print("POSTED " + request.form['like_id'])
         # Start/stop stalking
         if button_stalk.submit.data:
             if current_user.is_stalking(user):
@@ -349,7 +348,6 @@ def test():
     #for u in users:
     #    print(u.id)
     return render_template('test.html')
-
 
 app.run(host = 'localhost', port = '5000', debug = True)
 
