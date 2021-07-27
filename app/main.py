@@ -139,7 +139,7 @@ def search(sq):
     results = None
 
     if sq.isspace() or sq == "":
-        flash("Enter a name or username to search")
+        flash("Enter a non-empty name or username in the search bar above")
     else:
         results = UserModel.query.filter(or_(UserModel.display_name.contains(sq), UserModel.username.contains(sq))).all()
 

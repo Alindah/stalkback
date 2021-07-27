@@ -31,8 +31,8 @@ class DeleteAccount(FlaskForm):
     del_confirmation = SubmitField("Delete Account")
 
 class SearchBar(FlaskForm):
-    search_query = StringField(description = "∞ Start stalking...")
-    search = SubmitField("oo")
+    search_query = StringField(description = "∞ Type here to start stalking...")
+    search = SubmitField("Search ∞")
 
 class PostForm(FlaskForm):
     title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
