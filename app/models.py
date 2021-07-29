@@ -19,6 +19,13 @@ likes = db.Table('likes',
     db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key = True),
     db.Column('liked_by_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
 
+"""
+replies = db.Table('replies',
+    db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key = True),
+    db.Column('comment_id', db.Integer, db.ForeignKey('comments.id'), primary_key = True),
+    db.Column('commenter_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
+"""
+
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     
@@ -93,11 +100,11 @@ class UserModel(UserMixin, db.Model):
         return self.stalkers.filter(stalkers.c.stalker_id)
     
     # Get posts from stalkees, ordering by timestamp
-    def stalked_posts(self):
-        return PostModel.query.join(
-            stalkers, (stalkers.c.stalking_id == PostModel.user_id)).filter( # All posts that are being stalked
+    def stalked_submissions(self):
+        return SubmissionModel.query.join(
+            stalkers, (stalkers.c.stalking_id == SubmissionModel.user_id)).filter( # All posts that are being stalked
                 stalkers.c.stalker_id == self.id).order_by( # Only get posts that are stalked by this user
-                    PostModel.timestamp.desc()) # Order by time, with first result being most recent
+                    SubmissionModel.timestamp.desc()) # Order by time, with first result being most recent
     
     # Like a post
     def like_post(self, post):
@@ -114,9 +121,6 @@ class PostModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    category = db.Column(db.String(32), default = "none")
-    title = db.Column(db.String(300), default = "")
-    content = db.Column(db.String(), default = "")
     desc = db.Column(db.String(40000), default = "")
     timestamp = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
 
@@ -128,6 +132,17 @@ class PostModel(db.Model):
     # Check if a user has liked this post
     def is_liked_by(self, user):
         return user in self.liked_by
+
+class SubmissionModel(PostModel):
+    __tablename__ = 'submission'
+    
+    category = db.Column(db.String(32), default = "none")
+    title = db.Column(db.String(300), default = "")
+    content = db.Column(db.String(), default = "")
+
+    def __init__(self):
+        user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        super().__init__(user_id)
 
 class CategoryModel(db.Model):
     __tablename__ = 'categories'

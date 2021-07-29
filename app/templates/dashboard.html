@@ -20,7 +20,7 @@
         </table>
     </div>
 
-    {% for post in current_user.stalked_posts() %}
+    {% for post in current_user.stalked_submissions() %}
         <p>{{ user_post(post) }}</p>
     {% endfor %}
 {% endblock %}
