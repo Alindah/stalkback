@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import search_bar, user_avatar_linked, user_post with context%}
+{% from "macros.html" import search_bar, user_avatar_linked, user_submission with context%}
 
 <!-- SEARCH BAR -->
 {% block content_header %}
@@ -21,6 +21,6 @@
     </div>
 
     {% for post in current_user.stalked_submissions() %}
-        <p>{{ user_post(post) }}</p>
+        <p>{{ user_submission(post) }}</p>
     {% endfor %}
 {% endblock %}

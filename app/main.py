@@ -199,7 +199,7 @@ def profile(username, category = "none"):
     button_like = LikePost()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
+    posts = SubmissionModel.query.filter_by(author = user).all() if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
     uc_names = [ c.name for c in user.categories.all() ]
     cat_dd = CategoryDropdown(uc_names)
