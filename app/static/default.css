@@ -410,12 +410,25 @@ input[type='submit'] {
     padding: 1em;
 }
 
-.post-options-menu {
+.post-options-button {
     fill: var(--color-text);
     float: right;
     height: 2em;
     width: 2em;
     cursor: pointer;
+}
+
+.post-options-menu {
+    display: none;
+    float: right;
+    min-width: 30vw;
+    border: 0.2em solid var(--color-highlight);
+}
+
+.post-options-menu-item {
+    background-color: var(--color-header-gray);
+    padding: 0.5em;
+    text-align: center;
 }
 
 .text-area-form textarea {

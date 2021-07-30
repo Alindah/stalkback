@@ -94,7 +94,7 @@
         {% endif %}
         <div class="post-footer">
             {% if p.author == current_user %}
-                <td><svg class="post-options-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.96 122.88">
+                <td><svg class="post-options-button" onclick="toggleMenu('post-options-menu', this)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.96 122.88">
                         <title>Options</title>
                         <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"/>
                     </svg></td>
@@ -103,6 +103,10 @@
                     {{ del_form.del_id(value=p.id) }}
                     {{ del_form.del_post }}
                 </form>
+                <div class="post-options-menu">
+                    <div class="post-options-menu-item">Edit</div>
+                    <div class="post-options-menu-item">Delete</div>
+                </div>
             {% endif %}
 
             <form method="POST">
