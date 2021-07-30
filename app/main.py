@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, Markup, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, SubmissionModel, CategoryModel, likes, db
+from models import UserModel, PostModel, SubmissionModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
                     DeletePost, LikePost, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_

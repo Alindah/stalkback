@@ -121,8 +121,15 @@ class PostModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    content = db.Column(db.String(), default = "")
     desc = db.Column(db.String(40000), default = "")
     timestamp = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
+    type = db.Column(db.String(), default = "")
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'post',
+        'polymorphic_on': type
+    }
 
     # User interaction
     liked_by = db.relationship(
@@ -136,13 +143,13 @@ class PostModel(db.Model):
 class SubmissionModel(PostModel):
     __tablename__ = 'submission'
     
+    id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
     category = db.Column(db.String(32), default = "none")
     title = db.Column(db.String(300), default = "")
-    content = db.Column(db.String(), default = "")
 
-    def __init__(self):
-        user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-        super().__init__(user_id)
+    __mapper_args__ = {
+        'polymorphic_identity': 'submission'
+    }
 
 class CategoryModel(db.Model):
     __tablename__ = 'categories'
