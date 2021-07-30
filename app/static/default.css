@@ -456,3 +456,8 @@ input[type='submit'] {
     font-family: var(--font-header);
     text-transform: capitalize;
 }
+
+.dashboard-quick-links {
+    background-color: var(--color-header-gray);
+    padding: 1em;
+}
