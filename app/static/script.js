@@ -14,6 +14,10 @@ function toggleMenu(menuId, el = null) {
         menu.style.display = "none";
 }
 
+function toggleColor(el, color1, color2) {
+    el.style.fill = (el.style.fill == color1 || el.style.fill == "") ? color2 : color1;
+}
+
 // Go to page of indicated category upon clicking on it on the dropdown
 function onChangeProfCatDropdown(dropdown) {
     var selected = dropdown.options[dropdown.selectedIndex].text;

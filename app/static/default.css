@@ -414,6 +414,7 @@ input[type='submit'] {
 }
 
 .post-options-button {
+    position: relative;
     fill: var(--color-text);
     float: right;
     height: 2em;
@@ -423,10 +424,11 @@ input[type='submit'] {
 
 .post-options-menu {
     display: none;
-    float: right;
+    position: absolute;
+    right: 4em;
+    z-index: 1;
     min-width: 30vw;
     border: 0.2em solid var(--color-highlight);
-    box-sizing: border-box;
 }
 
 .post-options-menu-item {
@@ -437,7 +439,12 @@ input[type='submit'] {
     font-size: 1em;
     color: var(--color-text);
     border-color: var(--color-header-gray);
+    box-sizing: border-box;
     cursor: pointer;
+}
+
+.post-options-menu-item:hover {
+    color: var(--color-highlight);
 }
 
 .text-area-form textarea {
@@ -467,4 +474,16 @@ input[type='submit'] {
 .dashboard-quick-links {
     background-color: var(--color-header-gray);
     padding: 1em;
+}
+
+.reply-container {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
+
+.reply-container textarea {
+    padding: 0.5em;
+    width: 100%;
+    box-sizing: border-box;
 }
