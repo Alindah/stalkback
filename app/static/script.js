@@ -34,9 +34,15 @@ function toggleLike(button) {
     }).then(function(response) {
         // Toggle between like icons
         var icons = button.getElementsByTagName('div')
+        var likeCountEl = button.parentElement.getElementsByClassName("like-count")[0]
+        var likeCount = parseInt(likeCountEl.innerHTML);
 
         for (let i of icons)
             i.style.display = (i.style.display == "") ? "none" : "";
+        
+        // Update visual like count
+        likeCount = (icons[0].style.display == "none") ? likeCount + 1 : likeCount - 1;
+        likeCountEl.innerHTML = likeCount;
     });
     return false;
 }

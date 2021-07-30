@@ -114,13 +114,11 @@
                         <div class="svg-icon like-icon">{{ unliked_icon() }}</div>
                         <div class="svg-icon like-icon liked-icon" style="display:none;">{{ liked_icon() }}</div>
                     {% else %}
-                        <div class="svg-icon like-icon liked-icon">{{ liked_icon() }}</div>
                         <div class="svg-icon like-icon" style="display:none;">{{ unliked_icon() }}</div>
+                        <div class="svg-icon like-icon liked-icon">{{ liked_icon() }}</div>
                     {% endif %}
                 </button>
-                {% if p.liked_by | length > 0 %}
-                    <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
-                {% endif %}
+                <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
             </form>
             COMMENT
             <br>
