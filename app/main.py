@@ -199,7 +199,8 @@ def profile(username, category = "none"):
     button_like = LikePost()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = SubmissionModel.query.filter_by(author = user).all() if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category).all()
+    posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
+    posts = posts.order_by(SubmissionModel.timestamp.desc()).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
     uc_names = [ c.name for c in user.categories.all() ]
     cat_dd = CategoryDropdown(uc_names)
@@ -222,7 +223,7 @@ def profile(username, category = "none"):
             return redirect(url_for('profile', username = username))
 
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
-                            posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, 
+                            posts = posts, user_categories = uc_names, cat_dropdown = cat_dd, 
                             del_form = form_del, button_like = button_like, button_stalk = button_stalk, 
                             stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
