@@ -5,7 +5,7 @@ function deleteConfirmation() {
 }
 
 // Toggles menu container on and off
-function toggleMenu(menuId, el = null) {
+function toggleElDisplay(menuId, el = null) {
     var menu = (el) ? el.parentElement.getElementsByClassName(menuId)[0] : document.getElementById(menuId);
 
     if (menu.style.display == "" || menu.style.display == "none")
