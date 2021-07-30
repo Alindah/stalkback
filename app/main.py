@@ -339,15 +339,16 @@ def handle_post_del():
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
 def test():
-    #db.session.query(likes).delete()
+    print("Testing!")
+    # Use this to delete entries in a table
+    #db.session.query(table_name).delete()
     #db.session.commit()
-    #p = PostModel.query.get(int(2))
-    #users = p.liked_by
-    #lp = current_user.get_liked_posts()
-    #lp = current_user.liked_posts
-    #print("TEST")
-    #for u in users:
-    #    print(u.id)
+
+    #p = PostModel.query.get(int(1))
+    #print(str(p.replies.count(p)) + " replies")
+    #for c in p.replies:
+    #    print(str(c.user_id) + " says: " + c.desc)
+
     return render_template('test.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
