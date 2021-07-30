@@ -56,7 +56,7 @@
 {%- endmacro %}
 
 {% macro user_submission(p) -%}
-    <div class="post">
+    <div class="post submission">
         <div class="post-title-container">
             <table><tr>
                 <td class="user-av-med">
@@ -98,20 +98,21 @@
                         <title>Options</title>
                         <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"/>
                     </svg></td>
-                <form class="button-del-post" action="" method="POST">
-                    {{ del_form.csrf_token() }}
-                    {{ del_form.del_id(value=p.id) }}
-                    {{ del_form.del_post }}
-                </form>
-                <div class="post-options-menu">
-                    <div class="post-options-menu-item">Edit</div>
-                    <div class="post-options-menu-item">Delete</div>
-                </div>
+                    <div class="post-options-menu">
+                        <form action="" method="POST">
+                            {{ post_int.csrf_token() }}
+                            {{ post_int.post_id(value=p.id) }}
+                            <button class="post-options-menu-item">Edit</button>
+                            <button class="post-options-menu-item" onclick="return deletePost(this)">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
             {% endif %}
 
             <form method="POST">
-                {{ button_like.csrf_token() }}
-                {{ button_like.post_id(value=p.id) }}
+                {{ post_int.csrf_token() }}
+                {{ post_int.post_id(value=p.id) }}
 
                 <button class="like-button" onclick="return toggleLike(this)">
                     {% if not p.is_liked_by(current_user) %}

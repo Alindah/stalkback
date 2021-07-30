@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, Markup, url_
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, SubmissionModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
-                    DeletePost, PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
+                    PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -126,13 +126,13 @@ def deactivate():
 @login_required
 def dashboard():
     search_bar = SearchBar()
-    button_like = PostInteraction()
+    post_int = PostInteraction()
 
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
 
-    return render_template('dashboard.html', sb = search_bar, button_like = button_like)
+    return render_template('dashboard.html', sb = search_bar, post_int = post_int)
 
 # SEARCH
 @app.route('/search', methods = ['GET', 'POST'])
@@ -195,8 +195,7 @@ def settings():
 @app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
 def profile(username, category = "none"):
-    form_del = DeletePost()
-    button_like = PostInteraction()
+    post_int = PostInteraction()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
@@ -216,15 +215,9 @@ def profile(username, category = "none"):
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-        # Delete post
-        if form_del.del_post.data:
-            db.session.delete(PostModel.query.get(request.form['del_id']))
-            db.session.commit()
-            return redirect(url_for('profile', username = username))
-
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
                             posts = posts, user_categories = uc_names, cat_dropdown = cat_dd, 
-                            del_form = form_del, button_like = button_like, button_stalk = button_stalk, 
+                            post_int = post_int, button_stalk = button_stalk, 
                             stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
 @app.route('/stalk/<username>/none')
@@ -321,9 +314,8 @@ def handle_like():
 @app.route('/liked', methods = ['GET', 'POST'])
 @login_required
 def liked_posts():
-    form_del = DeletePost()
-    button_like = PostInteraction()
-    return render_template('liked_posts.html', del_form = form_del, button_like = button_like)
+    post_int = PostInteraction()
+    return render_template('liked_posts.html', post_int = post_int)
 
 # Toggle like or unlike depending on if the user has already liked the post or not
 def toggle_like(post_id):
@@ -335,6 +327,14 @@ def toggle_like(post_id):
         current_user.unlike_post(p)
 
     db.session.commit()
+
+# DELETE POST
+@app.route('/handlepostdeletion', methods = ['POST'])
+@login_required
+def handle_post_del():
+    db.session.delete(PostModel.query.get(request.form['post_id']))
+    db.session.commit()
+    return "success"
 
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])

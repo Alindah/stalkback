@@ -46,3 +46,15 @@ function toggleLike(button) {
     });
     return false;
 }
+
+function deletePost(button) {
+    fetch('/handlepostdeletion', {
+        method: 'POST',
+        body: new FormData(button.parentElement),
+    }).then(function(response) {
+        // Remove post from page
+        var postEl = button.closest('.submission');
+        postEl.style.display = "none";
+    });
+    return false;
+}
