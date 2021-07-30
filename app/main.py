@@ -336,6 +336,24 @@ def handle_post_del():
     db.session.commit()
     return "success"
 
+# HANDLE REPLIES
+@app.route('/reply', methods = ['POST'])
+@login_required
+def handle_reply():
+    reply(request.form['post_id'], request.form['comment'])
+    return "success"
+
+def reply(post_id, comment):
+    p = PostModel.query.get(int(post_id))
+
+    print("replying to post " + str(p.id))
+    print("> " + comment)
+    #c = CommentModel(author = current_user, desc = comment, parent_id = p.id)
+    #db.session.add(c)
+    #db.session.commit()
+    #p.add_comment(c)
+    #db.session.commit()
+
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
 def test():

@@ -46,12 +46,9 @@ class PostForm(FlaskForm):
         super(PostForm, self).__init__()
         self.category.choices = user_cat
 
-class DeletePost(FlaskForm):
-    del_id = HiddenField("Post ID")
-    del_post = SubmitField("Delete")
-
 class PostInteraction(FlaskForm):
     post_id = HiddenField("Post ID")
+    comment = TextAreaField("Comment", description = "Reply to post...")
 
 class EditProfileForm(FlaskForm):
     tagline = TextAreaField("Tagline", description = "Enter a tagline. Affects all of your categories.")
