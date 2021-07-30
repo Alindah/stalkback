@@ -114,13 +114,16 @@
                 {{ post_int.csrf_token() }}
                 {{ post_int.post_id(value=p.id) }}
 
+                <div class="svg-icon clickable comment-icon">
+                    {{ comment_icon() }}
+                </div>
                 <button class="like-button" onclick="return toggleLike(this)">
                     {% if not p.is_liked_by(current_user) %}
-                        <div class="svg-icon like-icon">{{ unliked_icon() }}</div>
-                        <div class="svg-icon like-icon liked-icon" style="display:none;">{{ liked_icon() }}</div>
+                        <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
+                        <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
                     {% else %}
-                        <div class="svg-icon like-icon" style="display:none;">{{ unliked_icon() }}</div>
-                        <div class="svg-icon like-icon liked-icon">{{ liked_icon() }}</div>
+                        <div class="svg-icon clickable like-icon" title="Like" style="display:none;"{{ unliked_icon() }}</div>
+                        <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
                     {% endif %}
                 </button>
                 <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
@@ -143,8 +146,8 @@
 {%- endmacro %}
 
 {% macro unliked_icon() -%}
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 107.68"><g>
-        <path d="M61.43,13.53C66.76,7.51,72.8,3.69,78.96,1.69c6.48-2.1,13.07-2.15,19.09-0.6c6.05,1.55,11.52,4.72,15.74,9.03 c5.58,5.7,9.09,
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 107.68">
+        <g><path d="M61.43,13.53C66.76,7.51,72.8,3.69,78.96,1.69c6.48-2.1,13.07-2.15,19.09-0.6c6.05,1.55,11.52,4.72,15.74,9.03 c5.58,5.7,9.09,
                 13.36,9.09,22.02c0,13.7-6.6,26.75-17.42,39.37c-10.14,11.83-24.05,23.35-39.61,34.73 c-2.58,1.89-5.98,1.88-8.5,0.22l0,0.01l-0.03-0.02l0,
                 0.01l-0.02-0.01l-0.21-0.15c-4.46-2.92-8.75-5.91-12.8-8.94 c-4.05-3.03-8.01-6.22-11.83-9.56C12.58,70.42,0,51.4,0,32.13c0-8.8,
                 3.44-16.44,8.93-22.08c4.25-4.37,9.73-7.51,15.79-9.03V1.02 c5.99-1.5,12.57-1.4,19.05,0.69C49.99,3.71,56.09,7.54,61.43,13.53L61.43,
@@ -161,4 +164,12 @@
         <g><path class="st0" d="M60.83,17.19C68.84,8.84,74.45,1.62,86.79,0.21c23.17-2.66,44.48,21.06,32.78,44.41 c-3.33,6.65-10.11,14.56-17.61,
                                 22.32c-8.23,8.52-17.34,16.87-23.72,23.2l-17.4,17.26L46.46,93.56C29.16,76.9,0.95,55.93,0.02,29.95 C-0.63,11.75,13.73,
                                 0.09,30.25,0.3C45.01,0.5,51.22,7.84,60.83,17.19L60.83,17.19L60.83,17.19z"/></g></svg>
+{%- endmacro %}
+
+{% macro comment_icon() -%}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.97 122.88">
+        <title>Comment</title>
+        <path d="M61.44,0a61.46,61.46,0,0,1,54.91,89l6.44,25.74a5.83,5.83,0,0,1-7.25,7L91.62,115A61.43,61.43,0,1,1,61.44,0ZM96.63,26.25a49.78,
+                49.78,0,1,0-9,77.52A5.83,5.83,0,0,1,92.4,103L109,107.77l-4.5-18a5.86,5.86,0,0,1,.51-4.34,49.06,49.06,0,0,0,4.62-11.58,50,50,0,
+                0,0-13-47.62Z"/></svg>
 {%- endmacro %}

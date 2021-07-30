@@ -147,6 +147,14 @@ input[type='submit'] {
     fill: var(--color-text);
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.comment-icon {
+    width: 1.5em;
+}
+
 .like-button {
     background-color: transparent;
     border: none;
@@ -154,7 +162,6 @@ input[type='submit'] {
 
 .like-icon {
     width: 2em;
-    cursor: pointer;
 }
 
 .liked-icon {

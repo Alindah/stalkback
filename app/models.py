@@ -19,13 +19,6 @@ likes = db.Table('likes',
     db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key = True),
     db.Column('liked_by_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
 
-"""
-replies = db.Table('replies',
-    db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key = True),
-    db.Column('comment_id', db.Integer, db.ForeignKey('comments.id'), primary_key = True),
-    db.Column('commenter_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
-"""
-
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     
