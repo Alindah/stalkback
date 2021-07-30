@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, Markup, url_
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 from models import UserModel, PostModel, SubmissionModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
-                    DeletePost, LikePost, EditProfileForm, CategoryDropdown, EmptyForm
+                    DeletePost, PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -126,7 +126,7 @@ def deactivate():
 @login_required
 def dashboard():
     search_bar = SearchBar()
-    button_like = LikePost()
+    button_like = PostInteraction()
 
     if request.method == 'POST':
         if search_bar.search.data:
@@ -196,7 +196,7 @@ def settings():
 @login_required
 def profile(username, category = "none"):
     form_del = DeletePost()
-    button_like = LikePost()
+    button_like = PostInteraction()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
     posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
@@ -314,7 +314,7 @@ def edit_prof(category):
 @app.route('/handlelike', methods = ['POST'])
 @login_required
 def handle_like():
-    toggle_like(request.form['like_id'])
+    toggle_like(request.form['post_id'])
     return "success"
 
 # LIKED POSTS
@@ -322,7 +322,7 @@ def handle_like():
 @login_required
 def liked_posts():
     form_del = DeletePost()
-    button_like = LikePost()
+    button_like = PostInteraction()
     return render_template('liked_posts.html', del_form = form_del, button_like = button_like)
 
 # Toggle like or unlike depending on if the user has already liked the post or not
