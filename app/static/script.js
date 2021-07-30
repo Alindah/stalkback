@@ -58,3 +58,14 @@ function deletePost(button) {
     });
     return false;
 }
+
+function replyToPost(button) {
+    fetch('/reply', {
+        method: 'POST',
+        body: new FormData(button.parentElement),
+    }).then(function(response) {
+        // Display new post
+    });
+    return false;
+}
+

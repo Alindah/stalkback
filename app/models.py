@@ -136,9 +136,17 @@ class PostModel(db.Model):
         'UserModel', secondary = likes,
         back_populates = 'liked_posts')
     
+    replies = db.relationship(
+        'CommentModel', backref = db.backref('parent', remote_side=[id]),
+        lazy = 'dynamic')
+
     # Check if a user has liked this post
     def is_liked_by(self, user):
         return user in self.liked_by
+    
+    # Add comment to post's replies table
+    def add_comment(self, comment):
+        self.replies.append(comment)
 
 class SubmissionModel(PostModel):
     __tablename__ = 'submission'
@@ -149,6 +157,15 @@ class SubmissionModel(PostModel):
 
     __mapper_args__ = {
         'polymorphic_identity': 'submission'
+    }
+
+class CommentModel(PostModel):
+    __tablename__ = 'comments'
+    
+    parent_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'comment'
     }
 
 class CategoryModel(db.Model):

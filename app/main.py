@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, Markup, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, SubmissionModel, CategoryModel, db
+from models import UserModel, PostModel, SubmissionModel, CommentModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
                     PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
@@ -351,14 +351,9 @@ def handle_reply():
 
 def reply(post_id, comment):
     p = PostModel.query.get(int(post_id))
-
-    print("replying to post " + str(p.id))
-    print("> " + comment)
-    #c = CommentModel(author = current_user, desc = comment, parent_id = p.id)
-    #db.session.add(c)
-    #db.session.commit()
-    #p.add_comment(c)
-    #db.session.commit()
+    c = CommentModel(author = current_user, desc = comment, parent = p)
+    p.add_comment(c)
+    db.session.commit()
 
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
@@ -368,10 +363,16 @@ def test():
     #db.session.query(table_name).delete()
     #db.session.commit()
 
-    #p = PostModel.query.get(int(1))
-    #print(str(p.replies.count(p)) + " replies")
-    #for c in p.replies:
-    #    print(str(c.user_id) + " says: " + c.desc)
+    p = PostModel.query.get(int(1))
+    #c = CommentModel(author = current_user, desc = "I'm a comment", parent = p)
+    #CommentModel(author = current_user, desc = "I'm another comment", parent = p)
+
+    #for comment in CommentModel.query.order_by(CommentModel.timestamp.desc()):
+        #print('p: {}, {}: {}'.format(comment.parent_id, comment.author.username, comment.desc))
+        #p.add_comment(comment)
+    print("Replies for Post {} titled {}".format(p.id, p.title))
+    for c in p.replies:
+        print(c.desc)
 
     return render_template('test.html')
 

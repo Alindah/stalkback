@@ -124,9 +124,10 @@
                     {% endif %}
                 </button>
                 <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
+                <br>
+                {{ post_int.comment(placeholder=post_int.comment.description) }}
+                <button onclick="return replyToPost(this)">submit</button>
             </form>
-            COMMENT
-            <br>
         </div>
     </div>
 {%- endmacro %}
