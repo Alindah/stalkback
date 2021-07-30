@@ -121,7 +121,6 @@ class PostModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    content = db.Column(db.String(), default = "")
     desc = db.Column(db.String(40000), default = "")
     timestamp = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
     type = db.Column(db.String(), default = "")
@@ -146,6 +145,7 @@ class SubmissionModel(PostModel):
     id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
     category = db.Column(db.String(32), default = "none")
     title = db.Column(db.String(300), default = "")
+    content = db.Column(db.String(), default = "")
 
     __mapper_args__ = {
         'polymorphic_identity': 'submission'
