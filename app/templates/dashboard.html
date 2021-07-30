@@ -20,6 +20,7 @@
         </table>
     </div>
     <div class="dashboard-quick-links">
+        <a href="{{ url_for('categories') }}">Manage categories</a><br>
         <a href="{{ url_for('liked_posts') }}">Liked posts</a><br>
         <a href="{{ url_for('stalklist', username = current_user.username, category = 'none', rel = 'stalking') }}">Who am I stalking?</a><br>
         <a href="{{ url_for('stalklist', username = current_user.username, category = 'none', rel = 'stalkers') }}">My stalkers</a><br>

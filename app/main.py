@@ -303,6 +303,12 @@ def edit_prof(category):
     
     return render_template('edit_profile.html', category = category, form = form)
 
+# EDIT CATEGORIES
+@app.route('/edit/categories', methods = ['GET', 'POST'])
+@login_required
+def categories():
+    return render_template('categories.html')
+
 # Handle like button submissions
 @app.route('/handlelike', methods = ['POST'])
 @login_required
