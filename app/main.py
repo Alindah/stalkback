@@ -363,7 +363,7 @@ def test():
     #db.session.query(table_name).delete()
     #db.session.commit()
 
-    p = PostModel.query.get(int(1))
+    p = PostModel.query.get(int(7))
     #c = CommentModel(author = current_user, desc = "I'm a comment", parent = p)
     #CommentModel(author = current_user, desc = "I'm another comment", parent = p)
 

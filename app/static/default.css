@@ -408,6 +408,20 @@ input[type='submit'] {
     padding-left: 1em;
 }
 
+.comment {
+    border-left: 0.4em solid var(--color-bg);
+}
+
+.not-op a {
+    color: var(--color-text);
+}
+
+.comment .post-footer {
+    background-color: rgba(var(--color-bg), 0.5);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
 .post-footer {
     background-color: var(--color-header);
     padding: 1em;
@@ -492,7 +506,7 @@ input[type='submit'] {
 }
 
 .comments-container {
-    display: none;
+    //display: none;
 }
 
 .reply-container {

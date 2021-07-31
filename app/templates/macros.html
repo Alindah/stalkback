@@ -141,9 +141,32 @@
                             <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
                         </div>
                     </div>
+                    {% for r in p.replies %}
+                        {{ user_comment(r) }}
+                    {% endfor %}
                 </div>
+
             </form>
         </div>
+    </div>
+{%- endmacro %}
+
+{% macro user_comment(c) -%}
+    <div class="post comment" style="margin-bottom:1em;">
+        <div class="post-desc">
+            <div class="post-user-container">
+                {{ user_avatar_linked(c.author) }}<br>
+                {% if c.author != c.parent.author %}
+                    <span class="not-op">{{ user_dname_linked(c.author) }}</span>
+                {% else %}
+                    <span>{{ user_dname_linked(c.author) }}</span>
+                {% endif %}
+            </div>
+            <div class="post-desc-container">
+                {{ c.desc }}
+            </div>
+        </div>
+        <div class="post-footer">test</div>
     </div>
 {%- endmacro %}
 

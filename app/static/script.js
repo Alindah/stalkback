@@ -70,3 +70,6 @@ function replyToPost(button) {
     return false;
 }
 
+function loadComments() {
+    console.log("loaded comments")
+}
