@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import search_bar, user_avatar_linked, user_post with context%}
+{% from "macros.html" import search_bar, user_avatar_linked, user_submission with context%}
 
 <!-- SEARCH BAR -->
 {% block content_header %}
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <div style="background-color: var(--color-header);">
+    <div class="dashboard-header">
         <table>
             <td class="user-av-med" style="padding: 0.5em">
                 {{ user_avatar_linked(current_user) }}
@@ -19,8 +19,14 @@
             </td>
         </table>
     </div>
+    <div class="dashboard-quick-links">
+        <a href="{{ url_for('categories') }}">Manage categories</a><br>
+        <a href="{{ url_for('liked_posts') }}">Liked posts</a><br>
+        <a href="{{ url_for('stalklist', username = current_user.username, category = 'none', rel = 'stalking') }}">Who am I stalking?</a><br>
+        <a href="{{ url_for('stalklist', username = current_user.username, category = 'none', rel = 'stalkers') }}">My stalkers</a><br>
+    </div>
 
-    {% for post in current_user.stalked_posts() %}
-        <p>{{ user_post(post) }}</p>
+    {% for post in current_user.stalked_submissions() %}
+        <p>{{ user_submission(post) }}</p>
     {% endfor %}
 {% endblock %}

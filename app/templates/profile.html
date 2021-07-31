@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import user_post, stalkback_logo with context %}
+{% from "macros.html" import user_submission, stalkback_logo with context %}
 
 <!-- Profile header -->
 {% block content_header %}
@@ -89,6 +89,6 @@
 
     <!-- User posts -->
     {% for post in posts %}
-        <p>{{ user_post(post) }}</p>
+        <p>{{ user_submission(post) }}</p>
     {% endfor %}
 {% endblock %}

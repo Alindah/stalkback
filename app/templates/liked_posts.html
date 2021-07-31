@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% from "macros.html" import user_post with context %}
+{% from "macros.html" import user_submission with context %}
 {% block content %}
+    <h2>Posts you've liked</h2>
     {% for post in current_user.liked_posts %}
-        <p>{{ user_post(post) }}</p>
+        <p>{{ user_submission(post) }}</p>
     {% endfor %}
 {% endblock %}

@@ -1,13 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Poppins&family=Righteous&family=Ubuntu:wght@500&display=swap');
 
 :root {
-    --color-bg: rgb(96, 110, 130);
-    --color-header: rgb(41, 43, 51);
-    --color-header-gray: rgb(55, 63, 75);
-    --color-highlight: rgb(255, 166, 0);
-    --color-link-highlight: rgb(255, 208, 0);
-    --color-text: rgb(255, 255, 255);
-    --color-warning: rgb(255, 94, 0);
+    --color-bg: 96, 110, 130;
+    --color-header: 41, 43, 51;
+    --color-header-darkgray: 47, 52, 62;
+    --color-header-gray: 55, 63, 75;
+    --color-offwhite: 242, 242, 242;
+    --color-highlight: 255, 166, 0;
+    --color-link-highlight: 255, 208, 0;
+    --color-text: 255, 255, 255;
+    --color-warning: 255, 94, 0;
     --font-header: 'Poppins', sans-serif;
     --font-main: 'Open Sans', sans-serif;
 }
@@ -15,22 +17,22 @@
 body, html {
     height: 100%;
     font-family: var(--font-main);
-    background-color: var(--color-header);
-    color: var(--color-text);
+    background-color: rgb(var(--color-header));
+    color: rgb(var(--color-text));
     margin: 0;
 }
 
 a {
-    color: var(--color-highlight);
+    color: rgb(var(--color-highlight));
     text-decoration: none;
 }
 
 a:hover {
-    color: var(--color-link-highlight);
+    color: rgb(var(--color-link-highlight));
 }
 
 ::selection {
-    background-color: var(--color-bg);
+    background-color: rgb(var(--color-bg));
 }
 
 input {
@@ -39,8 +41,17 @@ input {
 }
 
 input[type='submit'] {
-    background-color: var(--color-highlight);
-    border-color: var(--color-highlight);
+    background-color: rgb(var(--color-highlight));
+    border-color: rgb(var(--color-highlight));
+}
+
+textarea, input {
+    border: 0.15em solid transparent;
+}
+
+textarea:focus, input:focus {
+    outline: none !important;
+    border: 0.15em solid rgb(var(--color-highlight));
 }
 
 .small-text {
@@ -48,27 +59,27 @@ input[type='submit'] {
 }
 
 .default-text {
-    color: var(--color-text);
+    color: rgb(var(--color-text));
 }
 
 .highlight {
-    color: var(--color-highlight);
+    color: rgb(var(--color-highlight));
 }
 
 .warning {
-    color: var(--color-warning);
+    color: rgb(var(--color-warning));
 }
 
 .content-container {
     padding: 1em;
-    background: var(--color-bg);
+    background: rgb(var(--color-bg));
 }
 
 .header {
     position: relative;
     margin: 0;
-    background-color: var(--color-header);
-    color: var(--color-text);
+    background-color: rgb(var(--color-header));
+    color: rgb(var(--color-text));
 }
 
 .header-logo {
@@ -79,7 +90,7 @@ input[type='submit'] {
 .header-logo a {
     font-family: var(--font-header);
     font-size: 2em;
-    color: var(--color-text);
+    color: rgb(var(--color-text));
 }
 
 .header-logo-bino {
@@ -110,7 +121,7 @@ input[type='submit'] {
     z-index: 1;
     width: 100%;
     min-height: 100vh;
-    background-color: var(--color-header-gray);
+    background-color: rgb(var(--color-header-gray));
 }
 
 .menu-item {
@@ -120,11 +131,11 @@ input[type='submit'] {
 }
 
 .menu-link {
-    color: var(--color-text);
+    color: rgb(var(--color-text));
 }
 
 #svg-menu {
-    fill: var(--color-text);
+    fill: rgb(var(--color-text));
 }
 
 .footer {
@@ -140,40 +151,52 @@ input[type='submit'] {
     margin: 0.5em;
 }
 
-.svg-icon {
+.svg-icon-container {
     position: relative;
     display: inline-block;
     width: 1em;
-    fill: var(--color-text);
+    fill: rgb(var(--color-text));
+}
+
+.svg-icon-container svg {
+    display: block;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.comment-icon {
+    width: 1.5em;
 }
 
 .like-button {
     background-color: transparent;
     border: none;
+    padding: 0;
 }
 
 .like-icon {
     width: 2em;
-    cursor: pointer;
 }
 
 .liked-icon {
-    fill: var(--color-highlight)
+    fill: rgb(var(--color-highlight))
 }
 
 .flashes-container {
-    color: var(--color-highlight);
+    color: rgb(var(--color-highlight));
     font-size: 0.8em;
 }
 
 .info-box {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 1em;
-    border-color: var(--color-text);
+    border-color: rgb(var(--color-text));
 }
 
 .flashes-container legend {
-    color: var(--color-text);
+    color: rgb(var(--color-text));
 }
 
 .flashes-container li {
@@ -190,7 +213,7 @@ input[type='submit'] {
     padding-right: 2em;
     width: 23em;
     max-width: 80%;
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     text-align: center;
 }
 
@@ -250,6 +273,11 @@ input[type='submit'] {
 .simple-form input {
     width: 50%;
     margin: 0.1em;
+    border-radius: 5px;
+}
+
+.simple-form input:focus {
+    border-radius: 5px;
 }
 
 .simple-form input[type='submit'] {
@@ -273,12 +301,8 @@ input[type='submit'] {
 }
 
 #delete-confirm input[type='submit'] {
-    background-color: var(--color-warning);
-    border-color: var(--color-warning);
-}
-
-.button-del-post {
-    float: right;
+    background-color: rgb(var(--color-warning));
+    border-color: rgb(var(--color-warning));
 }
 
 .search-container {
@@ -301,15 +325,15 @@ input[type='submit'] {
 
 .list-results {
     border-collapse: collapse;
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     min-width: 26em;
 }
 
 .list-results td {
-    border-bottom: 0.2em solid var(--color-bg);
+    border-bottom: 0.2em solid rgb(var(--color-bg));
     border-collapse: collapse;
     padding: 0.5em;
-    background-color: var(--color-header-gray);
+    background-color: rgb(var(--color-header-gray));
 }
 
 .list-results th {
@@ -323,16 +347,16 @@ input[type='submit'] {
     padding: 1em;
     width: 100%;
     text-align: center;
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     box-sizing: border-box;
 }
 
 .prof-info-container {
-    background-color: var(--color-header-gray);
+    background-color: rgb(var(--color-header-gray));
 }
 
 .prof-info-title {
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     text-align: center;
     text-transform: uppercase;
     font-family: var(--font-header);
@@ -371,11 +395,11 @@ input[type='submit'] {
 }
 
 .user-av-med img {
-    border: 0.2em solid var(--color-header-gray);
+    border: 0.2em solid rgb(var(--color-header-gray));
 }
 
 .post-title-container {
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     padding: 1em;
 }
 
@@ -390,7 +414,7 @@ input[type='submit'] {
 }
 
 .post-desc {
-    background-color: var(--color-header-gray);
+    background-color: rgb(var(--color-header-gray));
     display: flex;
     overflow-wrap: anywhere;
     padding: 1em;
@@ -405,17 +429,65 @@ input[type='submit'] {
     padding-left: 1em;
 }
 
+.comment {
+    border-left: 0.4em solid rgb(var(--color-bg));
+}
+
+.comment.op {
+    border-left: 0.4em solid rgb(var(--color-highlight));
+}
+
+.comment-username.not-op a {
+    color: rgb(var(--color-text));
+}
+
+.comment .post-footer {
+    background-color: rgb(var(--color-header-darkgray));
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
 .post-footer {
-    background-color: var(--color-header);
+    background-color: rgb(var(--color-header));
     padding: 1em;
 }
 
-.post-options-menu {
-    fill: var(--color-text);
+.post-tool-padding {
+    margin-left: 0.5em;
+}
+
+.post-options-button {
+    position: relative;
+    fill: rgb(var(--color-text));
     float: right;
     height: 2em;
     width: 2em;
     cursor: pointer;
+}
+
+.post-options-menu {
+    display: none;
+    position: absolute;
+    right: 4em;
+    z-index: 1;
+    min-width: 30vw;
+    border: 0.2em solid rgb(var(--color-highlight));
+}
+
+.post-options-menu-item {
+    background-color: rgb(var(--color-header-gray));
+    padding: 0.5em;
+    text-align: center;
+    width: 100%;
+    font-size: 1em;
+    color: rgb(var(--color-text));
+    border-color: rgb(var(--color-header-gray));
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.post-options-menu-item:hover {
+    color: rgb(var(--color-highlight));
 }
 
 .text-area-form textarea {
@@ -428,16 +500,68 @@ input[type='submit'] {
     padding-right: 0.5em;
     width: 2em;
     max-height: 2em;
-    fill: var(--color-highlight);
+    fill: rgb(var(--color-highlight));
+}
+
+.input-button-standard {
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-button-mid-color {
+    background-color: rgb(var(--color-bg));
+    border: 0.1em ridge rgb(var(--color-header-gray));
+    color: rgb(var(--color-text));
 }
 
 .stalk-button input[type='submit'] {
-    background-color: var(--color-header);
-    border-color: var(--color-highlight);
-    color: var(--color-text);
+    background-color: rgb(var(--color-header));
+    border-color: rgb(var(--color-highlight));
+    border-radius: 5px;
+    color: rgb(var(--color-text));
     padding: 1em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     font-family: var(--font-header);
     text-transform: capitalize;
+}
+
+.dashboard-header {
+    background-color: rgb(var(--color-header))
+}
+
+.dashboard-quick-links {
+    background-color: rgb(var(--color-header-gray));
+    padding: 1em;
+}
+
+.comments-container {
+    display: none;
+}
+
+.reply-container {
+    display: none;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
+
+.reply-container textarea {
+    padding: 0.5em;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(var(--color-offwhite));
+    border: 0.2em solid transparent;
+}
+
+.reply-container textarea:focus {
+    border: 0.2em solid rgb(var(--color-highlight));
+}
+
+.reply-tools-container {
+    width: 100%;
+    height: 2em;
 }

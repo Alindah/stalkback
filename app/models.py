@@ -96,11 +96,11 @@ class UserModel(UserMixin, db.Model):
         return self.stalkers.filter(stalkers.c.stalker_id)
     
     # Get posts from stalkees, ordering by timestamp
-    def stalked_posts(self):
-        return PostModel.query.join(
-            stalkers, (stalkers.c.stalking_id == PostModel.user_id)).filter( # All posts that are being stalked
+    def stalked_submissions(self):
+        return SubmissionModel.query.join(
+            stalkers, (stalkers.c.stalking_id == SubmissionModel.user_id)).filter( # All posts that are being stalked
                 stalkers.c.stalker_id == self.id).order_by( # Only get posts that are stalked by this user
-                    PostModel.timestamp.desc()) # Order by time, with first result being most recent
+                    SubmissionModel.timestamp.desc()) # Order by time, with first result being most recent
     
     # Like a post
     def like_post(self, post):
@@ -117,20 +117,52 @@ class PostModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    category = db.Column(db.String(32), default = "none")
     title = db.Column(db.String(300), default = "")
-    content = db.Column(db.String(), default = "")
     desc = db.Column(db.String(40000), default = "")
     timestamp = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
+    type = db.Column(db.String(), default = "")
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'post',
+        'polymorphic_on': type
+    }
 
     # User interaction
     liked_by = db.relationship(
         'UserModel', secondary = likes,
         back_populates = 'liked_posts')
     
+    replies = db.relationship(
+        'CommentModel', backref = db.backref('parent', remote_side=[id]),
+        lazy = 'dynamic')
+
     # Check if a user has liked this post
     def is_liked_by(self, user):
         return user in self.liked_by
+    
+    # Add comment to post's replies table
+    def add_comment(self, comment):
+        self.replies.append(comment)
+
+class SubmissionModel(PostModel):
+    __tablename__ = 'submission'
+    
+    id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
+    category = db.Column(db.String(32), default = "none")
+    content = db.Column(db.String(), default = "")
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'submission'
+    }
+
+class CommentModel(PostModel):
+    __tablename__ = 'comments'
+    
+    parent_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'comment'
+    }
 
 class CategoryModel(db.Model):
     __tablename__ = 'categories'

@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash, Markup, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
-from models import UserModel, PostModel, CategoryModel, likes, db
+from models import UserModel, PostModel, SubmissionModel, CommentModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
-                    DeletePost, LikePost, EditProfileForm, CategoryDropdown, EmptyForm
+                    PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
@@ -126,13 +126,13 @@ def deactivate():
 @login_required
 def dashboard():
     search_bar = SearchBar()
-    button_like = LikePost()
+    post_int = PostInteraction()
 
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
 
-    return render_template('dashboard.html', sb = search_bar, button_like = button_like)
+    return render_template('dashboard.html', sb = search_bar, post_int = post_int)
 
 # SEARCH
 @app.route('/search', methods = ['GET', 'POST'])
@@ -195,11 +195,11 @@ def settings():
 @app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
 def profile(username, category = "none"):
-    form_del = DeletePost()
-    button_like = LikePost()
+    post_int = PostInteraction()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = user.posts.all() if category == "none" else user.posts.filter_by(category = category).all()
+    posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
+    posts = posts.order_by(SubmissionModel.timestamp.desc()).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
     uc_names = [ c.name for c in user.categories.all() ]
     cat_dd = CategoryDropdown(uc_names)
@@ -215,15 +215,9 @@ def profile(username, category = "none"):
             db.session.commit()
             return redirect(url_for('profile', username = username))
 
-        # Delete post
-        if form_del.del_post.data:
-            db.session.delete(PostModel.query.get(request.form['del_id']))
-            db.session.commit()
-            return redirect(url_for('profile', username = username))
-
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
-                            posts = reversed(posts), user_categories = uc_names, cat_dropdown = cat_dd, 
-                            del_form = form_del, button_like = button_like, button_stalk = button_stalk, 
+                            posts = posts, user_categories = uc_names, cat_dropdown = cat_dd, 
+                            post_int = post_int, button_stalk = button_stalk, 
                             stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
 @app.route('/stalk/<username>/none')
@@ -276,7 +270,7 @@ def post():
         if cat not in uc_names:
             db.session.add(CategoryModel(user = current_user, name = cat))
 
-        post = PostModel(author = current_user, title = title, desc = desc, category = cat)
+        post = SubmissionModel(author = current_user, title = title, desc = desc, category = cat)
         db.session.add(post)
         db.session.commit()
 
@@ -309,20 +303,25 @@ def edit_prof(category):
     
     return render_template('edit_profile.html', category = category, form = form)
 
+# EDIT CATEGORIES
+@app.route('/edit/categories', methods = ['GET', 'POST'])
+@login_required
+def categories():
+    return render_template('categories.html')
+
 # Handle like button submissions
 @app.route('/handlelike', methods = ['POST'])
 @login_required
 def handle_like():
-    toggle_like(request.form['like_id'])
+    toggle_like(request.form['post_id'])
     return "success"
 
 # LIKED POSTS
 @app.route('/liked', methods = ['GET', 'POST'])
 @login_required
 def liked_posts():
-    form_del = DeletePost()
-    button_like = LikePost()
-    return render_template('liked_posts.html', del_form = form_del, button_like = button_like)
+    post_int = PostInteraction()
+    return render_template('liked_posts.html', post_int = post_int)
 
 # Toggle like or unlike depending on if the user has already liked the post or not
 def toggle_like(post_id):
@@ -335,18 +334,46 @@ def toggle_like(post_id):
 
     db.session.commit()
 
+# DELETE POST
+@app.route('/handlepostdeletion', methods = ['POST'])
+@login_required
+def handle_post_del():
+    db.session.delete(PostModel.query.get(request.form['post_id']))
+    db.session.commit()
+    return "success"
+
+# HANDLE REPLIES
+@app.route('/reply', methods = ['POST'])
+@login_required
+def handle_reply():
+    reply(request.form['post_id'], request.form['comment'])
+    return "success"
+
+def reply(post_id, comment):
+    p = PostModel.query.get(int(post_id))
+    c = CommentModel(author = current_user, desc = comment, parent = p)
+    p.add_comment(c)
+    db.session.commit()
+
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
 def test():
-    #db.session.query(likes).delete()
+    print("Testing!")
+    # Use this to delete entries in a table
+    #db.session.query(table_name).delete()
     #db.session.commit()
-    #p = PostModel.query.get(int(2))
-    #users = p.liked_by
-    #lp = current_user.get_liked_posts()
-    #lp = current_user.liked_posts
-    #print("TEST")
-    #for u in users:
-    #    print(u.id)
+
+    p = PostModel.query.get(int(7))
+    #c = CommentModel(author = current_user, desc = "I'm a comment", parent = p)
+    #CommentModel(author = current_user, desc = "I'm another comment", parent = p)
+
+    #for comment in CommentModel.query.order_by(CommentModel.timestamp.desc()):
+        #print('p: {}, {}: {}'.format(comment.parent_id, comment.author.username, comment.desc))
+        #p.add_comment(comment)
+    print("Replies for Post {} titled {}".format(p.id, p.title))
+    for c in p.replies:
+        print(c.desc)
+
     return render_template('test.html')
 
 app.run(host = 'localhost', port = '5000', debug = True)
