@@ -5,6 +5,7 @@
     --color-header: 41, 43, 51;
     --color-header-darkgray: 47, 52, 62;
     --color-header-gray: 55, 63, 75;
+    --color-offwhite: 242, 242, 242;
     --color-highlight: 255, 166, 0;
     --color-link-highlight: 255, 208, 0;
     --color-text: 255, 255, 255;
@@ -42,6 +43,15 @@ input {
 input[type='submit'] {
     background-color: rgb(var(--color-highlight));
     border-color: rgb(var(--color-highlight));
+}
+
+textarea, input {
+    border: 0.15em solid transparent;
+}
+
+textarea:focus, input:focus {
+    outline: none !important;
+    border: 0.15em solid rgb(var(--color-highlight));
 }
 
 .small-text {
@@ -258,6 +268,11 @@ input[type='submit'] {
 .simple-form input {
     width: 50%;
     margin: 0.1em;
+    border-radius: 5px;
+}
+
+.simple-form input:focus {
+    border-radius: 5px;
 }
 
 .simple-form input[type='submit'] {
@@ -529,10 +544,11 @@ input[type='submit'] {
     padding: 0.5em;
     width: 100%;
     box-sizing: border-box;
+    background-color: rgb(var(--color-offwhite));
+    border: 0.2em solid transparent;
 }
 
 .reply-container textarea:focus {
-    outline: none !important;
     border: 0.2em solid rgb(var(--color-highlight));
 }
 
