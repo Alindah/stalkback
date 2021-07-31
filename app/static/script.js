@@ -6,12 +6,8 @@ function deleteConfirmation() {
 
 // Toggles menu container on and off
 function toggleElDisplay(menuId, el = null) {
-    var menu = (el) ? el.parentElement.getElementsByClassName(menuId)[0] : document.getElementById(menuId);
-
-    if (menu.style.display == "" || menu.style.display == "none")
-        menu.style.display = "block";
-    else
-        menu.style.display = "none";
+    var menu = el ? el.parentElement.getElementsByClassName(menuId)[0] : document.getElementById(menuId);
+    menu.style.display = (menu.style.display == "" || menu.style.display == "none") ? "block" : "none";
 }
 
 function toggleColor(el, color1, color2) {
