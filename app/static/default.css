@@ -417,7 +417,7 @@ input[type='submit'] {
 }
 
 .comment .post-footer {
-    background-color: rgba(rgb(var(--color-bg)), 0.5);
+    background-color: rgba(var(--color-header-gray), 0.5);
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
@@ -506,7 +506,7 @@ input[type='submit'] {
 }
 
 .comments-container {
-    //display: none;
+    display: none;
 }
 
 .reply-container {
