@@ -3,6 +3,7 @@
 :root {
     --color-bg: 96, 110, 130;
     --color-header: 41, 43, 51;
+    --color-header-darkgray: 47, 52, 62;
     --color-header-gray: 55, 63, 75;
     --color-highlight: 255, 166, 0;
     --color-link-highlight: 255, 208, 0;
@@ -421,7 +422,7 @@ input[type='submit'] {
 }
 
 .comment .post-footer {
-    background-color: rgba(var(--color-header-gray), 0.5);
+    background-color: rgb(var(--color-header-darkgray));
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
