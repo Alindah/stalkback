@@ -28,7 +28,7 @@ function onChangeProfCatDropdown(dropdown) {
 // https://stackoverflow.com/questions/62075431/flask-post-request-form-data-without-refreshing-page
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 function toggleLike(button) {
-    form = button.closest('form');
+    form = button.closest('.post-info-form');
     fetch('/handlelike', {
         method: 'POST',
         body: new FormData(form),
@@ -51,7 +51,7 @@ function toggleLike(button) {
 function deletePost(button) {
     fetch('/handlepostdeletion', {
         method: 'POST',
-        body: new FormData(button.closest('form')),
+        body: new FormData(button.closest('.post-info-form')),
     }).then(function(response) {
         // Remove post from page
         var postEl = button.closest('.submission');
@@ -63,7 +63,7 @@ function deletePost(button) {
 function replyToPost(button) {
     fetch('/reply', {
         method: 'POST',
-        body: new FormData(button.closest('form')),
+        body: new FormData(button.closest('.post-info-form')),
     }).then(function(response) {
         // Clear reply text area
         button.closest('.reply-container').getElementsByTagName('textarea')[0].value = "";
@@ -76,3 +76,4 @@ function replyToPost(button) {
 function loadComments() {
     console.log("loaded comments")
 }
+

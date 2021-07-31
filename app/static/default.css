@@ -504,6 +504,10 @@ input[type='submit'] {
     text-transform: capitalize;
 }
 
+.dashboard-header {
+    background-color: rgb(var(--color-header))
+}
+
 .dashboard-quick-links {
     background-color: rgb(var(--color-header-gray));
     padding: 1em;

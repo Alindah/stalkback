@@ -55,6 +55,7 @@
     </div>
 {%- endmacro %}
 
+<!-- USER SUBMISSION POST -->
 {% macro user_submission(p) -%}
     <div class="post submission">
         <div class="post-title-container">
@@ -96,12 +97,12 @@
         <div class="post-footer">
             <!-- POST OPTIONS MENU -->
             {% if p.author == current_user %}
-                <td><svg class="post-options-button" onclick="toggleColor(this, 'var(--color-text)', 'var(--color-highlight)'); toggleElDisplay('post-options-menu', this)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.96 122.88">
+                <td><svg class="post-options-button" onclick="toggleColor(this, 'rgb(var(--color-text))', 'rgb(var(--color-highlight))'); toggleElDisplay('post-options-menu', this)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.96 122.88">
                         <title>Options</title>
                         <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"/>
                     </svg></td>
                     <div class="post-options-menu">
-                        <form action="" method="POST">
+                        <form class="post-info-form" action="" method="POST">
                             {{ post_int.csrf_token() }}
                             {{ post_int.post_id(value=p.id) }}
                             <button class="post-options-menu-item">Edit</button>
@@ -116,6 +117,47 @@
     </div>
 {%- endmacro %}
 
+<!-- POST FOOTER TOOLs -->
+{% macro post_int_tools(p, submission) %}
+<form class="post-info-form" method="POST">
+    {{ post_int.csrf_token() }}
+    {{ post_int.post_id(value=p.id) }}
+    
+    <!-- COMMENT BUTTON -->
+    <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('comments-container', this)">
+        {{ comment_icon() }}
+    </div>
+    
+    <!-- LIKE BUTTON -->
+    <button class="like-button" onclick="return toggleLike(this)">
+        {% if not p.is_liked_by(current_user) %}
+        <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
+        <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
+        {% else %}
+        <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
+        <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
+        {% endif %}
+    </button>
+    <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
+    
+    <!-- COMMENTS -->
+    <div class="comments-container">
+        <div class="reply-container">
+            {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
+            <div class="reply-tools-container">
+                <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
+            </div>
+        </div>
+        
+        {% for r in p.replies %}
+        <div onclick="return test(this)"></div>
+            {{ user_comment(r, submission) }}
+        {% endfor %}
+    </div>
+</form>
+{%- endmacro %}
+
+<!-- USER COMMENT POST -->
 {% macro user_comment(c, submission) -%}
     <div class="post comment {{ 'op' if c.author == submission.author else 'not-op' }}" style="margin-bottom:1em;">
         <div class="post-desc">
@@ -135,49 +177,11 @@
     </div>
 {%- endmacro %}
 
-{% macro post_int_tools(p, submission) %}
-    <form method="POST">
-        {{ post_int.csrf_token() }}
-        {{ post_int.post_id(value=p.id) }}
-
-        <!-- COMMENT BUTTON -->
-        <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('comments-container', this)">
-            {{ comment_icon() }}
-        </div>
-
-        <!-- LIKE BUTTON -->
-        <button class="like-button" onclick="return toggleLike(this)">
-            {% if not p.is_liked_by(current_user) %}
-                <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
-                <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
-            {% else %}
-                <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
-                <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
-            {% endif %}
-        </button>
-        <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
-        
-        <!-- COMMENTS -->
-        <div class="comments-container">
-            <div class="reply-container">
-                {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
-                <div class="reply-tools-container">
-                    <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
-                </div>
-            </div>
-
-            {% for r in p.replies %}
-                {{ user_comment(r, submission) }}
-            {% endfor %}
-        </div>
-    </form>
-{%- endmacro %}
-
 {% macro user_avatar_linked(user) -%}
-    <a href="{{ url_for('profile', username = user.username) }}">
-        <img src="{{ user.avatar_url }}" class="user-av-med"></a>
-{%- endmacro %}
-
+<a href="{{ url_for('profile', username = user.username) }}">
+    <img src="{{ user.avatar_url }}" class="user-av-med"></a>
+    {%- endmacro %}
+    
 {% macro user_dname_linked(user) -%}
     <a href="{{ url_for('profile', username = user.username) }}">
         {{ user.display_name }}</a>
