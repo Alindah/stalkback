@@ -131,11 +131,11 @@
     <!-- LIKE BUTTON -->
     <button class="like-button" onclick="return toggleLike(this)">
         {% if not p.is_liked_by(current_user) %}
-        <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
-        <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
+            <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
+            <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
         {% else %}
-        <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
-        <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
+            <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
+            <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
         {% endif %}
     </button>
     <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
