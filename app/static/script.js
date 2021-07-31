@@ -65,6 +65,9 @@ function replyToPost(button) {
         method: 'POST',
         body: new FormData(button.closest('form')),
     }).then(function(response) {
+        // Clear reply text area
+        button.closest('.reply-container').getElementsByTagName('textarea')[0].value = "";
+        
         // Display new post
     });
     return false;

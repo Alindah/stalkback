@@ -160,7 +160,7 @@
         <!-- COMMENTS -->
         <div class="comments-container">
             <div class="reply-container">
-                {{ post_int.comment(rows="5", placeholder=post_int.comment.description) }}
+                {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
                 <div class="reply-tools-container">
                     <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
                 </div>
