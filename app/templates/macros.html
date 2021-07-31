@@ -26,8 +26,8 @@
 {% macro footer_link(text, url, svg_path) -%}
     <span class="footer-link">
         {% if svg_path %}
-            <div class="svg-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24">
+            <div class="svg-icon-container">
+                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24">
                     <title>{{ text }}</title>
                     <path d="{{ svg_path }}"></path>
                 </svg>
@@ -125,18 +125,21 @@
         {{ post_int.post_id(value=p.id) }}
         
         <!-- COMMENT BUTTON -->
-        <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
-            {{ comment_icon() }}
+        <div style="display:inline;">
+            <div class="svg-icon-container clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
+                {{ comment_icon() }}
+            </div>
+            <span class="comment-count">{{ p.replies.count() }}</span>
         </div>
         
         <!-- LIKE BUTTON -->
         <button class="like-button" onclick="return toggleLike(this)">
             {% if not p.is_liked_by(current_user) %}
-                <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
-                <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
+                <div class="svg-icon-container clickable like-icon" title="Like">{{ unliked_icon() }}</div>
+                <div class="svg-icon-container clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
             {% else %}
-                <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
-                <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
+                <div class="svg-icon-container clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
+                <div class="svg-icon-container clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
             {% endif %}
         </button>
         <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}

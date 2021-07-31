@@ -151,11 +151,15 @@ textarea:focus, input:focus {
     margin: 0.5em;
 }
 
-.svg-icon {
+.svg-icon-container {
     position: relative;
     display: inline-block;
     width: 1em;
     fill: rgb(var(--color-text));
+}
+
+.svg-icon-container svg {
+    display: block;
 }
 
 .clickable {
@@ -169,6 +173,7 @@ textarea:focus, input:focus {
 .like-button {
     background-color: transparent;
     border: none;
+    padding: 0;
 }
 
 .like-icon {
