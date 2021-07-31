@@ -117,15 +117,11 @@
 {%- endmacro %}
 
 {% macro user_comment(c, submission) -%}
-    <div class="post comment" style="margin-bottom:1em;">
+    <div class="post comment {{ 'op' if c.author == submission.author else 'not-op' }}" style="margin-bottom:1em;">
         <div class="post-desc">
             <div class="post-user-container">
                 {{ user_avatar_linked(c.author) }}<br>
-                {% if c.author != submission.author %}
-                    <span class="not-op">{{ user_dname_linked(c.author) }}</span>
-                {% else %}
-                    <span>{{ user_dname_linked(c.author) }}</span>
-                {% endif %}
+                <span class="comment-username">{{ user_dname_linked(c.author) }}</span>
             </div>
             <div class="post-desc-container">
                 {{ c.desc }}
