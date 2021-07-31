@@ -113,13 +113,13 @@
                     </div>
             {% endif %}
             
-            <div class="">
-                {{ post_int_tools(p, p) }}
-                <div class="comments-container">
-                    {% for r in p.replies %}
-                        {{ user_comment(r, p) }}
-                    {% endfor %}
-                </div>
+            {{ post_int_tools(p, p) }}
+
+            <!-- COMMENT REPLIES -->
+            <div class="comments-container">
+                {% for r in p.replies %}
+                    {{ user_comment(r, p) }}
+                {% endfor %}
             </div>
         </div>
     </div>
