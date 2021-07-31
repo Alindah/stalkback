@@ -112,7 +112,15 @@
                         </form>
                     </div>
             {% endif %}
-            {{ post_int_tools(p, p) }}
+            
+            <div class="">
+                {{ post_int_tools(p, p) }}
+                <div class="comments-container">
+                    {% for r in p.replies %}
+                        {{ user_comment(r, p) }}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {%- endmacro %}
@@ -124,7 +132,7 @@
     {{ post_int.post_id(value=p.id) }}
     
     <!-- COMMENT BUTTON -->
-    <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('comments-container', this)">
+    <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
         {{ comment_icon() }}
     </div>
     
@@ -141,17 +149,11 @@
     <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
     
     <!-- COMMENTS -->
-    <div class="comments-container">
-        <div class="reply-container">
-            {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
-            <div class="reply-tools-container">
-                <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
-            </div>
+    <div class="reply-container">
+        {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
+        <div class="reply-tools-container">
+            <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
         </div>
-        
-        {% for r in p.replies %}
-            {{ user_comment(r, submission) }}
-        {% endfor %}
     </div>
 </form>
 {%- endmacro %}

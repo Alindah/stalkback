@@ -10,6 +10,11 @@ function toggleElDisplay(menuId, el = null) {
     menu.style.display = (menu.style.display == "" || menu.style.display == "none") ? "block" : "none";
 }
 
+function displayComments(el) {
+    var commentsContainer = el.closest('.post-footer').getElementsByClassName('comments-container')[0];
+    commentsContainer.style.display = (commentsContainer.style.display == "" || commentsContainer.style.display == "none") ? "block" : "none";
+}
+
 function toggleColor(el, color1, color2) {
     el.style.fill = (el.style.fill == color1 || el.style.fill == "") ? color2 : color1;
 }
@@ -28,7 +33,9 @@ function onChangeProfCatDropdown(dropdown) {
 // https://stackoverflow.com/questions/62075431/flask-post-request-form-data-without-refreshing-page
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 function toggleLike(button) {
-    form = button.closest('.post-info-form');
+    var form = button.closest('.post-info-form');
+    console.log(form)
+
     fetch('/handlelike', {
         method: 'POST',
         body: new FormData(form),
@@ -61,9 +68,12 @@ function deletePost(button) {
 }
 
 function replyToPost(button) {
+    var form = button.closest('.post-info-form');
+    console.log(form)
+
     fetch('/reply', {
         method: 'POST',
-        body: new FormData(button.closest('.post-info-form')),
+        body: new FormData(form),
     }).then(function(response) {
         // Clear reply text area
         button.closest('.reply-container').getElementsByTagName('textarea')[0].value = "";
