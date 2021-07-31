@@ -125,12 +125,10 @@
         {{ post_int.post_id(value=p.id) }}
         
         <!-- COMMENT BUTTON -->
-        <div style="display:inline;">
-            <div class="svg-icon-container clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
-                {{ comment_icon() }}
-            </div>
-            <span class="comment-count">{{ p.replies.count() }}</span>
+        <div class="svg-icon-container clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
+            {{ comment_icon() }}
         </div>
+        <span class="comment-count">{{ p.replies.count() }}</span>
         
         <!-- LIKE BUTTON -->
         <button class="like-button" onclick="return toggleLike(this)">
