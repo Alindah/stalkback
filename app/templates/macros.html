@@ -112,50 +112,43 @@
                         </form>
                     </div>
             {% endif %}
-            
-            {{ post_int_tools(p, p) }}
-
-            <!-- COMMENT REPLIES -->
-            <div class="comments-container">
-                {% for r in p.replies %}
-                    {{ user_comment(r, p) }}
-                {% endfor %}
-            </div>
+            {{ post_int_tools(p) }}
+            {{ replies_list(p, p) }}
         </div>
     </div>
 {%- endmacro %}
 
 <!-- POST FOOTER TOOLs -->
-{% macro post_int_tools(p, submission) %}
-<form class="post-info-form" method="POST">
-    {{ post_int.csrf_token() }}
-    {{ post_int.post_id(value=p.id) }}
-    
-    <!-- COMMENT BUTTON -->
-    <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
-        {{ comment_icon() }}
-    </div>
-    
-    <!-- LIKE BUTTON -->
-    <button class="like-button" onclick="return toggleLike(this)">
-        {% if not p.is_liked_by(current_user) %}
-            <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
-            <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
-        {% else %}
-            <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
-            <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
-        {% endif %}
-    </button>
-    <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
-    
-    <!-- COMMENTS -->
-    <div class="reply-container">
-        {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
-        <div class="reply-tools-container">
-            <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
+{% macro post_int_tools(p) %}
+    <form class="post-info-form" method="POST">
+        {{ post_int.csrf_token() }}
+        {{ post_int.post_id(value=p.id) }}
+        
+        <!-- COMMENT BUTTON -->
+        <div class="svg-icon clickable comment-icon" onclick="toggleElDisplay('reply-container', this); displayComments(this)">
+            {{ comment_icon() }}
         </div>
-    </div>
-</form>
+        
+        <!-- LIKE BUTTON -->
+        <button class="like-button" onclick="return toggleLike(this)">
+            {% if not p.is_liked_by(current_user) %}
+                <div class="svg-icon clickable like-icon" title="Like">{{ unliked_icon() }}</div>
+                <div class="svg-icon clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
+            {% else %}
+                <div class="svg-icon clickable like-icon" title="Like" style="display:none;">{{ unliked_icon() }}</div>
+                <div class="svg-icon clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
+            {% endif %}
+        </button>
+        <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
+        
+        <!-- COMMENTS -->
+        <div class="reply-container">
+            {{ post_int.comment(rows="5", placeholder=post_int.comment.description, maxlength="10000") }}
+            <div class="reply-tools-container">
+                <button class="input-button-standard input-button-mid-color" onclick="return replyToPost(this)" style="margin:0.5em; float:right;">submit</button>
+            </div>
+        </div>
+    </form>
 {%- endmacro %}
 
 <!-- USER COMMENT POST -->
@@ -164,17 +157,25 @@
         <div class="post-desc">
             <div class="post-user-container">
                 {{ user_avatar_linked(c.author) }}<br>
-                <span class="comment-username">{{ user_dname_linked(c.author) }}</span>
+                <span class="comment-username {{ 'op' if c.author == submission.author else 'not-op' }}">{{ user_dname_linked(c.author) }}</span>
             </div>
             <div class="post-desc-container">
                 {{ c.desc }}
             </div>
         </div>
-
-        <!-- COMMENT FOOTER TOOLS -->
         <div class="post-footer">
-            {{ post_int_tools(c, submission) }}
+            {{ post_int_tools(c) }}
+            {{ replies_list(c, submission) }}
         </div>
+    </div>
+{%- endmacro %}
+
+<!-- COMMENT REPLIES -->
+{%- macro replies_list(p, submission) %}
+    <div class="comments-container">
+        {% for r in p.replies %}
+            {{ user_comment(r, submission) }}
+        {% endfor %}
     </div>
 {%- endmacro %}
 

@@ -417,7 +417,7 @@ input[type='submit'] {
     border-left: 0.4em solid rgb(var(--color-highlight));
 }
 
-.not-op .comment-username a {
+.comment-username.not-op a {
     color: rgb(var(--color-text));
 }
 
