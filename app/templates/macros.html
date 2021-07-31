@@ -131,7 +131,7 @@
         <span class="comment-count">{{ p.replies.count() }}</span>
         
         <!-- LIKE BUTTON -->
-        <button class="like-button" onclick="return toggleLike(this)">
+        <button class="like-button post-tool-padding" onclick="return toggleLike(this)">
             {% if not p.is_liked_by(current_user) %}
                 <div class="svg-icon-container clickable like-icon" title="Like">{{ unliked_icon() }}</div>
                 <div class="svg-icon-container clickable like-icon liked-icon" title="Unlike" style="display:none;">{{ liked_icon() }}</div>
@@ -140,7 +140,7 @@
                 <div class="svg-icon-container clickable like-icon liked-icon" title="UnLike">{{ liked_icon() }}</div>
             {% endif %}
         </button>
-        <span class="like-count">{{ p.liked_by | length }}</span> like{% if p.liked_by | length != 1 %}s{%endif%}
+        <span class="like-count">{{ p.liked_by | length }}</span>
         
         <!-- COMMENTS -->
         <div class="reply-container">

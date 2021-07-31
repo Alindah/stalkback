@@ -452,6 +452,10 @@ textarea:focus, input:focus {
     padding: 1em;
 }
 
+.post-tool-padding {
+    margin-left: 0.5em;
+}
+
 .post-options-button {
     position: relative;
     fill: rgb(var(--color-text));
