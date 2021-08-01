@@ -355,6 +355,21 @@ def reply(post_id, comment):
     p.add_comment(c)
     db.session.commit()
 
+@app.route('/process_stalk', methods = ['POST'])
+@login_required
+def process_stalk():
+    for cat_id in request.form.items():
+        cat = CategoryModel.query.get(int(cat_id[0]))
+
+        if cat.is_stalked_by(current_user):
+            current_user.stop_stalking_cat(cat)
+        else:
+            current_user.start_stalking_cat(cat)
+
+    db.session.commit()
+
+    return "success"
+
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
 def test():

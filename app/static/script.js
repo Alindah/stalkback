@@ -71,7 +71,6 @@ function deletePost(button) {
 
 function replyToPost(button) {
     var form = button.closest('.post-info-form');
-    console.log(form)
 
     fetch('/reply', {
         method: 'POST',
@@ -89,3 +88,14 @@ function loadComments() {
     console.log("loaded comments")
 }
 
+function processStalking(el) {
+    console.log("processing");
+    var form = el.closest('.form-stalk');
+    fetch('/process_stalk', {
+        method: 'POST',
+        body: new FormData(form),
+    }).then(function(response) {
+        // do something
+    });
+    return false;
+}
