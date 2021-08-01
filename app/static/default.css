@@ -529,6 +529,17 @@ textarea:focus, input:focus {
     text-transform: capitalize;
 }
 
+.select-category-container {
+    background: rgb(var(--color-header));
+    margin-left: 1em;
+    margin-right: 1em;
+    padding: 0.5em;
+}
+
+.categories-container {
+    padding: 1em;
+}
+
 .dashboard-header {
     background-color: rgb(var(--color-header))
 }
