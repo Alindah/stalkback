@@ -93,7 +93,7 @@ def register():
         user.set_password(password)
         user.set_avatar(avatars)
         db.session.add(user)
-        db.session.add(CategoryModel(user = user, name = "none"))
+        db.session.add(CategoryModel(user = user, name = "default"))
         db.session.commit()
 
         flash("Account successfully created!")
@@ -194,11 +194,11 @@ def settings():
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
-def profile(username, category = "none"):
+def profile(username, category = "default"):
     post_int = PostInteraction()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
+    posts = SubmissionModel.query.filter_by(author = user) if category == "default" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
     posts = posts.order_by(SubmissionModel.timestamp.desc()).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
     uc_names = [ c.name for c in user.categories.all() ]
@@ -220,7 +220,7 @@ def profile(username, category = "none"):
                             post_int = post_int, button_stalk = button_stalk, 
                             stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
-@app.route('/stalk/<username>/none')
+@app.route('/stalk/<username>/default')
 @login_required
 def profile_none(username):
     return redirect(url_for('profile', username = username))
@@ -228,7 +228,7 @@ def profile_none(username):
 @app.route('/sl/<username>/<rel>', methods = ['GET', 'POST'])
 @app.route('/sl/<username>/<category>/<rel>', methods = ['GET', 'POST'])
 @login_required
-def stalklist(username, category = "none", rel = "stalking"):
+def stalklist(username, category = "default", rel = "stalking"):
     user = UserModel.query.filter_by(username = username).first_or_404()
     s = None
 
@@ -240,7 +240,7 @@ def stalklist(username, category = "none", rel = "stalking"):
     return render_template('stalklist.html', username = username, category = category,
                             stalkers = s, table_header = rel)
 
-@app.route('/sl/<username>/none/<rel>')
+@app.route('/sl/<username>/default/<rel>')
 @login_required
 def stalklist_none(username, rel):
     return redirect(url_for('stalklist', username = username, rel = rel))
@@ -254,7 +254,7 @@ def post():
 
     current_cat = request.args.get('category')
     
-    if current_cat == "none" or not current_cat:
+    if current_cat == "default" or not current_cat:
         current_cat = ""
 
     if request.method == 'POST':

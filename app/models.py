@@ -165,7 +165,7 @@ class SubmissionModel(PostModel):
     __tablename__ = 'submission'
     
     id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
-    category = db.Column(db.String(32), default = "none")
+    category = db.Column(db.String(32), default = "default")
     content = db.Column(db.String(), default = "")
 
     __mapper_args__ = {
@@ -186,7 +186,7 @@ class CategoryModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.String(32), default = "none")
+    name = db.Column(db.String(32), default = "default")
     desc = db.Column(db.String(1000), default = "")
     icon = db.Column(db.String())
     creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)

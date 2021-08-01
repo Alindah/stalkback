@@ -63,7 +63,7 @@
                 <td class="user-av-med">
                     {{ user_avatar_linked(p.author) }}</td>
                 <td class="post-title">
-                        {% if p.category != "none" %}
+                        {% if p.category != "default" %}
                             <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
                             > {{ p.author.username }} / {{ p.category }}</a>
                         {% else %}
