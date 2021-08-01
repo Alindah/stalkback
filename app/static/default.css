@@ -43,6 +43,7 @@ input {
 input[type='submit'] {
     background-color: rgb(var(--color-highlight));
     border-color: rgb(var(--color-highlight));
+    cursor: pointer;
 }
 
 textarea, input {
@@ -538,6 +539,11 @@ textarea:focus, input:focus {
 
 .categories-container {
     padding: 1em;
+}
+
+.category-checkbox-container {
+    padding-right: 1em;
+    display: inline-block;
 }
 
 .dashboard-header {
