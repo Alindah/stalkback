@@ -64,13 +64,13 @@
             Select categories to stalk
             <div class="categories-container">
                 <form class="form-stalk" action="" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
                     {% for c in user.categories %}
                         <input type="checkbox" name="{{ c.id }}"> {{ c.name }}
                     {% endfor %}
                     <button type="button" onclick=(processStalking(this))>submit</button>
                 </form>
             </div>
-            </p>
         </div>
 
         {% if desc %}

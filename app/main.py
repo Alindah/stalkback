@@ -358,13 +358,19 @@ def reply(post_id, comment):
 @app.route('/process_stalk', methods = ['POST'])
 @login_required
 def process_stalk():
-    for cat_id in request.form.items():
-        cat = CategoryModel.query.get(int(cat_id[0]))
+    form = list(request.form.items())
+    user = UserModel.query.get(int(form[0][1]))
+    selected_categories = [int(c[0]) for c in form[1 : ]]
 
-        if cat.is_stalked_by(current_user):
+    # Add checked categories to stalklist
+    for cat_id in selected_categories:
+        cat = CategoryModel.query.get(cat_id)
+        current_user.start_stalking_cat(cat)
+    
+    # Remove unchecked items from stalklist
+    for cat in user.categories:
+        if cat.id not in selected_categories:
             current_user.stop_stalking_cat(cat)
-        else:
-            current_user.start_stalking_cat(cat)
 
     db.session.commit()
 
