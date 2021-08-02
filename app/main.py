@@ -358,11 +358,17 @@ def process_stalk():
     # Start or stop stalking user
     if current_user.is_stalking(user):
         current_user.stop_stalking(user)
-        db.session.commit()
-        return "stopped stalking"
     else:
         current_user.start_stalking(user)
+        process_stalk_cat(user, selected_categories)
 
+    db.session.commit()
+
+    return "success"
+
+@app.route('/process_stalk_categories')
+@login_required
+def process_stalk_cat(user, selected_categories):
     # Add checked categories to stalklist
     for cat_id in selected_categories:
         cat = CategoryModel.query.get(cat_id)
@@ -372,10 +378,6 @@ def process_stalk():
     for cat in user.categories:
         if cat.id not in selected_categories:
             current_user.stop_stalking_cat(cat)
-
-    db.session.commit()
-
-    return "success"
 
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
