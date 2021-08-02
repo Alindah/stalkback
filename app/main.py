@@ -364,9 +364,7 @@ def process_stalk():
 
     db.session.commit()
 
-    return "success"
-
-@app.route('/process_stalk_categories')
+@app.route('/process_stalk_categories', methods = ['POST'])
 @login_required
 def process_stalk_cat(user, selected_categories):
     # Add checked categories to stalklist
