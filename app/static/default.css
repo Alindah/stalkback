@@ -523,15 +523,23 @@ textarea:focus, input:focus {
 }
 
 #button-stalk {
-    background-color: rgb(var(--color-header));
     border-color: rgb(var(--color-highlight));
     border-radius: 5px;
-    color: rgb(var(--color-text));
     padding: 1em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     font-family: var(--font-header);
     text-transform: capitalize;
+}
+
+.button-highlight {
+    background-color: rgb(var(--color-highlight));
+    color: rgb(var(--color-header));
+}
+
+.button-dark-highlight {
+    background-color: rgb(var(--color-header)) !important;
+    color: rgb(var(--color-text));
 }
 
 #select-category-container {

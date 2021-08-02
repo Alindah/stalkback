@@ -54,6 +54,7 @@ function toggleLike(button) {
         likeCount = (icons[0].style.display == "none") ? likeCount + 1 : likeCount - 1;
         likeCountEl.innerHTML = likeCount;
     });
+
     return false;
 }
 
@@ -66,6 +67,7 @@ function deletePost(button) {
         var postEl = button.closest('.submission');
         postEl.style.display = "none";
     });
+
     return false;
 }
 
@@ -81,6 +83,7 @@ function replyToPost(button) {
         
         // Display new post
     });
+
     return false;
 }
 
@@ -97,9 +100,19 @@ function processStalking() {
         method: 'POST',
         body: new FormData(form),
     }).then(function(response) {
-        button.value = button.value == "unstalk" ? "stalk" : "unstalk";
+        if (button.value == "unstalk") {
+            button.value = "stalk";
+            button.classList.add("button-highlight");
+            button.classList.remove("button-dark-highlight");
+        }
+        else {
+            button.value = "unstalk";
+            button.classList.add("button-dark-highlight");
+            button.classList.remove("button-highlight");
+        }
         catSelectContainer.style.display = "none";
     });
+
     return false;
 }
 
@@ -111,6 +124,19 @@ function onClickStalk(el) {
 
     el.value = (el.value == "stalk") ? "confirm stalking below" : "stalk"
     toggleElDisplay('select-category-container');
+
+    return false;
+}
+
+function updateCategoriesStalking() {
+    var form = document.getElementById('form-stalk');
+
+    fetch('/process_stalk_categories', {
+        method: 'POST',
+        body: new FormData(form),
+    }).then(function(response) {
+        
+    });
 
     return false;
 }

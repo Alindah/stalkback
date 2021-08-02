@@ -353,20 +353,22 @@ def reply(post_id, comment):
 def process_stalk():
     form = list(request.form.items())
     user = UserModel.query.get(int(form[0][1]))
-    selected_categories = [int(c[0]) for c in form[1 : ]]
 
     # Start or stop stalking user
     if current_user.is_stalking(user):
         current_user.stop_stalking(user)
     else:
         current_user.start_stalking(user)
-        process_stalk_cat(user, selected_categories)
 
     db.session.commit()
 
 @app.route('/process_stalk_categories', methods = ['POST'])
 @login_required
-def process_stalk_cat(user, selected_categories):
+def process_stalk_cat():
+    form = list(request.form.items())
+    user = UserModel.query.get(int(form[0][1]))
+    selected_categories = [int(c[0]) for c in form[1 : ]]
+    
     # Add checked categories to stalklist
     for cat_id in selected_categories:
         cat = CategoryModel.query.get(cat_id)
@@ -376,6 +378,10 @@ def process_stalk_cat(user, selected_categories):
     for cat in user.categories:
         if cat.id not in selected_categories:
             current_user.stop_stalking_cat(cat)
+    
+    db.session.commit()
+
+    return "success"
 
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
