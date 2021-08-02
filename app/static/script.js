@@ -36,7 +36,6 @@ function onChangeProfCatDropdown(dropdown) {
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 function toggleLike(button) {
     var form = button.closest('.post-info-form');
-    console.log(form)
 
     fetch('/handlelike', {
         method: 'POST',
@@ -95,6 +94,7 @@ function processStalking() {
     var form = document.getElementById('form-stalk');
     var button = document.getElementById('button-stalk');
     var catSelectContainer = document.getElementById('select-category-container');
+    var manageCategory = document.getElementById('manage-category-container');
 
     fetch('/process_stalk', {
         method: 'POST',
@@ -102,13 +102,14 @@ function processStalking() {
     }).then(function(response) {
         if (button.value == "unstalk") {
             button.value = "stalk";
-            button.classList.add("button-highlight");
-            button.classList.remove("button-dark-highlight");
+            button.classList.replace("button-dark-highlight", "button-highlight");
+
+            if (manageCategory)
+                manageCategory.style.display = "none";
         }
         else {
             button.value = "unstalk";
-            button.classList.add("button-dark-highlight");
-            button.classList.remove("button-highlight");
+            button.classList.replace("button-highlight", "button-dark-highlight");
         }
         catSelectContainer.style.display = "none";
     });

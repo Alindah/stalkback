@@ -362,6 +362,8 @@ def process_stalk():
 
     db.session.commit()
 
+    return "success"
+
 @app.route('/process_stalk_categories', methods = ['POST'])
 @login_required
 def process_stalk_cat():
