@@ -66,7 +66,14 @@
                     <form id="form-stalk" action="" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                             {% for c in user.categories %}
-                                <div class="category-checkbox-container"><input type="checkbox" name="{{ c.id }}"> {{ c.name }}</div>
+                                <div class="category-checkbox-container">
+                                    {% if c in current_user.stalked_categories %}
+                                        <input type="checkbox" name="{{ c.id }}" autocomplete="off" checked>
+                                    {% else %}
+                                        <input type="checkbox" name="{{ c.id }}" autocomplete="off">
+                                    {% endif %}
+                                    {{ c.name }}
+                                </div>
                             {% endfor %}
                         <div style="margin-top: 1em;">
                             <button type="button" onclick=(processStalking())>confirm</button>
