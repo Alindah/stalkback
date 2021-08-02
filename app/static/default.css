@@ -71,6 +71,10 @@ textarea:focus, input:focus {
     color: rgb(var(--color-warning));
 }
 
+.hover-highlight:hover {
+    color: rgb(var(--color-link-highlight));
+}
+
 .content-container {
     padding: 1em;
     background: rgb(var(--color-bg));

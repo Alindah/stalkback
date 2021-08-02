@@ -104,19 +104,13 @@ function processStalking() {
 }
 
 function onClickStalk(el) {
-    var catSelectContainer = document.getElementById('select-category-container');
-
-    if (el.value == "stalk") {
-        el.value = "confirm stalking below"
-        catSelectContainer.style.display = "block";
-    }
-    else if (el.value == "unstalk") {
+    if (el.value == "unstalk") {
         processStalking();
+        return false;
     }
-    else {
-        el.value = "stalk"
-        catSelectContainer.style.display = "none";
-    }
+
+    el.value = (el.value == "stalk") ? "confirm stalking below" : "stalk"
+    toggleElDisplay('select-category-container');
 
     return false;
 }
