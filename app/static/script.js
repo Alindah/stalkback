@@ -36,7 +36,6 @@ function onChangeProfCatDropdown(dropdown) {
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 function toggleLike(button) {
     var form = button.closest('.post-info-form');
-    console.log(form)
 
     fetch('/handlelike', {
         method: 'POST',
@@ -54,6 +53,7 @@ function toggleLike(button) {
         likeCount = (icons[0].style.display == "none") ? likeCount + 1 : likeCount - 1;
         likeCountEl.innerHTML = likeCount;
     });
+
     return false;
 }
 
@@ -66,12 +66,12 @@ function deletePost(button) {
         var postEl = button.closest('.submission');
         postEl.style.display = "none";
     });
+
     return false;
 }
 
 function replyToPost(button) {
     var form = button.closest('.post-info-form');
-    console.log(form)
 
     fetch('/reply', {
         method: 'POST',
@@ -82,6 +82,7 @@ function replyToPost(button) {
         
         // Display new post
     });
+
     return false;
 }
 
@@ -89,3 +90,61 @@ function loadComments() {
     console.log("loaded comments")
 }
 
+function processStalking() {
+    var form = document.getElementById('form-stalk');
+    var button = document.getElementById('button-stalk');
+    var catSelectContainer = document.getElementById('select-category-container');
+    var manageCategory = document.getElementById('manage-category-container');
+
+    fetch('/process_stalk', {
+        method: 'POST',
+        body: new FormData(form),
+    }).then(function(response) {
+        if (button.value == "unstalk") {
+            button.value = "stalk";
+            button.classList.replace("button-dark-highlight", "button-highlight");
+
+            if (manageCategory)
+                manageCategory.style.display = "none";
+        }
+        else {
+            button.value = "unstalk";
+            button.classList.replace("button-highlight", "button-dark-highlight");
+        }
+        catSelectContainer.style.display = "none";
+    });
+
+    return false;
+}
+
+function onClickStalk(el) {
+    if (el.value == "unstalk") {
+        processStalking();
+        return false;
+    }
+
+    el.value = (el.value == "stalk") ? "confirm stalking below" : "stalk"
+    toggleElDisplay('select-category-container');
+
+    return false;
+}
+
+function updateCategoriesStalking() {
+    var form = document.getElementById('form-stalk');
+    var update = document.getElementById('update-text-timed');
+    update.classList.replace('timed-text-visible', 'timed-text-hidden');
+
+    fetch('/process_stalk_categories', {
+        method: 'POST',
+        body: new FormData(form),
+    }).then(function(response) {
+        update.classList.replace('timed-text-hidden', 'timed-text-visible');
+    });
+
+    return false;
+}
+
+function reloadElement(el) {
+    var content = el.innerHTML;
+    el.innerHTML = content;
+}

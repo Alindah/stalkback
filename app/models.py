@@ -19,6 +19,10 @@ likes = db.Table('likes',
     db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key = True),
     db.Column('liked_by_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
 
+categories_stalklist = db.Table('categories_stalklist',
+    db.Column('cat_id', db.Integer, db.ForeignKey('categories.id'), primary_key = True),
+    db.Column('stalker_id', db.Integer, db.ForeignKey('users.id'), primary_key = True))
+
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     
@@ -46,6 +50,12 @@ class UserModel(UserMixin, db.Model):
         primaryjoin = (stalkers.c.stalker_id == id),
         secondaryjoin = (stalkers.c.stalking_id == id),
         backref = db.backref('stalkers', lazy = 'dynamic'), lazy = 'dynamic')
+    
+    # Categories that are being stalked by this user
+    stalked_categories = db.relationship(
+        'CategoryModel', secondary = categories_stalklist,
+        #primaryjoin = (stalkers_category.c.cat_id == 'categories.id'),
+        back_populates = 'stalked_by')
     
     # Liked/Saved Posts
     liked_posts = db.relationship(
@@ -111,6 +121,16 @@ class UserModel(UserMixin, db.Model):
     def unlike_post(self, post):
         if post.is_liked_by(self):
             self.liked_posts.remove(post)
+    
+    # Start stalking a specified category
+    def start_stalking_cat(self, category):
+        if not category.is_stalked_by(self):
+            self.stalked_categories.append(category)
+    
+    # Stop stalking a specified category
+    def stop_stalking_cat(self, category):
+        if category.is_stalked_by(self):
+            self.stalked_categories.remove(category)
 
 class PostModel(db.Model):
     __tablename__ = 'posts'
@@ -144,11 +164,12 @@ class PostModel(db.Model):
     def add_comment(self, comment):
         self.replies.append(comment)
 
+# TODO: Link to category by category id instead of name
 class SubmissionModel(PostModel):
     __tablename__ = 'submission'
     
     id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
-    category = db.Column(db.String(32), default = "none")
+    category = db.Column(db.String(32), default = "default")
     content = db.Column(db.String(), default = "")
 
     __mapper_args__ = {
@@ -169,13 +190,16 @@ class CategoryModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.String(32), default = "none")
+    name = db.Column(db.String(32), default = "default")
     desc = db.Column(db.String(1000), default = "")
     icon = db.Column(db.String())
     creation_date = db.Column(db.DateTime(), index = True, default = datetime.utcnow)
 
-
-
-
-
-
+    stalked_by = db.relationship(
+        'UserModel', secondary = categories_stalklist,
+        #primaryjoin = (stalkers_category.c.stalker_id == 'users.id'),
+        back_populates = 'stalked_categories')
+    
+    # Check if user is stalking this category
+    def is_stalked_by(self, user):
+        return user in self.stalked_by

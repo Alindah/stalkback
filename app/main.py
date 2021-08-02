@@ -93,7 +93,7 @@ def register():
         user.set_password(password)
         user.set_avatar(avatars)
         db.session.add(user)
-        db.session.add(CategoryModel(user = user, name = "none"))
+        db.session.add(CategoryModel(user = user, name = "default"))
         db.session.commit()
 
         flash("Account successfully created!")
@@ -128,11 +128,15 @@ def dashboard():
     search_bar = SearchBar()
     post_int = PostInteraction()
 
+    stalked_posts = current_user.stalked_submissions()
+    uc_names = [ c.name for c in current_user.stalked_categories ]
+    stalked_posts_cat = stalked_posts.filter(SubmissionModel.category.in_(uc_names))
+
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
 
-    return render_template('dashboard.html', sb = search_bar, post_int = post_int)
+    return render_template('dashboard.html', sb = search_bar, post_int = post_int, stalked_posts = stalked_posts_cat)
 
 # SEARCH
 @app.route('/search', methods = ['GET', 'POST'])
@@ -194,33 +198,22 @@ def settings():
 @app.route('/stalk/<username>', methods = ['GET', 'POST'])
 @app.route('/stalk/<username>/<category>', methods = ['GET', 'POST'])
 @login_required
-def profile(username, category = "none"):
+def profile(username, category = "default"):
     post_int = PostInteraction()
     button_stalk = EmptyForm()
     user = UserModel.query.filter_by(username = username).first_or_404()
-    posts = SubmissionModel.query.filter_by(author = user) if category == "none" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
+    posts = SubmissionModel.query.filter_by(author = user) if category == "default" else SubmissionModel.query.filter_by(author = user).filter_by(category = category)
     posts = posts.order_by(SubmissionModel.timestamp.desc()).all()
     current_cat = user.categories.filter_by(name = category).first_or_404()
     uc_names = [ c.name for c in user.categories.all() ]
     cat_dd = CategoryDropdown(uc_names)
-
-    if request.method == 'POST':
-        # Start/stop stalking
-        if button_stalk.submit.data:
-            if current_user.is_stalking(user):
-                current_user.stop_stalking(user)
-            else:
-                current_user.start_stalking(user)
-            
-            db.session.commit()
-            return redirect(url_for('profile', username = username))
 
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
                             posts = posts, user_categories = uc_names, cat_dropdown = cat_dd, 
                             post_int = post_int, button_stalk = button_stalk, 
                             stalkers_count = user.get_stalkers().count(), stalking_count = user.get_stalking().count())
 
-@app.route('/stalk/<username>/none')
+@app.route('/stalk/<username>/default')
 @login_required
 def profile_none(username):
     return redirect(url_for('profile', username = username))
@@ -228,7 +221,7 @@ def profile_none(username):
 @app.route('/sl/<username>/<rel>', methods = ['GET', 'POST'])
 @app.route('/sl/<username>/<category>/<rel>', methods = ['GET', 'POST'])
 @login_required
-def stalklist(username, category = "none", rel = "stalking"):
+def stalklist(username, category = "default", rel = "stalking"):
     user = UserModel.query.filter_by(username = username).first_or_404()
     s = None
 
@@ -240,7 +233,7 @@ def stalklist(username, category = "none", rel = "stalking"):
     return render_template('stalklist.html', username = username, category = category,
                             stalkers = s, table_header = rel)
 
-@app.route('/sl/<username>/none/<rel>')
+@app.route('/sl/<username>/default/<rel>')
 @login_required
 def stalklist_none(username, rel):
     return redirect(url_for('stalklist', username = username, rel = rel))
@@ -254,7 +247,7 @@ def post():
 
     current_cat = request.args.get('category')
     
-    if current_cat == "none" or not current_cat:
+    if current_cat == "default" or not current_cat:
         current_cat = ""
 
     if request.method == 'POST':
@@ -355,6 +348,45 @@ def reply(post_id, comment):
     p.add_comment(c)
     db.session.commit()
 
+@app.route('/process_stalk', methods = ['POST'])
+@login_required
+def process_stalk():
+    form = list(request.form.items())
+    user = UserModel.query.get(int(form[0][1]))
+
+    # Start or stop stalking user
+    if current_user.is_stalking(user):
+        current_user.stop_stalking(user)
+        db.session.commit()
+        return redirect(url_for('profile', username = user.username))
+    else:
+        current_user.start_stalking(user)
+
+    db.session.commit()
+
+    return "success"
+
+@app.route('/process_stalk_categories', methods = ['POST'])
+@login_required
+def process_stalk_cat():
+    form = list(request.form.items())
+    user = UserModel.query.get(int(form[0][1]))
+    selected_categories = [int(c[0]) for c in form[1 : ]]
+    
+    # Add checked categories to stalklist
+    for cat_id in selected_categories:
+        cat = CategoryModel.query.get(cat_id)
+        current_user.start_stalking_cat(cat)
+    
+    # Remove unchecked items from stalklist
+    for cat in user.categories:
+        if cat.id not in selected_categories:
+            current_user.stop_stalking_cat(cat)
+    
+    db.session.commit()
+
+    return "success"
+
 # TEST
 @app.route('/test', methods = ['GET', 'POST'])
 def test():
@@ -363,16 +395,20 @@ def test():
     #db.session.query(table_name).delete()
     #db.session.commit()
 
-    p = PostModel.query.get(int(7))
+    #p = PostModel.query.get(int(1))
     #c = CommentModel(author = current_user, desc = "I'm a comment", parent = p)
     #CommentModel(author = current_user, desc = "I'm another comment", parent = p)
 
     #for comment in CommentModel.query.order_by(CommentModel.timestamp.desc()):
         #print('p: {}, {}: {}'.format(comment.parent_id, comment.author.username, comment.desc))
         #p.add_comment(comment)
-    print("Replies for Post {} titled {}".format(p.id, p.title))
-    for c in p.replies:
-        print(c.desc)
+    
+    stalked_posts = current_user.stalked_submissions()
+    uc_names = [ c.name for c in current_user.stalked_categories ]
+    stalked_posts_cat = stalked_posts.filter(SubmissionModel.category.in_(uc_names))
+
+    for p in stalked_posts_cat:
+        print (p.category)
 
     return render_template('test.html')
 

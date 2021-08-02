@@ -42,7 +42,7 @@ class PostForm(FlaskForm):
     new_cat = StringField(description = "Create new category")
     submit = SubmitField("Post!")
 
-    def __init__(self, user_cat = ['none'], current_cat = "none"):
+    def __init__(self, user_cat = ["default"], current_cat = "default"):
         super(PostForm, self).__init__()
         self.category.choices = user_cat
 
@@ -58,7 +58,7 @@ class EditProfileForm(FlaskForm):
 class CategoryDropdown(FlaskForm):
     category = SelectField("Category")
 
-    def __init__(self, user_cat = [], current_cat = "none"):
+    def __init__(self, user_cat = [], current_cat = "default"):
         super(CategoryDropdown, self).__init__()
         self.category.choices = ['Select a category...'] + user_cat
 

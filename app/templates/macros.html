@@ -63,7 +63,7 @@
                 <td class="user-av-med">
                     {{ user_avatar_linked(p.author) }}</td>
                 <td class="post-title">
-                        {% if p.category != "none" %}
+                        {% if p.category != "default" %}
                             <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
                             > {{ p.author.username }} / {{ p.category }}</a>
                         {% else %}
@@ -155,6 +155,7 @@
 <!-- USER COMMENT POST -->
 {% macro user_comment(c, submission) -%}
     <div class="post comment {{ 'op' if c.author == submission.author else 'not-op' }}" style="margin-bottom:1em;">
+        <div class="small-text comment-date">{{ c.timestamp.strftime("%a, %d %b %Y, %I:%M:%S %p") }}</div>
         <div class="post-desc">
             <div class="post-user-container">
                 {{ user_avatar_linked(c.author) }}<br>
