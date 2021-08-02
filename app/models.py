@@ -161,6 +161,7 @@ class PostModel(db.Model):
     def add_comment(self, comment):
         self.replies.append(comment)
 
+# TODO: Link to category by category id instead of name
 class SubmissionModel(PostModel):
     __tablename__ = 'submission'
     

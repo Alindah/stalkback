@@ -128,11 +128,15 @@ def dashboard():
     search_bar = SearchBar()
     post_int = PostInteraction()
 
+    stalked_posts = current_user.stalked_submissions()
+    uc_names = [ c.name for c in current_user.stalked_categories ]
+    stalked_posts_cat = stalked_posts.filter(SubmissionModel.category.in_(uc_names))
+
     if request.method == 'POST':
         if search_bar.search.data:
             return search(request.form['search_query'])
 
-    return render_template('dashboard.html', sb = search_bar, post_int = post_int)
+    return render_template('dashboard.html', sb = search_bar, post_int = post_int, stalked_posts = stalked_posts_cat)
 
 # SEARCH
 @app.route('/search', methods = ['GET', 'POST'])
@@ -384,16 +388,20 @@ def test():
     #db.session.query(table_name).delete()
     #db.session.commit()
 
-    p = PostModel.query.get(int(7))
+    #p = PostModel.query.get(int(1))
     #c = CommentModel(author = current_user, desc = "I'm a comment", parent = p)
     #CommentModel(author = current_user, desc = "I'm another comment", parent = p)
 
     #for comment in CommentModel.query.order_by(CommentModel.timestamp.desc()):
         #print('p: {}, {}: {}'.format(comment.parent_id, comment.author.username, comment.desc))
         #p.add_comment(comment)
-    print("Replies for Post {} titled {}".format(p.id, p.title))
-    for c in p.replies:
-        print(c.desc)
+    
+    stalked_posts = current_user.stalked_submissions()
+    uc_names = [ c.name for c in current_user.stalked_categories ]
+    stalked_posts_cat = stalked_posts.filter(SubmissionModel.category.in_(uc_names))
+
+    for p in stalked_posts_cat:
+        print (p.category)
 
     return render_template('test.html')
 

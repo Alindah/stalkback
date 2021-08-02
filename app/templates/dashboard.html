@@ -26,7 +26,7 @@
         <a href="{{ url_for('stalklist', username = current_user.username, category = 'none', rel = 'stalkers') }}">My stalkers</a><br>
     </div>
 
-    {% for post in current_user.stalked_submissions() %}
+    {% for post in stalked_posts %}
         <p>{{ user_submission(post) }}</p>
     {% endfor %}
 {% endblock %}
