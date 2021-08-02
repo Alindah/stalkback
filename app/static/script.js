@@ -88,14 +88,35 @@ function loadComments() {
     console.log("loaded comments")
 }
 
-function processStalking(el) {
-    console.log("processing");
-    var form = el.closest('.form-stalk');
+function processStalking() {
+    var form = document.getElementById('form-stalk');
+    var button = document.getElementById('button-stalk');
+    var catSelectContainer = document.getElementById('select-category-container');
+
     fetch('/process_stalk', {
         method: 'POST',
         body: new FormData(form),
     }).then(function(response) {
-        // do something
+        button.value = button.value == "unstalk" ? "stalk" : "unstalk";
+        catSelectContainer.style.display = "none";
     });
+    return false;
+}
+
+function onClickStalk(el) {
+    var catSelectContainer = document.getElementById('select-category-container');
+
+    if (el.value == "stalk") {
+        el.value = "confirm stalking below"
+        catSelectContainer.style.display = "block";
+    }
+    else if (el.value == "unstalk") {
+        processStalking();
+    }
+    else {
+        el.value = "stalk"
+        catSelectContainer.style.display = "none";
+    }
+
     return false;
 }

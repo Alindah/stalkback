@@ -518,7 +518,7 @@ textarea:focus, input:focus {
     color: rgb(var(--color-text));
 }
 
-.stalk-button input[type='submit'] {
+#button-stalk {
     background-color: rgb(var(--color-header));
     border-color: rgb(var(--color-highlight));
     border-radius: 5px;
@@ -530,7 +530,8 @@ textarea:focus, input:focus {
     text-transform: capitalize;
 }
 
-.select-category-container {
+#select-category-container {
+    display: none;
     background: rgb(var(--color-header));
     padding: 1em;
 }

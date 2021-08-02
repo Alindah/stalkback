@@ -37,13 +37,9 @@
                     {% if user != current_user %}
                         <td>
                             <div>
-                                <form class="stalk-button" action="" method="POST" enctype="multipart/form-data">
+                                <form action="" method="POST" enctype="multipart/form-data">
                                     {{ button_stalk.hidden_tag() }}
-                                    {% if current_user.is_stalking(user) %}
-                                        {{ button_stalk.submit(value = "unstalk") }}
-                                    {% else %}
-                                        {{ button_stalk.submit(value = "stalk") }}
-                                    {% endif %}
+                                    {{ button_stalk.submit(id = "button-stalk", value = "unstalk" if current_user.is_stalking(user) else "stalk", onclick = "return onClickStalk(this)") }}
                                 </form>
                             </div>
                         </td>
@@ -62,16 +58,16 @@
 
         <!-- Categories select -->
         {% if user != current_user %}
-            <div class="select-category-container">
+            <div id="select-category-container">
                 Select categories to stalk
                 <div class="categories-container">
-                    <form class="form-stalk" action="" method="POST" enctype="multipart/form-data">
+                    <form id="form-stalk" action="" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
-                        {% for c in user.categories %}
-                            <div class="category-checkbox-container"><input type="checkbox" name="{{ c.id }}"> {{ c.name }}</div>
-                        {% endfor %}
+                            {% for c in user.categories %}
+                                <div class="category-checkbox-container"><input type="checkbox" name="{{ c.id }}"> {{ c.name }}</div>
+                            {% endfor %}
                         <div style="margin-top: 1em;">
-                            <button type="button" onclick=(processStalking(this))>submit</button>
+                            <button type="button" onclick=(processStalking())>confirm</button>
                         </div>
                     </form>
                 </div>

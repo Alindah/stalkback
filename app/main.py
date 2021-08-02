@@ -208,17 +208,6 @@ def profile(username, category = "default"):
     uc_names = [ c.name for c in user.categories.all() ]
     cat_dd = CategoryDropdown(uc_names)
 
-    if request.method == 'POST':
-        # Start/stop stalking
-        if button_stalk.submit.data:
-            if current_user.is_stalking(user):
-                current_user.stop_stalking(user)
-            else:
-                current_user.start_stalking(user)
-            
-            db.session.commit()
-            return redirect(url_for('profile', username = username))
-
     return render_template('profile.html', category = category, user = user, desc = current_cat.desc, 
                             posts = posts, user_categories = uc_names, cat_dropdown = cat_dd, 
                             post_int = post_int, button_stalk = button_stalk, 
@@ -365,6 +354,14 @@ def process_stalk():
     form = list(request.form.items())
     user = UserModel.query.get(int(form[0][1]))
     selected_categories = [int(c[0]) for c in form[1 : ]]
+
+    # Start or stop stalking user
+    if current_user.is_stalking(user):
+        current_user.stop_stalking(user)
+        db.session.commit()
+        return "stopped stalking"
+    else:
+        current_user.start_stalking(user)
 
     # Add checked categories to stalklist
     for cat_id in selected_categories:
