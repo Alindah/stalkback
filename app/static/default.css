@@ -532,9 +532,7 @@ textarea:focus, input:focus {
 
 .select-category-container {
     background: rgb(var(--color-header));
-    margin-left: 1em;
-    margin-right: 1em;
-    padding: 0.5em;
+    padding: 1em;
 }
 
 .categories-container {
