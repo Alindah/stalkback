@@ -131,13 +131,20 @@ function onClickStalk(el) {
 
 function updateCategoriesStalking() {
     var form = document.getElementById('form-stalk');
+    var update = document.getElementById('update-text-timed');
+    update.classList.replace('timed-text-visible', 'timed-text-hidden');
 
     fetch('/process_stalk_categories', {
         method: 'POST',
         body: new FormData(form),
     }).then(function(response) {
-        
+        update.classList.replace('timed-text-hidden', 'timed-text-visible');
     });
 
     return false;
+}
+
+function reloadElement(el) {
+    var content = el.innerHTML;
+    el.innerHTML = content;
 }

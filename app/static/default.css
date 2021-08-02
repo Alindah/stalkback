@@ -63,6 +63,22 @@ textarea:focus, input:focus {
     color: rgb(var(--color-text));
 }
 
+@keyframes anim-timed-text {
+    0% {opacity: 1;}
+    70% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.timed-text-hidden {
+    opacity: 0;
+}
+
+.timed-text-visible {
+    opacity: 0;
+    animation-name: anim-timed-text;
+    animation-duration: 2s;
+}
+
 .highlight {
     color: rgb(var(--color-highlight));
 }
