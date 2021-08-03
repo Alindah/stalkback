@@ -54,7 +54,6 @@ class UserModel(UserMixin, db.Model):
     # Categories that are being stalked by this user
     stalked_categories = db.relationship(
         'CategoryModel', secondary = categories_stalklist,
-        #primaryjoin = (stalkers_category.c.cat_id == 'categories.id'),
         back_populates = 'stalked_by')
     
     # Liked/Saved Posts
@@ -194,7 +193,6 @@ class CategoryModel(db.Model):
 
     stalked_by = db.relationship(
         'UserModel', secondary = categories_stalklist,
-        #primaryjoin = (stalkers_category.c.stalker_id == 'users.id'),
         back_populates = 'stalked_categories')
     
     # Check if user is stalking this category
