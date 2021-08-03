@@ -5,16 +5,27 @@ function deleteConfirmation() {
 }
 
 // Toggles menu container on and off
-function toggleElDisplay(menuId, el = null, parent_class = null) {
+// Set showEl to 0 to hide; 1 to display
+function toggleElDisplay(menuId, el = null, parent_class = null, showEl = 99) {
     if (el)
         var parent = (el && parent_class == null) ? el.parentElement : el.closest('.' + parent_class);
+    
     var menu = el ? parent.getElementsByClassName(menuId)[0] : document.getElementById(menuId);
-    menu.style.display = (menu.style.display == "" || menu.style.display == "none") ? "block" : "none";
+
+    if (showEl == 0)
+        menu.style.display = "none";
+    else if (showEl == 1)
+        menu.style.display = "block"
+    else
+        menu.style.display = (menu.style.display == "" || menu.style.display == "none") ? "block" : "none";
 }
 
 function displayComments(el) {
     var commentsContainer = el.closest('.post-footer').getElementsByClassName('comments-container')[0];
     commentsContainer.style.display = (commentsContainer.style.display == "" || commentsContainer.style.display == "none") ? "block" : "none";
+
+    if (commentsContainer.style.display == "none")
+        toggleElDisplay('reply-container', el, 'comment', 0);
 }
 
 function toggleColor(el, color1, color2) {
