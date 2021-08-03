@@ -125,7 +125,7 @@
         {{ post_int.post_id(value=p.id) }}
         
         <!-- COMMENT BUTTON -->
-        <div class="svg-icon-container clickable comment-icon" onclick="toggleElDisplay('reply-container', this, 'post-info-form'); displayComments(this)">
+        <div class="svg-icon-container clickable comment-icon" onclick="toggleElDisplay('reply-container', this, 'post-info-form'); displayComments(this);">
             {{ comment_icon() }}
         </div>
         <span class="comment-count">{{ p.replies.count() }}</span>
@@ -199,11 +199,12 @@
                         {{ comment_icon() }}</div>
                     <span class="comment-count">{{ c.replies.count() }}</span>
                 </div>
+
+                <!-- REPLY -->
                 <div style="display:inline-block; margin-left:0.5em;">
-                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment');">
+                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment'); scrollToEl(this);">
                         Reply</span></div>
 
-                <!-- COMMENTS -->
                 <div class="reply-container">
                     {{ post_int.comment(rows="2", placeholder=post_int.comment.description, maxlength="10000") }}
                     <div class="reply-tools-container">
@@ -211,6 +212,7 @@
                     </div>
                 </div>
             </form>
+            <!-- COMMENTS LIST -->
             {{ replies_list(c, submission) }}
         </div>
     </div>

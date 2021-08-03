@@ -26,6 +26,14 @@ function displayComments(el) {
 
     if (commentsContainer.style.display == "none")
         toggleElDisplay('reply-container', el, 'comment', 0);
+    else
+        scrollToEl(el);
+}
+
+function scrollToEl(el) {
+    if (el)
+        el.scrollIntoView(alignToTop = true);
+
 }
 
 function toggleColor(el, color1, color2) {

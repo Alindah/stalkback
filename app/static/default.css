@@ -22,6 +22,7 @@ body, html {
     background-color: rgb(var(--color-header));
     color: rgb(var(--color-text));
     margin: 0;
+    scroll-behavior: smooth;
 }
 
 a {
