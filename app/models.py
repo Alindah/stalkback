@@ -61,8 +61,6 @@ class UserModel(UserMixin, db.Model):
         'PostModel', secondary = likes,
         back_populates = 'liked_by')
 
-    #saved_posts = db.Column(db.Integer, db.ForeignKey('posts.id'))
-
     # Hash a password
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
