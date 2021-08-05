@@ -1,0 +1,31 @@
+alembic==1.6.5
+blinker==1.4
+certifi==2021.5.30
+click @ file:///tmp/build/80754af9/click_1621604852318/work
+dnspython==1.16.0
+email-validator @ file:///tmp/build/80754af9/email-validator_1623674793554/work
+Flask @ file:///home/ktietz/src/ci/flask_1611932660458/work
+Flask-Avatars==0.2.2
+Flask-Login==0.5.0
+Flask-Mail==0.9.1
+Flask-Migrate==3.0.1
+Flask-SQLAlchemy @ file:///tmp/build/80754af9/flask-sqlalchemy_1616180561581/work
+Flask-Uploads==0.2.1
+Flask-WTF @ file:///tmp/build/80754af9/flask-wtf_1622018667443/work
+greenlet @ file:///opt/concourse/worker/volumes/live/3d030e63-590e-4f13-439a-f458077e6fdc/volume/greenlet_1620913624685/work
+idna @ file:///tmp/build/80754af9/idna_1622654382723/work
+importlib-metadata @ file:///opt/concourse/worker/volumes/live/bdafb81c-7edc-4122-77fe-a69839ec3c71/volume/importlib-metadata_1617877361684/work
+itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
+Jinja2 @ file:///tmp/build/80754af9/jinja2_1624781299557/work
+Mako==1.1.4
+MarkupSafe @ file:///opt/concourse/worker/volumes/live/1bcf0940-5bf8-4171-61e3-2133f5885e8b/volume/markupsafe_1621528148241/work
+Pillow==8.3.1
+python-dateutil==2.8.2
+python-editor==1.0.4
+pytz==2021.1
+six==1.16.0
+SQLAlchemy @ file:///opt/concourse/worker/volumes/live/042b279e-425b-47e4-759d-32ca45fba3b5/volume/sqlalchemy_1624590434895/work
+tzlocal==2.1
+Werkzeug @ file:///home/ktietz/src/ci/werkzeug_1611932622770/work
+WTForms @ file:///tmp/build/80754af9/wtforms_1597707484216/work
+zipp @ file:///tmp/build/80754af9/zipp_1625570634446/work

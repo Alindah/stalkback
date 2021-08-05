@@ -4,7 +4,7 @@ from flask_login import UserMixin
 import hashlib
 from datetime import datetime
 
-# Create database and user model
+# Create database
 db = SQLAlchemy()
 
 # Association table (model not necessary because no new data other than foreign keys)
