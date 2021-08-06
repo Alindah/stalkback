@@ -38,6 +38,7 @@ a:hover {
     background-color: rgb(var(--color-bg));
 }
 
+/* Input */
 input {
     font-family: var(--font-main);
     padding: 0.2em;
@@ -49,6 +50,22 @@ input[type='submit'] {
     cursor: pointer;
 }
 
+/* Buttons */
+.input-button-standard {
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-button-mid-color {
+    background-color: rgb(var(--color-bg));
+    border: 0.1em ridge rgb(var(--color-header-gray));
+    color: rgb(var(--color-text));
+}
+
+/* Text areas */
 textarea, input {
     border: 0.15em solid transparent;
 }
@@ -63,10 +80,7 @@ textarea:focus, input:focus {
     font-family: var(--font-main);
 }
 
-.icon-med {
-    width: 2em !important;
-}
-
+/* Text */
 .small-text {
     font-size: 0.8em;
 }
@@ -91,6 +105,11 @@ textarea:focus, input:focus {
     color: rgb(var(--color-link-highlight));
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+/* Notifiers */
 .timed-text-hidden {
     opacity: 0;
 }
@@ -99,6 +118,65 @@ textarea:focus, input:focus {
     opacity: 0;
     animation-name: anim-timed-text;
     animation-duration: 2s;
+}
+
+/* ICONS */
+/* SVGs */
+.icon-med {
+    width: 2em !important;
+}
+
+.svg-icon-container {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    fill: rgb(var(--color-text));
+}
+
+.svg-icon-container svg {
+    display: block;
+}
+
+/* User avatars */
+.user-av {
+    width: 30vw;
+    height: auto;
+    max-width: 200px;
+}
+
+.user-av-med {
+    width: 60px;
+}
+
+.user-av-small {
+    width: 30px;
+}
+
+.user-av-med img {
+    border: 0.2em solid rgb(var(--color-header-gray));
+}
+
+/* Generic form */
+.simple-form {
+    padding: 1em;
+}
+
+.simple-form input {
+    width: 50%;
+    margin: 0.1em;
+    border-radius: 5px;
+}
+
+.simple-form input:focus {
+    border-radius: 5px;
+}
+
+.simple-form input[type='submit'] {
+    width: auto;
+    padding: 0.5em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    margin-top: 0.5em;
 }
 
 /* ANIMATIONS */
@@ -114,6 +192,7 @@ textarea:focus, input:focus {
     background: rgb(var(--color-bg));
 }
 
+/* Header */
 .header {
     position: relative;
     margin: 0;
@@ -146,6 +225,7 @@ textarea:focus, input:focus {
     width: 2.5em;
 }
 
+/* Navigation menu */
 .menu-button {
     float: right;
     width: 2.25em;
@@ -177,6 +257,7 @@ textarea:focus, input:focus {
     fill: rgb(var(--color-text));
 }
 
+/* Footer */
 .footer {
     position: relative;
     padding: 1em;
@@ -190,48 +271,12 @@ textarea:focus, input:focus {
     margin: 0.5em;
 }
 
-.svg-icon-container {
-    position: relative;
-    display: inline-block;
-    width: 1em;
-    fill: rgb(var(--color-text));
-}
-
-.svg-icon-container svg {
-    display: block;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-.comment-icon {
-    width: 1.5em;
-}
-
-.comment-icon-small {
-    width: 1em;
-}
-
-.like-button {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-}
-
-.liked-icon {
-    fill: rgb(var(--color-highlight))
-}
-
-.liked-icon-small {
-    width: 1.3em;
-}
-
 .flashes-container {
     color: rgb(var(--color-highlight));
     font-size: 0.8em;
 }
 
+/* Flashes box */
 .info-box {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 1em;
@@ -247,6 +292,8 @@ textarea:focus, input:focus {
     list-style-position: inside;
 }
 
+/* LOGIN/REGISTER */
+/* Login/Register form */
 .acct-form-container {
     margin: auto;
     margin-top: 1em;
@@ -300,6 +347,7 @@ textarea:focus, input:focus {
     width: 50%;
 }
 
+/* Login/Register spiel */
 .headline {
     font-size: 1.75em;
     font-weight: bold;
@@ -309,28 +357,8 @@ textarea:focus, input:focus {
     font-size: 1.25em;
 }
 
-.simple-form {
-    padding: 1em;
-}
-
-.simple-form input {
-    width: 50%;
-    margin: 0.1em;
-    border-radius: 5px;
-}
-
-.simple-form input:focus {
-    border-radius: 5px;
-}
-
-.simple-form input[type='submit'] {
-    width: auto;
-    padding: 0.5em;
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-    margin-top: 0.5em;
-}
-
+/* ACCOUNT SETTINGS */
+/* Delete confirmation */
 #delete-confirm {
     display: none;
 }
@@ -348,6 +376,7 @@ textarea:focus, input:focus {
     border-color: rgb(var(--color-warning));
 }
 
+/* SEARCH */
 .search-container {
     display: inline;
     width: 100%;
@@ -366,6 +395,7 @@ textarea:focus, input:focus {
     box-sizing: border-box;
 }
 
+/* RESULT TABLES */
 .list-results {
     border-collapse: collapse;
     background-color: rgb(var(--color-header));
@@ -385,6 +415,8 @@ textarea:focus, input:focus {
     text-transform: capitalize;
 }
 
+/* PROFILE */
+/* Profile header */
 .prof-header {
     margin: auto;
     padding: 1em;
@@ -394,6 +426,7 @@ textarea:focus, input:focus {
     box-sizing: border-box;
 }
 
+/* Profile info */
 .prof-info-container {
     background-color: rgb(var(--color-header-gray));
 }
@@ -411,37 +444,66 @@ textarea:focus, input:focus {
     width: 100%;
 }
 
-.prof-tools-container {
-    height: 2em;
-    padding-bottom: 1em;
-    padding-right: 0.5em;
-}
-
+/* Stalking */
 .stalk-count {
     padding-left: 0.5em;
     padding-right: 1em;
     font-weight: bold;
 }
 
-.user-av {
-    width: 30vw;
-    height: auto;
-    max-width: 200px;
+#button-stalk {
+    border-color: rgb(var(--color-highlight));
+    border-radius: 5px;
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-family: var(--font-header);
+    text-transform: capitalize;
 }
 
-.user-av-med {
-    width: 60px;
+.button-highlight {
+    background-color: rgb(var(--color-highlight));
+    color: rgb(var(--color-header));
 }
 
-.user-av-small {
-    width: 30px;
+.button-dark-highlight {
+    background-color: rgb(var(--color-header)) !important;
+    color: rgb(var(--color-text));
 }
 
-.user-av-med img {
-    border: 0.2em solid rgb(var(--color-header-gray));
+/* Select category */
+#select-category-container {
+    display: none;
+    background: rgb(var(--color-header));
+    padding: 1em;
+}
+
+.categories-container {
+    padding: 1em;
+}
+
+.category-checkbox-container {
+    padding-right: 1em;
+    display: inline-block;
+}
+
+/* Profile tools */
+.prof-tools-container {
+    height: 2em;
+    padding-bottom: 1em;
+    padding-right: 0.5em;
+}
+
+.profile-tool-button {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 2em;
+    max-height: 2em;
+    fill: rgb(var(--color-highlight));
 }
 
 /* POSTS */
+/* Post title */
 .post-title-container {
     background-color: rgb(var(--color-header));
     padding: 1em;
@@ -452,9 +514,15 @@ textarea:focus, input:focus {
     width: 100%;
 }
 
+/* Post content */
 .post-content {
     background-color: seagreen;
     padding: 1em;
+}
+
+/* Post description */
+.post-desc-container {
+    padding-left: 1em;
 }
 
 .post-desc {
@@ -464,24 +532,19 @@ textarea:focus, input:focus {
     padding: 1em;
 }
 
+/* Post author */
 .post-user-container {
     text-align: center;
     width: 5em;
 }
 
-.post-desc-container {
-    padding-left: 1em;
-}
-
+/* Post footer */
 .post-footer {
     background-color: rgb(var(--color-header));
     padding: 1em;
 }
 
-.post-tool-padding {
-    margin-left: 0.5em;
-}
-
+/* Post options */
 .post-options-button {
     position: relative;
     fill: rgb(var(--color-text));
@@ -516,9 +579,33 @@ textarea:focus, input:focus {
     color: rgb(var(--color-highlight));
 }
 
-.post-info-form-container {
-    background: red;
-    height: 100px;
+/* Post tools */ 
+.post-tool-padding {
+    margin-left: 0.5em;
+}
+
+/* Comment icon */ 
+.comment-icon {
+    width: 1.5em;
+}
+
+.comment-icon-small {
+    width: 1em;
+}
+
+/* Like icon */
+.like-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.liked-icon {
+    fill: rgb(var(--color-highlight))
+}
+
+.liked-icon-small {
+    width: 1.3em;
 }
 
 /* COMMENTS */
@@ -526,6 +613,10 @@ textarea:focus, input:focus {
     border-left: 0.4em solid rgb(var(--color-bg));
 }
 
+.comments-container {
+    display: none;
+    padding-top: 1em;
+}
 
 .comment.op {
     border-left: 0.4em solid rgb(var(--color-highlight));
@@ -539,6 +630,7 @@ textarea:focus, input:focus {
     color: rgb(var(--color-text));
 }
 
+/* Comment header */
 .comment-header {
     padding: 0.5em;
     padding-bottom: 0;
@@ -555,23 +647,21 @@ textarea:focus, input:focus {
     float: right;
 }
 
+/* Comment description */
 .comment .post-desc {
     padding-top: 0;
     padding-left: 2.2em;
     padding-bottom: 1em;
 }
 
+/* Comment footer */
 .comment .post-footer {
     background-color: rgb(var(--color-header-darkgray));
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
 
-.comments-container {
-    display: none;
-    padding-top: 1em;
-}
-
+/* Replies */
 .reply-container {
     display: none;
     margin-bottom: 1em;
@@ -593,64 +683,6 @@ textarea:focus, input:focus {
 .reply-tools-container {
     width: 100%;
     height: 2em;
-}
-
-
-.profile-button {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    width: 2em;
-    max-height: 2em;
-    fill: rgb(var(--color-highlight));
-}
-
-.input-button-standard {
-    padding: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.input-button-mid-color {
-    background-color: rgb(var(--color-bg));
-    border: 0.1em ridge rgb(var(--color-header-gray));
-    color: rgb(var(--color-text));
-}
-
-#button-stalk {
-    border-color: rgb(var(--color-highlight));
-    border-radius: 5px;
-    padding: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    font-family: var(--font-header);
-    text-transform: capitalize;
-}
-
-.button-highlight {
-    background-color: rgb(var(--color-highlight));
-    color: rgb(var(--color-header));
-}
-
-.button-dark-highlight {
-    background-color: rgb(var(--color-header)) !important;
-    color: rgb(var(--color-text));
-}
-
-#select-category-container {
-    display: none;
-    background: rgb(var(--color-header));
-    padding: 1em;
-}
-
-.categories-container {
-    padding: 1em;
-}
-
-.category-checkbox-container {
-    padding-right: 1em;
-    display: inline-block;
 }
 
 /* DASHBOARD */
