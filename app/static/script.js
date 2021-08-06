@@ -128,28 +128,12 @@ function replyToPost(button) {
 // Process what happens when the a user is confirmed to stalk or is unstalked
 function processStalking() {
     var form = document.getElementById('form-stalk');
-    var button = document.getElementById('button-stalk');
-    var catSelectContainer = document.getElementById('select-category-container');
-    var manageCategory = document.getElementById('manage-category-container');
 
     fetch('/process_stalk', {
         method: 'POST',
         body: new FormData(form),
-    }).then(function(response) {
-        // Replace text with "stalk" and change the color if button is currently "unstalk"
-        if (button.value == "unstalk") {
-            button.value = "stalk";
-            button.classList.replace("button-dark-highlight", "button-highlight");
-
-            if (manageCategory)
-                manageCategory.style.display = "none";
-        }
-        else {
-            button.value = "unstalk";
-            button.classList.replace("button-highlight", "button-dark-highlight");
-        }
-
-        catSelectContainer.style.display = "none";
+    }).then(function() {
+        location.reload();
     });
 
     return false;

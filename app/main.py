@@ -480,8 +480,6 @@ def process_stalk():
     # Start or stop stalking user
     if current_user.is_stalking(user):
         current_user.stop_stalking(user)
-        db.session.commit()
-        return redirect(url_for('profile', username = user.username))
     else:
         current_user.start_stalking(user)
 
