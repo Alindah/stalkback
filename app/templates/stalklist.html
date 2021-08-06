@@ -2,12 +2,16 @@
 {% from "macros.html" import user_avatar_linked %}
 
 {% block content %}
+    <!-- LIST OF STALKERS OR STALKEES -->
     <table class="list-results">
         {% if stalkers %}
             <th colspan="2">{{ table_header }} ({{ stalkers.count() }})</th>
             {% for stalker in stalkers %}
                 <tr>
+                    <!-- USER AVATAR -->
                     <td class="user-av-med">{{ user_avatar_linked(stalker) }}</td>
+                    
+                    <!-- USER NAMES -->
                     <td>
                         <a href="{{ url_for('profile', username = stalker.username) }}">
                             <div>

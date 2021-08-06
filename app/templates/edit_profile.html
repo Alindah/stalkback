@@ -9,9 +9,11 @@
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
+            <!-- PROFILE TAGLINE INPUT -->
             <span class="small-text">{{ form.tagline.label }}</span><br>
             {{ form.tagline(maxlength=128, rows=2, placeholder=form.tagline.description) }}<br>
 
+            <!-- PROFILE DESCRIPTION INPUT -->
             <span class="small-text">{{ form.desc.label }}</span><br>
             {{ form.desc(maxlength=1000, rows=6, placeholder=form.desc.description) }}<br>
 

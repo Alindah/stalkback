@@ -2,13 +2,17 @@
 {% from "macros.html" import flashes %}
 {% block content %}
     <div class="acct-form-container">
+        <!-- HEADLINE -->
         <p>
             <span class="headline">Become a <span class="highlight">stalker</span> today.</span><br>
             <span class="tagline">It's ok. Your friends are stalking you, too.</span>
         </p>
+
+        <!-- REGISTRATION FORM -->
         <form action="" method="POST" class="form-container">
             {{ flashes("Please fix the following errors:") }}
             {{ form.hidden_tag() }}
+            
             <p class="small-text">* [Required information]</p>
             {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
             {{ form.username(maxlength=30, placeholder=form.username.description) }}<br>
@@ -19,6 +23,7 @@
         </form>
         <br>
         <hr>
+        <!-- LOGIN PAGE LINK -->
         <p>  
             Already have an account?<br>
             <a href="{{ url_for('index') }}">Log in here!</a>

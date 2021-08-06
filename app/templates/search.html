@@ -11,9 +11,11 @@
         <table class="list-results">
             {% for r in res %}
                 <tr>
+                    <!-- USER PROFILE PICTURE -->
                     <td class="user-av-med">
                         {{ user_avatar_linked(r) }}
                     </td>
+                    <!-- USER DISPLAY NAME AND USER NAME -->
                     <td>
                         <a href="{{ url_for('profile', username = r.username) }}">
                             <div>

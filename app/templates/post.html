@@ -7,15 +7,19 @@
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
+            <!-- NEW POST TITLE -->
             <span class="small-text">{{ form.title.label }}</span><br>
             {{ form.title(maxlength=300, placeholder=form.title.description) }}<br>
 
+            <!-- NEW POST DESCRIPTION -->
             <span class="small-text">{{ form.desc.label }}</span><br>
             {{ form.desc(maxlength=40000, rows=6, placeholder=form.desc.description) }}<br>
 
+            <!-- NEW POST CONTENT -->
             <span class="small-text">{{ form.content.label }}</span><br>
             {{ form.content }}<br>
 
+            <!-- NEW POST CATEGORY -->
             <span class="small-text">{{ form.category.label }}</span><br>
             {{ form.category }}
             {{ form.new_cat(maxlength=32, value=current_cat, placeholder=form.new_cat.description) }}<br>

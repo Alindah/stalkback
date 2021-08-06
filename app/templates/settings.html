@@ -1,42 +1,49 @@
 {% extends "base.html" %}
 {% from "macros.html" import flashes %}
 {% block content %}
-    <head>
-        <script src="{{ url_for('static', filename='script.js') }}"></script> 
-    </head>
     <h1>Settings</h1>
     <fieldset class="simple-form">
         {{ flashes() }}
         <br>
+        <!-- USER AVATAR -->
         <div style="margin: auto; width: 100%; text-align: center;">
             <img src="{{ current_user.avatar_url }}" style="width: 100px;"><br>
         </div>
+
+        <!-- BROWSE NEW AVATAR -->
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="file" name="uploaded_avatar" accept=".png,.jpg">
             <input type="submit" value="Upload avatar">
         </form>
 
+        <!-- ACCOUNT SETTINGS FORM -->
         <p><form action="" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
+            <!-- DISPLAY NAME -->
             {{ form.display_name.label }}
             {{ form.display_name(minlength=1, maxlength=32, value=current_user.display_name) }}<br>
             
+            <!-- OLD PASSWORD -->
             {{ form.password.label }}
             {{ form.password }}<br>
 
+            <!-- NEW PASSWORD -->
             {{ form.password_new.label }}
             {{ form.password_new }}<br>
 
+            <!-- NEW PASSWORD RE-ENTER -->
             {{ form.password_check.label }}
             {{ form.password_check }}<br>
 
             {{ form.submit }}
         </form></p>
     </fieldset>
-    <h3><a href="javascript:deleteConfirmation();">Delete account</a></h3>
+    <!-- ACCOUNT DELETION -->
+    <h3><a href="javascript:toggleElDisplay('delete-confirm');">Delete account</a></h3>
     <div id="delete-confirm">
         <fieldset class="info-box">
+            <!-- DELETION PASSWORD CONFIRMATION -->
             <p>
                 Enter password to confirm account deletion.<br>
                 <span class="warning">*Warning* This is PERMANENT</span>
