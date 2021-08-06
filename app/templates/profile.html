@@ -59,6 +59,7 @@
             </tr>
         </table>
 
+        <!-- Manage categories toggle (only appears if not your profile) -->
         {% if user != current_user %}
             {% if current_user.is_stalking(user) %}
                 <div id="manage-category-container" style="padding:1em; padding-top:0;">
@@ -101,9 +102,10 @@
             <div style="padding:1em;">{{ desc }}</div>
         {% endif %}
 
-        <!-- Profile tools -->
+        <!-- Profile tools (only appears if this is your profile) -->
         {% if user == current_user %}
             <div class="prof-tools-container">
+                <!-- Edit profile -->
                 <a href="{{ url_for('edit_prof', category = category) }}">
                     <div style="display:flex; float:right;">
                         <svg class="profile-button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 121.51">
@@ -115,6 +117,7 @@
                                     76.47ZM57.13,41.68,96.3.91A2.74,2.74,0,0,1,99.69.38l22.48,21.76a2.39,2.39,0,0,1-.19,3.57L82.28,67,57.13,41.68Z"/></svg>
                     </div>
                 </a>
+                <!-- Create new post -->
                 <a href="{{ url_for('post', category = category) }}">
                     <div style="display:flex; float:right;">
                         <svg class="profile-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="122.879px" height="122.88px" 

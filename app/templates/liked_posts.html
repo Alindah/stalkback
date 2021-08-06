@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "macros.html" import user_submission with context %}
 {% block content %}
+    <!-- LIST OF LIKED POSTS -->
     <h2>Posts you've liked</h2>
     {% for post in current_user.liked_posts %}
         <p>{{ user_submission(post) }}</p>

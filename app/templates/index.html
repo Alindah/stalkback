@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% from "macros.html" import flashes %}
 {% block content %}
+    <!-- LOGIN CONTAINER -->
     <div class="acct-form-container login-container">
+        <!-- HEADLINE -->
         <p>
             <span class="headline">Come <span class="highlight">stalk</span> your friends.</span><br>
             <span class="tagline">We know you want to ;)</span>
         </p>
+
+        <!-- LOGIN FORM -->
         <p><form action="" method="POST" class="form-container">
             {{ form.hidden_tag() }}
             {{ form.email(maxlength=254, placeholder=form.email.description) }}<br>
@@ -17,6 +21,7 @@
         </form></p>
         {{ flashes() }}
         <hr>
+        <!-- REGISTRATION LINK -->
         <p>  
             Don't have an account yet?<br>
             Grab your binoculars ∞
