@@ -26,8 +26,8 @@ This means you have more control over what you want to see, and as a creator, yo
 
 ### Technology Stack
 
-- **Languages :** [Python][1], [JavaScript][2], [HTML][3], [CSS][4]
-- **Framework :** [Flask][5]
+- **Languages:** [Python][1], [JavaScript][2], [HTML][3], [CSS][4]
+- **Framework:** [Flask][5]
 - **Template engine:** [Jinja][6]
 - **Database engine:** [SQLite][7]
 - **Libraries:** [SQLAlchemy][8], [Flask-WTF][9], [Flask-Login][10], [Flask-Avatars][11]
