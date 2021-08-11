@@ -38,7 +38,7 @@ This means you have more control over what you want to see, and as a creator, yo
 
 1. Clone this repo!
 
-    `git clone https://github.com/Alindah/stalkback.git`
+        git clone https://github.com/Alindah/stalkback.git
 
 
 2. [conda](https://docs.conda.io/en/latest/miniconda.html) (or your environment manager of choice)
@@ -47,25 +47,25 @@ This means you have more control over what you want to see, and as a creator, yo
 
 1. In your console, change the directory to the root of the project folder.
 
-    `cd path/to/project/folder/here`
+        cd path/to/project/folder/here
 
 2. Create a virtual environment.
 
-   `conda create --name myenv`
+        conda create --name myenv
 
 3. Activate your new environment.
 
-    `conda activate myenv`
+        conda activate myenv
 
 4. Install Stalkback's dependencies.
 
-    `conda install --file requirements.txt`
+        conda install --file requirements.txt
 
 ### Running the app
 
 1. Run the app.
 
-    `python app/main.py`
+        python app/main.py
 
 2. By default, Stalkback is set to run on localhost on port 5000. Assuming no conflicts, open your browser and visit http://localhost:5000/.
 
