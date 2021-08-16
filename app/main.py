@@ -32,8 +32,8 @@ def create_table():
 # Create necessary folders
 @app.before_first_request
 def create_dir():
-    if not os.path.exists(app.config['AVATAR_SAVE_PATH']):
-        os.makedirs(app.config['AVATAR_SAVE_PATH'])
+    if not os.path.exists("./app/static/" + app.config['AVATAR_SAVE_PATH']):
+        os.makedirs("./app/static/" + app.config['AVATAR_SAVE_PATH'])
 
 # Load the indicated user by id
 @login.user_loader
