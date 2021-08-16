@@ -12,8 +12,9 @@
 
         <!-- BROWSE NEW AVATAR -->
         <form action="" method="POST" enctype="multipart/form-data">
-            <input type="file" name="uploaded_avatar" accept=".png,.jpg">
-            <input type="submit" value="Upload avatar">
+            {{ form_avatar.hidden_tag() }}
+            {{ form_avatar.avatar }}
+            {{ form_avatar.upload }}
         </form>
 
         <!-- ACCOUNT SETTINGS FORM -->
