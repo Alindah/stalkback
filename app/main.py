@@ -233,12 +233,27 @@ def settings():
             create_dir()
             avatar = request.files['avatar']
             file_ext = os.path.splitext(avatar.filename)[1]
+
             if file_ext in app.config['AVATAR_UPLOAD_EXTENSIONS']:
+                # https://docs.python.org/3/library/io.html#io.IOBase.seek
+                file_size = avatar.seek(0, os.SEEK_END)
+                
+                # Reset position to start of stream
+                avatar.seek(os.SEEK_SET)
+
+                # Reject files that are too large
+                if file_size > app.config['AVATAR_MAX_SIZE']:
+                    flash("Avatar size must be under {0} kb".format(int(app.config['AVATAR_MAX_SIZE'] / 1024)))
+                    return redirect('/settings')
+
+                # Save valid avatar
                 avatar.filename = "ua{0}{1}".format(str(current_user.id), ".png")
                 avatar_path = os.path.join("./app/static/" + app.config['AVATAR_SAVE_PATH'], avatar.filename)
                 avatar.save(avatar_path)
+
                 current_user.set_avatar(avatars, avatar_path)                
                 db.session.commit()
+
                 flash("New avatar successfully uploaded.")
             else:
                 flash("Avatars must have one of the following extensions: " + str(app.config['AVATAR_UPLOAD_EXTENSIONS']))
