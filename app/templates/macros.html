@@ -257,9 +257,11 @@
 
 <!-- USER AVATAR (with link to profile) -->
 {% macro user_avatar_linked(user, size = "user-av-med") -%}
-<a href="{{ url_for('profile', username = user.username) }}">
-    <img src="{{ user.avatar_url }}" class="{{ size }}"></a>
-    {%- endmacro %}
+    {% if user %}
+        <a href="{{ url_for('profile', username = user.username) }}">
+            <img src="{{ user.get_avatar() }}" class="{{ size }}"></a>
+    {% endif %}
+{%- endmacro %}
 
 <!-- USER DISPLAY NAME (with link to profile) -->
 {% macro user_dname_linked(user) -%}

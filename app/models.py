@@ -1,7 +1,9 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-import hashlib
+from flask import url_for
+from config import Config
+import hashlib, os
 from datetime import datetime
 
 # Create database
@@ -88,6 +90,16 @@ class UserModel(UserMixin, db.Model):
         else:
             email_hash = hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
             self.avatar_url = avatars.gravatar(email_hash, size=300)
+    
+    # Get the user's avatar if it exists
+    # RETURN : the user's avatar image url
+    def get_avatar(self):
+        url = Config.AVATAR_SAVE_PATH + "/ua" + str(self.id) + ".png"
+
+        if os.path.exists("./app/static/" + url):
+            return url_for('static', filename = url)
+        
+        return self.avatar_url
 
     # Start stalking a specified user
     # user : user object who will be stalked

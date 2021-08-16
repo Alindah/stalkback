@@ -234,12 +234,14 @@ def settings():
             avatar = request.files['avatar']
             file_ext = os.path.splitext(avatar.filename)[1]
             if file_ext in app.config['AVATAR_UPLOAD_EXTENSIONS']:
-                avatar.filename = "{0}{1}".format(str(current_user.id), ".png")
-                avatar.save(os.path.join(app.config['AVATAR_SAVE_PATH'], avatar.filename))
+                avatar.filename = "ua{0}{1}".format(str(current_user.id), ".png")
+                avatar_path = os.path.join("./app/static/" + app.config['AVATAR_SAVE_PATH'], avatar.filename)
+                avatar.save(avatar_path)
+                current_user.set_avatar(avatars, avatar_path)                
+                db.session.commit()
                 flash("New avatar successfully uploaded.")
             else:
                 flash("Avatars must have one of the following extensions: " + str(app.config['AVATAR_UPLOAD_EXTENSIONS']))
-
         
         # Manage changes user wants to make to their account
         if form.submit.data:
