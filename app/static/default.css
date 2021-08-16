@@ -140,16 +140,19 @@ textarea:focus, input:focus {
 /* User avatars */
 .user-av {
     width: 30vw;
-    height: auto;
+    height: 30vw;
+    max-height: 200px;
     max-width: 200px;
 }
 
 .user-av-med {
     width: 60px;
+    height: 60px;
 }
 
 .user-av-small {
     width: 30px;
+    height: 30px;
 }
 
 .user-av-med img {

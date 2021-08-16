@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, SelectField, HiddenField, TextAreaField, validators
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, \
+                    SelectField, HiddenField, TextAreaField, validators
 
 # ===== #
 # LOGIN #
@@ -39,6 +40,10 @@ class DeleteAccount(FlaskForm):
     password_del = PasswordField(description = "Password")
     del_confirmation = SubmitField("Delete Account")
 
+class AvatarUpload(FlaskForm):
+    avatar = FileField("Avatar", [validators.DataRequired()])
+    upload = SubmitField("Upload")
+
 # ========== #
 # SEARCH BAR #
 # ========== #
@@ -50,7 +55,7 @@ class SearchBar(FlaskForm):
 # NEW SUBMISSION #
 # ============== #
 class PostForm(FlaskForm):
-    title = StringField("Title*", validators = [validators.Required("Title required")], description = "Enter a title")
+    title = StringField("Title*", validators = [validators.DataRequired("Title required")], description = "Enter a title")
     content = FileField("Content")
     desc = TextAreaField("Description", description = "Enter a description")
     category = SelectField("Category")

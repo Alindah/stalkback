@@ -191,7 +191,9 @@
 
                 <!-- REPLY BUTTON -->
                 <div style="display:inline-block; margin-left:0.5em;">
-                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment'); scrollToEl(this);">
+                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment'); 
+                                                                scrollToEl(this); 
+                                                                this.closest('.post-footer').getElementsByTagName('textarea')[0].focus();">
                         Reply</span></div>
 
                 <!-- REPLY CONTAINER BOX -->
@@ -257,9 +259,11 @@
 
 <!-- USER AVATAR (with link to profile) -->
 {% macro user_avatar_linked(user, size = "user-av-med") -%}
-<a href="{{ url_for('profile', username = user.username) }}">
-    <img src="{{ user.avatar_url }}" class="{{ size }}"></a>
-    {%- endmacro %}
+    {% if user %}
+        <a href="{{ url_for('profile', username = user.username) }}">
+            <img src="{{ user.get_avatar() }}" class="{{ size }}"></a>
+    {% endif %}
+{%- endmacro %}
 
 <!-- USER DISPLAY NAME (with link to profile) -->
 {% macro user_dname_linked(user) -%}

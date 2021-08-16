@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect, flash, Markup, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from werkzeug.utils import secure_filename
 from models import UserModel, PostModel, SubmissionModel, CommentModel, CategoryModel, db
 from forms import RegisterForm, SettingsForm, LoginForm, DeleteAccount, SearchBar, PostForm, \
-                    PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm
+                    PostInteraction, EditProfileForm, CategoryDropdown, EmptyForm, AvatarUpload
 from sqlalchemy import or_
 from flask_avatars import Avatars
 from config import Config
+import os
 
 app = Flask(__name__)
 
@@ -26,6 +28,12 @@ login.login_view = '/'
 @app.before_first_request
 def create_table():
     db.create_all()
+
+# Create necessary folders
+@app.before_first_request
+def create_dir():
+    if not os.path.exists("./app/static/" + app.config['AVATAR_SAVE_PATH']):
+        os.makedirs("./app/static/" + app.config['AVATAR_SAVE_PATH'])
 
 # Load the indicated user by id
 @login.user_loader
@@ -209,6 +217,7 @@ def search(sq):
 def settings():
     form = SettingsForm()
     form_delete = DeleteAccount()
+    form_avatar = AvatarUpload()
 
     # Handle POST requests
     if request.method == 'POST':
@@ -218,6 +227,36 @@ def settings():
                 return redirect('/deactivate')
 
             flash("Incorrect password. Account is not deleted.")
+        
+        # Upload new avatar
+        if form_avatar.upload.data:
+            create_dir()
+            avatar = request.files['avatar']
+            file_ext = os.path.splitext(avatar.filename)[1]
+
+            if file_ext in app.config['AVATAR_UPLOAD_EXTENSIONS']:
+                # https://docs.python.org/3/library/io.html#io.IOBase.seek
+                file_size = avatar.seek(0, os.SEEK_END)
+                
+                # Reset position to start of stream
+                avatar.seek(os.SEEK_SET)
+
+                # Reject files that are too large
+                if file_size > app.config['AVATAR_MAX_SIZE']:
+                    flash("Avatar size must be under {0} kb".format(int(app.config['AVATAR_MAX_SIZE'] / 1024)))
+                    return redirect('/settings')
+
+                # Save valid avatar
+                avatar.filename = "ua{0}{1}".format(str(current_user.id), ".png")
+                avatar_path = os.path.join("./app/static/" + app.config['AVATAR_SAVE_PATH'], avatar.filename)
+                avatar.save(avatar_path)
+
+                current_user.set_avatar(avatars, avatar_path)                
+                db.session.commit()
+
+                flash("New avatar successfully uploaded.")
+            else:
+                flash("Avatars must have one of the following extensions: " + str(app.config['AVATAR_UPLOAD_EXTENSIONS']))
         
         # Manage changes user wants to make to their account
         if form.submit.data:
@@ -248,7 +287,7 @@ def settings():
 
             db.session.commit()
 
-    return render_template('settings.html', form = form, form_delete = form_delete)
+    return render_template('settings.html', form = form, form_delete = form_delete, form_avatar = form_avatar)
 
 # ======= #
 # PROFILE #
