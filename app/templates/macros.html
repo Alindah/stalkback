@@ -191,7 +191,9 @@
 
                 <!-- REPLY BUTTON -->
                 <div style="display:inline-block; margin-left:0.5em;">
-                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment'); scrollToEl(this);">
+                    <span class="small-text clickable" onclick="toggleElDisplay('reply-container', this, 'comment'); 
+                                                                scrollToEl(this); 
+                                                                this.closest('.post-footer').getElementsByTagName('textarea')[0].focus();">
                         Reply</span></div>
 
                 <!-- REPLY CONTAINER BOX -->
