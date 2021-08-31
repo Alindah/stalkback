@@ -264,6 +264,7 @@
             <img src="{{ user.get_avatar() }}" class="{{ size }}"></a>
     {% else %}
         <!-- UNCLICKABLE DELETED / DEFAULT AVATAR -->
+        <img src="{{ url_for('static', filename='data/defaults/ua_del.png') }}" class="{{ size }}">
     {% endif %}
 {%- endmacro %}
 
