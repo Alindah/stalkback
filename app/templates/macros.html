@@ -74,7 +74,10 @@
                     {{ user_avatar_linked(p.author) }}</td>
                 <!-- SUBMISSION TITLE CONTAINER -->
                 <td class="post-title">
-                        {% if p.category != "default" %}
+                        {% if not p.author %}
+                            <!-- Blank if author no longer exists -->
+                            This user no longer exists!
+                        {% elif p.category != "default" %}
                             <a href="{{ url_for('profile', username = p.author.username, category = p.category) }}" class="small-text" style="text-decoration: none;">
                             > {{ p.author.username }} / {{ p.category }}</a>
                         {% else %}
@@ -82,7 +85,13 @@
                             > {{ p.author.username }}</a> 
                         {% endif %}
                     </a><br>
-                    <span style="font-size: 2em;">{{ p.title }}</span><br>
+                    <span style="font-size: 2em;">
+                        {% if p.author %}
+                            {{ p.title }}
+                        {% else %}
+                            <span class="user-deleted-text">[ deleted ]</span>
+                        {% endif %}
+                    </span><br>
                     <span class="small-text">{{ p.timestamp.strftime("%a, %d %b %Y, %I:%M:%S %p") }}</span>
                 </td>
             </tr></table>
@@ -102,7 +111,11 @@
                     {{ user_avatar_linked(p.author) }}<br>
                     {{ user_dname_linked(p.author) }}</div>
                 <div class="post-desc-container">
-                    {{ p.desc }}
+                    {% if p.author %}
+                        {{ p.desc }}
+                    {% else %}
+                        <span class="user-deleted-text">[ deleted ]</span>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
@@ -172,7 +185,11 @@
         <!-- COMMENT TEXT CONTENT -->
         <div class="post-desc">
             <div class="post-desc-container">
-                {{ c.desc }}
+                {% if c.author %}
+                    {{ c.desc }}
+                {% else %}
+                    <span class='user-deleted-text' style="font-style:italic;">This comment has been deleted!</span>
+                {% endif %}
             </div>
         </div>
 
@@ -262,15 +279,21 @@
     {% if user %}
         <a href="{{ url_for('profile', username = user.username) }}">
             <img src="{{ user.get_avatar() }}" class="{{ size }}"></a>
+    {% else %}
+        <!-- UNCLICKABLE DELETED / DEFAULT AVATAR -->
+        <img src="{{ url_for('static', filename='data/defaults/ua_del.png') }}" class="{{ size }}">
     {% endif %}
 {%- endmacro %}
 
 <!-- USER DISPLAY NAME (with link to profile) -->
 {% macro user_dname_linked(user) -%}
-    <a href="{{ url_for('profile', username = user.username) }}">
-        {{ user.display_name }}</a>
+    {% if user %}
+        <a href="{{ url_for('profile', username = user.username) }}">
+            {{ user.display_name }}</a>
+    {% else %}
+        <span class="user-deleted-text">[ deleted ]</span>
+    {% endif %}
 {%- endmacro %}
-
 
 <!-- ****
     ICONS
