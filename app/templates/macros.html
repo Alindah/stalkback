@@ -172,7 +172,11 @@
         <!-- COMMENT TEXT CONTENT -->
         <div class="post-desc">
             <div class="post-desc-container">
-                {{ c.desc }}
+                {% if c.author %}
+                    {{ c.desc }}
+                {% else %}
+                    <span class='user-deleted-text' style="font-style:italic;">This comment has been deleted!</span>
+                {% endif %}
             </div>
         </div>
 
@@ -274,7 +278,7 @@
         <a href="{{ url_for('profile', username = user.username) }}">
             {{ user.display_name }}</a>
     {% else %}
-        <span class="user-deleted-name">[ deleted ]</span>
+        <span class="user-deleted-text">[ deleted ]</span>
     {% endif %}
 {%- endmacro %}
 

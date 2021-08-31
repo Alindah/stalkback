@@ -541,8 +541,8 @@ textarea:focus, input:focus {
     width: 5em;
 }
 
-.user-deleted-name {
-    color: rgb(var(--color-text), 0.5);
+.user-deleted-text {
+    color: rgb(var(--color-text), 0.3);
 }
 
 /* Post footer */
