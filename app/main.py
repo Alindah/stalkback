@@ -162,9 +162,17 @@ def logout():
 @app.route('/deactivate')
 @login_required
 def deactivate():
+    # Delete user's categories from the database
+    for cat in current_user.categories:
+        db.session.delete(cat)
+    
+    # Delete the user themself
     db.session.delete(current_user)
+
     db.session.commit()
+
     flash("Your account was successfully deleted.")
+
     return redirect('/logout')
 
 # ========= #
@@ -255,7 +263,7 @@ def settings():
                 db.session.commit()
 
                 flash("New avatar successfully uploaded.")
-                
+
             else:
                 flash("Avatars must have one of the following extensions: " + str(app.config['AVATAR_UPLOAD_EXTENSIONS']))
         
