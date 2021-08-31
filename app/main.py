@@ -255,6 +255,7 @@ def settings():
                 db.session.commit()
 
                 flash("New avatar successfully uploaded.")
+                
             else:
                 flash("Avatars must have one of the following extensions: " + str(app.config['AVATAR_UPLOAD_EXTENSIONS']))
         

@@ -262,15 +262,20 @@
     {% if user %}
         <a href="{{ url_for('profile', username = user.username) }}">
             <img src="{{ user.get_avatar() }}" class="{{ size }}"></a>
+    {% else %}
+        <!-- UNCLICKABLE DELETED / DEFAULT AVATAR -->
     {% endif %}
 {%- endmacro %}
 
 <!-- USER DISPLAY NAME (with link to profile) -->
 {% macro user_dname_linked(user) -%}
-    <a href="{{ url_for('profile', username = user.username) }}">
-        {{ user.display_name }}</a>
+    {% if user %}
+        <a href="{{ url_for('profile', username = user.username) }}">
+            {{ user.display_name }}</a>
+    {% else %}
+        <span class="user-deleted-name">[ deleted ]</span>
+    {% endif %}
 {%- endmacro %}
-
 
 <!-- ****
     ICONS
