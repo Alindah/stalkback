@@ -76,7 +76,6 @@ This means you have more control over what you want to see, and as a creator, yo
 ## Contributors
 
 - **Alinda Heng** - [GitHub](https://github.com/Alindah/) | [Website](https://alinda.dev)
-- **Jose Valdez** - [GitHub](https://github.com/Finkage)
 
 ## Acknowlegement
 
